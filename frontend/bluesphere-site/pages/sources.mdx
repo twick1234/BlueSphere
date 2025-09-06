@@ -1,0 +1,58 @@
+---
+title: Data Sources
+description: Where BlueSphere data comes from, update cadence, and licensing terms
+---
+
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+# Data Sources
+
+Below are the primary data sources powering BlueSphere. We aim to use **open, reputable** datasets with clear licensing.
+
+> Licensing summaries are provided for convenience — refer to the source sites for definitive terms.
+
+## Live Status
+<span id="src-status" style={display:'inline-block', padding:'6px 10px', border:'1px solid #e5e7eb', borderRadius:'8px'}>Checking…</span>
+
+<script dangerouslySetInnerHTML={__html: `
+(async function() {
+  const el = document.getElementById('src-status');
+  try {
+    const res = await fetch('http://localhost:8000/status');
+    if (!res.ok) throw new Error('status not ok');
+    const items = await res.json();
+    // Expect array like: [{name:'api', ok:true}, ...] but we handle generically
+    const ok = Array.isArray(items) ? items.every(x => x.ok !== false) : true;
+    el.textContent = ok ? 'All systems nominal' : 'Some checks failing';
+    el.style.background = ok ? '#ecfeff' : '#fff7ed';
+    el.style.borderColor = ok ? '#06b6d4' : '#f97316';
+    el.style.color = ok ? '#0e7490' : '#9a3412';
+  } catch(e) {
+    el.textContent = 'Status unavailable';
+    el.style.background = '#fff7ed';
+    el.style.borderColor = '#f97316';
+    el.style.color = '#9a3412';
+  }
+})();
+`} />
+
+## Catalog
+
+| Source | Dataset | Update Cadence | Access | License |
+|---|---|---|---|---|
+| **NDBC (NOAA)** | Realtime2 buoy observations (WTMP) | Hourly | <a href="https://www.ndbc.noaa.gov/" target="_blank" rel="noreferrer">Website</a> | Public domain (US Govt) |
+| **ERSST v5 (NOAA/NCEI)** | Monthly global SST (and anomalies) | Monthly (~1 mo lag) | <a href="https://www.ncei.noaa.gov/products/extended-reconstructed-sst" target="_blank" rel="noreferrer">Product page</a> | Public domain (US Govt) |
+| **ERDDAP (NOAA CoastWatch etc.)** | Tabledap/Griddap datasets (e.g., SST) | Varies by dataset | <a href="https://coastwatch.pfeg.noaa.gov/erddap" target="_blank" rel="noreferrer">Portal</a> | Source-specific, often public domain |
+
+### Planned
+- **OSCAR surface currents**
+- **Argo float temperature/salinity**
+- **Satellite SST** (multi-sensor)
+
+## How We Use These
+- **Ingestion** converts files/feeds into a normalized format and **upserts** to our database.
+- We precompute **tiles** for map rendering (SST PNG tiles, currents MVT).
+- See <Link href="/docs/DATA_SOURCES">DATA_SOURCES.md</Link> and <Link href="/docs/DATA_LICENSES">DATA_LICENSES.md</Link> for details.
+
+_Last updated: 2025-09-06_

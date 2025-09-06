@@ -1,0 +1,50 @@
+name: Daily Tiles Cache Refresh
+
+on:
+  schedule:
+    - cron: "0 2 * * *"  # daily at 02:00 UTC
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r backend/requirements.txt
+
+      - name: Prepare tiles cache
+        run: |
+          mkdir -p tiles/cache/sst tiles/cache/currents
+
+      - name: Generate currents MVT (synthetic)
+        run: |
+          python ingestion/make_currents_mvt.py 0 2
+
+      - name: Generate SST tiles (if ERSST_URL provided)
+        env:
+          ERSST_URL: ${{ secrets.ERSST_URL }}
+        run: |
+          if [ -n "$ERSST_URL" ]; then
+            echo "Downloading ERSST from $ERSST_URL"
+            curl -sSL "$ERSST_URL" -o /tmp/ersst.nc
+            python ingestion/make_sst_tiles.py /tmp/ersst.nc 0 2
+          else
+            echo "ERSST_URL secret not set; skipping SST tile build."
+          fi
+
+      - name: Commit & push tiles (optional)
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+          git add tiles/cache || true
+          git commit -m "chore: refresh tiles cache (CI)" || echo "nothing to commit"
+          git push || true

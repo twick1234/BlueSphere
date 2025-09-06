@@ -1,0 +1,26 @@
+name: Uptime Checks
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check GitHub Pages
+        run: |
+          URL="https://Twick1234.github.io/BlueSphere/"
+          echo "GET $URL"
+          curl -sSfL "$URL" >/dev/null
+
+  check-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check API status
+        run: |
+          # Replace with deployed API URL when live
+          URL="http://localhost:8000/status"
+          echo "GET $URL"
+          curl -sS "$URL" || true

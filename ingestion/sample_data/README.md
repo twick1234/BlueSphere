@@ -1,0 +1,1 @@
+Place tiny sample CSV/NetCDF files here for local tests (kept out of VCS).

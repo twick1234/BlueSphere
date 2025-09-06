@@ -1,0 +1,90 @@
+[
+  {
+    "title": "Set GitHub secrets for ingestion (POSTGRES_*).",
+    "body": "Imported from todo_backlog.md under **Immediate**.",
+    "labels": [
+      "priority:high",
+      "milestone:v0.16"
+    ]
+  },
+  {
+    "title": "Push repo and tag v0.16.0; publish release.",
+    "body": "Imported from todo_backlog.md under **Immediate**.",
+    "labels": [
+      "priority:high",
+      "milestone:v0.16"
+    ]
+  },
+  {
+    "title": "Start website and verify pages + chatbot + FAQ search.",
+    "body": "Imported from todo_backlog.md under **Immediate**.",
+    "labels": [
+      "priority:high",
+      "milestone:v0.16"
+    ]
+  },
+  {
+    "title": "Run Playwright E2E in CI.",
+    "body": "Imported from todo_backlog.md under **Immediate**.",
+    "labels": [
+      "priority:high",
+      "milestone:v0.16"
+    ]
+  },
+  {
+    "title": "Implement real NDBC/ERSST ingestion and write tests.",
+    "body": "Imported from todo_backlog.md under **Near\u2011Term**.",
+    "labels": [
+      "priority:medium",
+      "milestone:future"
+    ]
+  },
+  {
+    "title": "Wire Chatbot Phase 2 to LLM with safety and citations.",
+    "body": "Imported from todo_backlog.md under **Near\u2011Term**.",
+    "labels": [
+      "priority:medium",
+      "milestone:future"
+    ]
+  },
+  {
+    "title": "Add Story Mode timeline component.",
+    "body": "Imported from todo_backlog.md under **Near\u2011Term**.",
+    "labels": [
+      "priority:medium",
+      "milestone:future"
+    ]
+  },
+  {
+    "title": "Add images/illustrations with licenses to Stories.",
+    "body": "Imported from todo_backlog.md under **Near\u2011Term**.",
+    "labels": [
+      "priority:medium",
+      "milestone:future"
+    ]
+  },
+  {
+    "title": "Alerts for anomalies; subscription UI.",
+    "body": "Imported from todo_backlog.md under **Future**.",
+    "labels": [
+      "priority:low",
+      "milestone:future"
+    ]
+  },
+  {
+    "title": "OGC APIs; embeddable widgets.",
+    "body": "Imported from todo_backlog.md under **Future**.",
+    "labels": [
+      "priority:low",
+      "milestone:future"
+    ]
+  },
+  {
+    "title": "Internationalization (i18n) for education hub.",
+    "body": "Imported from todo_backlog.md under **Future**.",
+    "labels": [
+      "priority:low",
+      "milestone:future"
+    ]
+  }
+]

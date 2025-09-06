@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: spdx-header-js
+        name: Ensure SPDX in JS/TS
+        entry: bash -c 'grep -q "SPDX-License-Identifier" "$1" || (echo "Missing SPDX header" && exit 1)'
+        language: system
+        files: ^frontend/bluesphere-site/.*\.(js|ts|tsx)$
+      - id: spdx-header-py
+        name: Ensure SPDX in Python
+        entry: bash -c 'grep -q "SPDX-License-Identifier" "$1" || (echo "Missing SPDX header" && exit 1)'
+        language: system
+        files: ^(ingestion/.*\.py)$
+      - id: spdx-header-sh
+        name: Ensure SPDX in Shell
+        entry: bash -c 'grep -q "SPDX-License-Identifier" "$1" || (echo "Missing SPDX header" && exit 1)'
+        language: system
+        files: ^scripts/.*\.sh$

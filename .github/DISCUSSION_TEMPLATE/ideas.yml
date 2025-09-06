@@ -1,0 +1,27 @@
+---
+title: "Idea: <your proposal>"
+labels: []
+about: Propose a new feature or improvement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share your idea! How will it help BlueSphere users and the planet?
+  - type: input
+    id: pitch
+    attributes:
+      label: One-line pitch
+      placeholder: e.g., Add a 'Story Mode' timeline for El Niño events
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Value & impact
+      placeholder: Who benefits? What problem does it solve?
+      description: Describe user impact and environmental benefit
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed approach
+      placeholder: Components, APIs, data sources, UI ideas

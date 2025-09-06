@@ -1,0 +1,46 @@
+:root{
+  --bs-bg: #f8fafc;
+  --bs-fg: #0f172a;
+  --bs-accent: #0ea5e9;
+  --bs-muted: #64748b;
+  --bs-border: #e5e7eb;
+}
+html, body { margin:0; padding:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; color: var(--bs-fg); background: var(--bs-bg); }
+a { color: var(--bs-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.bs-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.bs-header { position: sticky; top: 0; z-index: 50; background: white; border-bottom: 1px solid var(--bs-border); }
+.bs-header-inner { display:flex; align-items:center; justify-content: space-between; height: 56px; }
+.bs-brand a { font-weight: 700; letter-spacing: 0.2px; color: var(--bs-fg); }
+.bs-nav { display:flex; gap: 16px; }
+.bs-link { padding: 8px 10px; border-radius: 8px; }
+.bs-link:hover { background: #f1f5f9; text-decoration: none; }
+.bs-main { padding: 24px 16px; min-height: calc(100vh - 56px - 56px); }
+.bs-footer { border-top: 1px solid var(--bs-border); padding: 16px 0; color: var(--bs-muted); background: white; }
+pre, code { background: #0b1020; color: #e2e8f0; border-radius: 8px; padding: 8px 10px; }
+
+
+/* Dark mode base */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bs-bg: #0b1020;
+    --bs-fg: #e2e8f0;
+    --bs-border: #1f2937;
+  }
+  .bs-header, .bs-footer { background: #0b1020; }
+  a { color: #7dd3fc; }
+  .bs-link:hover { background: #111827; }
+}
+
+
+/* Explicit theme override via [data-theme] */
+:root[data-theme="light"]{
+  --bs-bg: #f8fafc;
+  --bs-fg: #0f172a;
+  --bs-border: #e5e7eb;
+}
+:root[data-theme="dark"]{
+  --bs-bg: #0b1020;
+  --bs-fg: #e2e8f0;
+  --bs-border: #1f2937;
+}

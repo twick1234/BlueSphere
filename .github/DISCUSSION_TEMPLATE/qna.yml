@@ -1,0 +1,36 @@
+---
+title: "Question: <your topic>"
+labels: []
+about: Ask a question and get help from the community
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your question! Provide as much context as you can.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Briefly describe your question
+      placeholder: e.g., How do I plot SST anomalies for a specific region?
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Steps you have tried, code snippets, screenshots
+      placeholder: |
+        - I tried ...
+        - Expected vs actual ...
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Ingestion
+        - API
+        - Web App (Map)
+        - Website (Docs)
+        - Data / Science
+        - Other

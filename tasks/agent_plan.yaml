@@ -1,0 +1,94 @@
+version: '1.0'
+repo: BlueSphere
+agents:
+- name: Agent-Repo
+  tasks:
+  - publish_repo
+  - setup_release
+  depends_on: []
+- name: Agent-API
+  tasks:
+  - run_backend_local
+  - verify_status_api
+  depends_on:
+  - Agent-Repo
+- name: Agent-Ingestion
+  tasks:
+  - configure_secrets
+  - enable_daily_ingestion
+  - dry_run_ingestion
+  depends_on:
+  - Agent-Repo
+- name: Agent-WebApp
+  tasks:
+  - run_ui_map
+  - verify_freshness_panel
+  depends_on:
+  - Agent-API
+- name: Agent-Website
+  tasks:
+  - build_site
+  - serve_site
+  - verify_pages
+  - verify_chatbot
+  depends_on:
+  - Agent-Repo
+- name: Agent-Branding
+  tasks:
+  - favicon_check
+  - readme_badges
+  depends_on:
+  - Agent-Website
+- name: Agent-QA
+  tasks:
+  - run_playwright
+  - optional_backend_tests
+  - lighthouse_a11y
+  depends_on:
+  - Agent-Website
+  - Agent-WebApp
+- name: Agent-Docs
+  tasks:
+  - draft_release_from_template
+  - publish_tag_release
+  depends_on:
+  - Agent-QA
+- name: Agent-WebsiteDeploy
+  tasks:
+  - enable_pages
+  - deploy_pages
+  depends_on:
+  - Agent-Website
+tasks:
+  publish_repo: Follow docs/INSTRUCTIONS_CLAUDE_CODE.md using scripts/publish_to_github.sh
+    (set USER).
+  setup_release: Push annotated tag v0.16.0 and prepare release notes from docs/RELEASE_NOTES_TEMPLATE.md
+    + CHANGELOG.
+  run_backend_local: docker compose up --build; verify http://localhost:8000/docs
+    reachable.
+  verify_status_api: GET /status returns datasets with green/yellow/red.
+  configure_secrets: "Add POSTGRES_* Secrets in GitHub \u2192 Actions."
+  enable_daily_ingestion: Ensure .github/workflows/daily-smart-ingestion.yml present;
+    manual dispatch ok.
+  dry_run_ingestion: Run ingestion scripts locally with mock or limited fetch; confirm
+    job_run entries.
+  run_ui_map: "Start frontend/ocean-ui (npm run dev) \u2192 http://localhost:3000\
+    \ map renders."
+  verify_freshness_panel: Status panel shows dataset badges from /status.
+  build_site: cd frontend/bluesphere-site && npm install && npm run build
+  serve_site: npm start -p 4000; open http://localhost:4000
+  verify_pages: Check /, /impact, /stories, /stories/el-nino and others render.
+  verify_chatbot: Chatbot opens and answers FAQ-based questions; FAQ search filters
+    correctly.
+  favicon_check: logo.svg used as favicon; visible in tab.
+  readme_badges: 'Optional: Add CI badge for ci-node.yml to README.'
+  run_playwright: npm run test:e2e in repo root after website started.
+  optional_backend_tests: Implement pytest stubs + run in CI (future).
+  lighthouse_a11y: "Run Lighthouse; ensure Accessibility \u2265 90."
+  draft_release_from_template: Use docs/RELEASE_NOTES_TEMPLATE.md, fill highlights
+    for v0.16.0.
+  publish_tag_release: git tag -a v0.16.0 -m 'BlueSphere v0.16.0' && git push origin
+    main --tags; ensure auto-release workflow triggers.
+  enable_pages: "In GitHub Settings \u2192 Pages, set Source to GitHub Actions."
+  deploy_pages: Push to main to trigger `.github/workflows/deploy-pages.yml` which
+    exports Next.js and deploys to Pages.

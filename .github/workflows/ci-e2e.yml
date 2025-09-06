@@ -1,0 +1,69 @@
+name: CI (E2E)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install backend deps
+        run: |
+          pip install -r backend/requirements.txt
+          python backend/create_tables.py
+
+      - name: Start API
+        run: |
+          nohup python -m uvicorn backend.app:app --host 0.0.0.0 --port 8000 &
+          echo $! > api.pid
+
+      - name: Install UI deps
+        working-directory: frontend/ocean-ui
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Start UI
+        working-directory: frontend/ocean-ui
+        env:
+          NEXT_DISABLE_TELEMETRY: '1'
+        run: |
+          nohup npm start -- -p 3000 &
+          echo $! > ui.pid
+
+      - name: Wait for services
+        run: |
+          npm i -g wait-on
+          wait-on http://localhost:8000/status
+          wait-on http://localhost:3000
+
+      - name: Install Playwright
+        working-directory: tests/e2e
+        run: |
+          npm install
+          npx playwright install --with-deps
+
+      - name: Run E2E
+        working-directory: tests/e2e
+        run: npm test
+
+      - name: Tear down
+        if: always()
+        run: |
+          kill $(cat api.pid) || true
+          kill $(cat frontend/ocean-ui/ui.pid) || true
