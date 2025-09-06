@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query, HTTPException
 from pydantic import BaseModel
+from typing import Union
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -20,8 +21,8 @@ def health():
     return {"ok": True}
 
 @app.get("/stations")
-def stations(bbox: str | None = Query(None, description="minLon,minLat,maxLon,maxLat"),
-             platform: str | None = None, limit: int = 200):
+def stations(bbox: Union[str, None] = Query(None, description="minLon,minLat,maxLon,maxLat"),
+             platform: Union[str, None] = None, limit: int = 200):
     q = """
     SELECT station_id, external_id, name, platform_type,
            ST_X(ST_AsText(geom::geometry)) AS lon,
@@ -48,7 +49,7 @@ def stations(bbox: str | None = Query(None, description="minLon,minLat,maxLon,ma
     return {"stations": rows}
 
 @app.get("/stations/{station_id}/series")
-def station_series(station_id: int, var: str = "sst", start: str | None = None, end: str | None = None, qc: str = "good"):
+def station_series(station_id: int, var: str = "sst", start: Union[str, None] = None, end: Union[str, None] = None, qc: str = "good"):
     col = {"sst":"sst_c","sss":"sss_psu"}.get(var, "sst_c")
     q = f"SELECT observed_at, {col} as value, qc_flag FROM ocean.obs_surface WHERE station_id=%s"
     params = [station_id]
@@ -67,7 +68,7 @@ def station_series(station_id: int, var: str = "sst", start: str | None = None, 
     return {"series": rows}
 
 @app.get("/grid/sst")
-def grid_sst(month: str, bbox: str | None = None, anomaly: bool = False, limit: int = 100000):
+def grid_sst(month: str, bbox: Union[str, None] = None, anomaly: bool = False, limit: int = 100000):
     value_col = "sst_anom_c" if anomaly else "sst_c"
     q = f"""
     SELECT gv.time_month, gv.{value_col} as value,

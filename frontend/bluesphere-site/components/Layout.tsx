@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import '../styles/globals.css'
 import HeadMeta from './HeadMeta'
 import ThemeToggle from './ThemeToggle'
 
@@ -25,7 +24,7 @@ const Layout: React.FC<{children:any}> = ({ children }) => {
       <header className="bs-header">
         <div className="bs-container bs-header-inner">
           <div className="bs-brand">
-            <Link href="/"><img id="bs-logo" src="/brand/logo.svg" alt="BlueSphere" style={height:28, verticalAlign:"middle", marginRight:8} />BlueSphere</Link>
+            <Link href="/"><img id="bs-logo" src="/brand/logo.svg" alt="BlueSphere" style={{height:28, verticalAlign:"middle", marginRight:8}} />BlueSphere</Link>
           </div>
           <nav className="bs-nav">
             <NavLink href="/map">Map</NavLink>

@@ -2,7 +2,7 @@
 # © 2024–2025 Mark Lindon — BlueSphere
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 import os
 
 app = FastAPI(title="BlueSphere API", version="0.1.0", description="Status, stations, grids, and currents.")
@@ -78,10 +78,10 @@ from backend.models import BuoyObs
 
 @app.get("/obs")
 def obs(
-    bbox: str | None = Query(None, description="minLon,minLat,maxLon,maxLat"),
-    start: str | None = Query(None, description="ISO8601 start (UTC)"),
-    end: str | None = Query(None, description="ISO8601 end (UTC)"),
-    station: str | None = Query(None, description="Filter by station_id"),
+    bbox: Union[str, None] = Query(None, description="minLon,minLat,maxLon,maxLat"),
+    start: Union[str, None] = Query(None, description="ISO8601 start (UTC)"),
+    end: Union[str, None] = Query(None, description="ISO8601 end (UTC)"),
+    station: Union[str, None] = Query(None, description="Filter by station_id"),
     limit: int = Query(500, ge=1, le=5000),
     offset: int = Query(0, ge=0)
 ):
@@ -117,10 +117,10 @@ from backend.models import BuoyObs
 
 @app.get("/obs/summary")
 def obs_summary(
-    bbox: str | None = Query(None, description="minLon,minLat,maxLon,maxLat"),
-    start: str | None = Query(None, description="ISO8601 start (UTC)"),
-    end: str | None = Query(None, description="ISO8601 end (UTC)"),
-    station: str | None = Query(None, description="Filter by station_id")
+    bbox: Union[str, None] = Query(None, description="minLon,minLat,maxLon,maxLat"),
+    start: Union[str, None] = Query(None, description="ISO8601 start (UTC)"),
+    end: Union[str, None] = Query(None, description="ISO8601 end (UTC)"),
+    station: Union[str, None] = Query(None, description="Filter by station_id")
 ):
     sess = get_session()
     q = sess.query(
