@@ -21,6 +21,19 @@ def status():
 def stations():
     return {"count": 0, "stations": []}
 
+@app.get("/")
+def root():
+    return {
+        "message": "BlueSphere Ocean API",
+        "version": "0.16.0",
+        "endpoints": {
+            "health": "/health",
+            "status": "/status", 
+            "stations": "/stations",
+            "docs": "/docs"
+        }
+    }
+
 @app.get("/docs")
 def docs():
     return {"message": "API documentation available at /docs"}
