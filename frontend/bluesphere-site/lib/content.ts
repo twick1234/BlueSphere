@@ -25,7 +25,7 @@ export async function getPage(slug: string): Promise<PageItem> {
   const file = path.join(contentDir, slug + '.md')
   const raw = fs.readFileSync(file, 'utf8')
   const { data, content } = matter(raw)
-  const processed = await remark().use(html).process(content)
+  const processed = await remark().use(html as any).process(content)
   return {
     slug,
     title: (data && (data as any).title) || slug,
@@ -46,7 +46,7 @@ export async function getStory(slug: string): Promise<PageItem> {
   const file = path.join(contentDir, 'stories', slug + '.md')
   const raw = fs.readFileSync(file, 'utf8')
   const { data, content } = matter(raw)
-  const processed = await remark().use(html).process(content)
+  const processed = await remark().use(html as any).process(content)
   return {
     slug,
     title: (data && (data as any).title) || slug,
