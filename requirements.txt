@@ -1,0 +1,42 @@
+# BlueSphere Ocean Data Platform Dependencies
+
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+asyncpg==0.29.0
+sqlalchemy==2.0.23
+alembic==1.13.1
+
+# HTTP Client & Data Processing
+httpx==0.25.2
+requests==2.31.0
+pandas==2.1.3
+numpy==1.25.2
+
+# Environment & Configuration
+python-dotenv==1.0.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# CORS & Security
+python-cors==1.7.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Ocean Data Processing
+netcdf4==1.6.5
+xarray==2023.11.0
+scipy==1.11.4
+
+# Time Series & Analysis
+datetime==5.3
+
+# Production Server
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
+
+# Monitoring & Logging
+structlog==23.2.0

@@ -1,0 +1,78 @@
+# Render Blueprint for BlueSphere Ocean Data Platform
+
+services:
+  # Backend API Service
+  - type: web
+    name: bluesphere-api
+    env: python
+    plan: starter
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn simple_api:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: "/health"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.9.18"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bluesphere-db
+          property: connectionString
+    autoDeploy: true
+
+  # Frontend Ocean UI (WebApp)
+  - type: web
+    name: bluesphere-webapp
+    env: node
+    plan: starter
+    rootDir: "./frontend/ocean-ui"
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm start"
+    healthCheckPath: "/"
+    envVars:
+      - key: NODE_VERSION
+        value: "18.17.0"
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://bluesphere-api.onrender.com"
+    autoDeploy: true
+
+  # Marketing Website
+  - type: web
+    name: bluesphere-website
+    env: node
+    plan: starter
+    rootDir: "./frontend/bluesphere-site"
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm start"
+    healthCheckPath: "/"
+    envVars:
+      - key: NODE_VERSION
+        value: "18.17.0"
+      - key: NEXT_PUBLIC_APP_URL
+        value: "https://bluesphere-webapp.onrender.com"
+    autoDeploy: true
+
+  # Static Site (GitHub Pages alternative)
+  - type: static_site
+    name: bluesphere-docs
+    buildCommand: "echo 'Building documentation site'"
+    publishPath: "./docs"
+    pullRequestPreviewsEnabled: false
+    autoDeploy: true
+
+databases:
+  # PostgreSQL Database
+  - name: bluesphere-db
+    databaseName: bluesphere
+    user: bluesphere_user
+    plan: starter
+    postgresMajorVersion: 15
+
+# Environment Variables for all services
+envVarGroups:
+  - name: bluesphere-common
+    envVars:
+      - key: ENVIRONMENT
+        value: "production"
+      - key: LOG_LEVEL
+        value: "INFO"
+      - key: CORS_ORIGINS
+        value: "https://bluesphere-webapp.onrender.com,https://bluesphere-website.onrender.com"

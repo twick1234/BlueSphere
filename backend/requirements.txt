@@ -13,3 +13,10 @@ mapbox-vector-tile==2.0.1
 
 SQLAlchemy==2.0.31
 psycopg2-binary==2.9.9
+
+# Temporal data processing
+tqdm==4.66.1
+redis==5.0.0
+
+# Scientific computing (enhanced versions)
+scipy==1.11.1

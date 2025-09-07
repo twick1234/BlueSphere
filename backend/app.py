@@ -43,6 +43,9 @@ app.include_router(tiles_router)
 from backend.tiles_cached import router as tiles_cached_router
 app.include_router(tiles_cached_router)
 
+from backend.temporal_api import router as temporal_router
+app.include_router(temporal_router)
+
 from sqlalchemy import select, func
 from backend.db import get_session
 from backend.models import Station, JobRun

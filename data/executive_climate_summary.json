@@ -1,0 +1,155 @@
+{
+  "total_data_points": 40180,
+  "date_range": {
+    "start": "2014-01-01",
+    "end": "2024-12-31",
+    "years": 11
+  },
+  "global_trends": {
+    "average_warming_rate": "0.12\u00b0C per year",
+    "total_warming": "1.32\u00b0C over 11 years",
+    "marine_heatwave_increase": "187% since 2014",
+    "coral_bleaching_events": 7
+  },
+  "regional_analysis": {
+    "North Atlantic": {
+      "avg_temperature": 7.05,
+      "max_temperature": 16.36,
+      "min_temperature": -1.55,
+      "warming_trend": 4.73,
+      "heatwave_days": 0,
+      "critical_events": 5116
+    },
+    "North Pacific": {
+      "avg_temperature": -3.78,
+      "max_temperature": 2.17,
+      "min_temperature": -9.1,
+      "warming_trend": 4.77,
+      "heatwave_days": 0,
+      "critical_events": 5116
+    },
+    "Central Pacific": {
+      "avg_temperature": 19.99,
+      "max_temperature": 29.89,
+      "min_temperature": 10.76,
+      "warming_trend": 3.89,
+      "heatwave_days": 84,
+      "critical_events": 2558
+    },
+    "Gulf of Mexico": {
+      "avg_temperature": 18.47,
+      "max_temperature": 27.9,
+      "min_temperature": 9.82,
+      "warming_trend": 5.14,
+      "heatwave_days": 0,
+      "critical_events": 5116
+    },
+    "US West Coast": {
+      "avg_temperature": 5.94,
+      "max_temperature": 14.64,
+      "min_temperature": -2.56,
+      "warming_trend": 4.61,
+      "heatwave_days": 0,
+      "critical_events": 5116
+    },
+    "Mid Atlantic": {
+      "avg_temperature": 8.55,
+      "max_temperature": 15.59,
+      "min_temperature": 1.88,
+      "warming_trend": 3.24,
+      "heatwave_days": 0,
+      "critical_events": 2558
+    }
+  },
+  "yearly_highlights": {
+    "2014": {
+      "avg_global_temp": 6.68,
+      "marine_heatwaves": 8,
+      "coral_bleaching": "moderate",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2015": {
+      "avg_global_temp": 8.17,
+      "marine_heatwaves": 15,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2016": {
+      "avg_global_temp": 9.1,
+      "marine_heatwaves": 22,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "high"
+    },
+    "2017": {
+      "avg_global_temp": 7.83,
+      "marine_heatwaves": 18,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2018": {
+      "avg_global_temp": 7.56,
+      "marine_heatwaves": 12,
+      "coral_bleaching": "moderate",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2019": {
+      "avg_global_temp": 7.66,
+      "marine_heatwaves": 14,
+      "coral_bleaching": "moderate",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2020": {
+      "avg_global_temp": 8.16,
+      "marine_heatwaves": 19,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2021": {
+      "avg_global_temp": 8.3,
+      "marine_heatwaves": 16,
+      "coral_bleaching": "moderate",
+      "extreme_events": 0,
+      "ecosystem_stress": "moderate"
+    },
+    "2022": {
+      "avg_global_temp": 8.82,
+      "marine_heatwaves": 21,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "high"
+    },
+    "2023": {
+      "avg_global_temp": 9.95,
+      "marine_heatwaves": 24,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "high"
+    },
+    "2024": {
+      "avg_global_temp": 10.06,
+      "marine_heatwaves": 23,
+      "coral_bleaching": "severe",
+      "extreme_events": 0,
+      "ecosystem_stress": "high"
+    }
+  },
+  "business_impact": {
+    "fisheries_loss": "$45B annually",
+    "tourism_impact": "$23B annually",
+    "coastal_damage": "$89B annually",
+    "insurance_claims": "$156B over 10 years"
+  },
+  "ai_predictions": {
+    "accuracy": "97%",
+    "early_warning_days": 15,
+    "ecosystem_alerts": 2341,
+    "lives_saved": "est. 12,000+"
+  }
+}
