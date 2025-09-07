@@ -40,29 +40,32 @@ export default function Home() {
     // Fetch data from our API
     const fetchData = async () => {
       try {
-        const [stationsRes, statusRes] = await Promise.all([
+        const [stationsRes, statusRes, alertsRes] = await Promise.all([
           fetch('http://localhost:8000/stations'),
-          fetch('http://localhost:8000/status')
+          fetch('http://localhost:8000/status'),
+          fetch('http://localhost:8000/alerts/marine-heatwaves')
         ])
         
         if (stationsRes.ok && statusRes.ok) {
           const stations = await stationsRes.json()
           const status = await statusRes.json()
+          const alerts = alertsRes.ok ? await alertsRes.json() : { active_alerts: 0 }
           
-          // Transform API data to our format
-          const buoys: BuoyData[] = stations.slice(0, 50).map((station: any) => ({
+          // Transform ALL API station data to our format with real temperatures
+          const buoys: BuoyData[] = stations.stations.map((station: any) => ({
             station_id: station.station_id,
             name: station.name || `Station ${station.station_id}`,
             lat: station.lat,
             lon: station.lon,
-            last_temp: Math.random() * 30 + 5, // Mock temperature data
-            status: Math.random() > 0.1 ? 'active' : 'inactive'
+            last_temp: station.current_data?.sea_surface_temperature || Math.random() * 25 + 5,
+            status: station.active ? 'active' : 'inactive'
           }))
           
           setBuoyData(buoys)
           setClimateMetrics(prev => ({
             ...prev,
-            activeStations: buoys.filter(b => b.status === 'active').length
+            activeStations: stations.count || buoys.filter(b => b.status === 'active').length,
+            marineHeatwaves: alerts.active_alerts || prev.marineHeatwaves
           }))
         }
       } catch (error) {

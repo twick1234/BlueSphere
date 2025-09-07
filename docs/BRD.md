@@ -1,19 +1,34 @@
 ![BlueSphere](/frontend/bluesphere-site/public/brand/logo.svg)
 
-# BlueSphere BRD (Business Requirements Document)
+# BlueSphere Climate Action Platform Requirements
 
-## 1. Purpose & Mission
-BlueSphere turns ocean data into **actionable climate insight** to shape a brighter, sustainable future.
+## 🌍 URGENT MISSION: SAVING OUR OCEANS
+**BlueSphere exists to expose the climate emergency in our oceans and mobilize urgent global action. This is not about profit - this is about survival.**
 
-## 2. Stakeholders
-- NGOs & Advocates, Policy Makers & Regulators, Scientists, Educators & Students, Citizens.
+Our oceans are dying. Marine heatwaves are destroying coral reefs. Sea levels are rising. Ocean currents that regulate our climate are failing. **We have less than a decade to act.**
 
-## 3. Objectives & Success Metrics
-- **Access**: public ocean datasets unified and explorable.
-- **Insight**: trends, anomalies, currents, forecasts.
-- **Action**: dashboards, alerts, and guidance for mitigation/adaptation.
-- **Education**: explainers and story mode to raise climate literacy.
-- **KPIs**: monthly active users, dataset freshness SLA, forecast accuracy, education reach, partner orgs.
+## 🔥 THE CRISIS WE'RE ADDRESSING
+- **Marine heatwaves** have increased 20x since the 1980s
+- **50% of coral reefs** have been lost to bleaching  
+- **Ocean temperatures** are rising faster than ever recorded
+- **Critical climate data** is scattered, inaccessible, ignored
+
+## 🎯 OUR RESPONSE: DEMOCRATIZE OCEAN INTELLIGENCE
+BlueSphere transforms complex ocean data into **undeniable climate truth** that drives immediate action.
+
+### Primary Stakeholders
+- **Climate Activists & NGOs**: Need compelling data for campaigns
+- **Policy Makers**: Need clear evidence for emergency legislation  
+- **Scientists**: Need unified global datasets for research
+- **Citizens**: Need to understand the crisis in their backyard
+- **Youth**: Need tools to demand climate action from leaders
+
+### Success Metrics (Not Revenue)
+- **Climate Action Triggered**: Policies changed, protests organized, funding redirected
+- **Data Democratization**: Scientists using platform for critical research
+- **Public Awakening**: Citizens understanding ocean crisis in their region
+- **Emergency Preparedness**: Communities preparing for sea level rise/storms
+- **Global Collaboration**: International data sharing and cooperation
 
 ## 4. Scope
 - Data platform (APIs, tiles, ingestion) + Public website (education, Q&A, stories).
