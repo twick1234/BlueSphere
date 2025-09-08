@@ -13,7 +13,7 @@ Branch: main
 
 ### **2. Build & Deploy Settings:**
 ```
-Root Directory: frontend/bluesphere-site
+Root Directory: (leave blank - use root directory)
 Build Command: npm ci && npm run build
 Start Command: npm start
 ```
@@ -33,7 +33,7 @@ Region: Oregon (US West)
 
 ## **COPY-PASTE FOR RENDER:**
 
-**Root Directory:** `frontend/bluesphere-site`
+**Root Directory:** `(leave blank - use root directory)`
 **Build Command:** `npm ci && npm run build`
 **Start Command:** `npm start`
 **Node Version:** `18.x` (leave blank for latest)
