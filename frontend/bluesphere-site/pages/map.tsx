@@ -500,8 +500,7 @@ export default function GlobalOceanMap() {
         <Head>
           <title>Global Ocean Monitoring Map - BlueSphere</title>
           <meta name="description" content="Interactive map showing real-time ocean temperature data from 300+ monitoring stations worldwide." />
-          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        </Head>
+          </Head>
         <SkeletonLoader isDarkMode={isDarkMode} />
         <style jsx>{`
           .skeleton-container {
@@ -580,7 +579,6 @@ export default function GlobalOceanMap() {
       <Head>
         <title>Global Ocean Monitoring Map - BlueSphere</title>
         <meta name="description" content="Interactive map showing real-time ocean temperature data from 300+ monitoring stations worldwide. Track marine heatwaves, climate change impacts, and ocean conditions for climate action." />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </Head>
 
       <div className={`world-class-ocean-map ${isDarkMode ? 'dark-theme' : 'light-theme'} ${isFullscreen ? 'fullscreen-mode' : ''}`}>
