@@ -7,7 +7,7 @@ const NavLink: React.FC<{href:string, children:any}> = ({ href, children }) => (
   <Link className="bs-link" href={href}>{children}</Link>
 )
 
-const Layout: React.FC<{children:any}> = ({ children }) => {
+const Layout: React.FC<{children:any, title?:string}> = ({ children, title }) => {
   return (
     <div className="bs-root">
       <HeadMeta />

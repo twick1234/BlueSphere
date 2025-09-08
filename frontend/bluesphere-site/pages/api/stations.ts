@@ -213,8 +213,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         "Global Ocean Observing System"
       ],
       coverage: {
-        countries: [...new Set(allStations.map(s => s.country))],
-        providers: [...new Set(allStations.map(s => s.provider))]
+        countries: Array.from(new Set(allStations.map(s => s.country))),
+        providers: Array.from(new Set(allStations.map(s => s.provider)))
       },
       mission: "Real-time global ocean monitoring for urgent climate action",
       last_updated: "live",

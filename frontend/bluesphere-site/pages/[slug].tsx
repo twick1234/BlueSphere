@@ -8,7 +8,8 @@ export default function Page({ html, title }:{ html:string, title:string }){
 }
 
 export async function getStaticPaths(){
-  const slugs = listSlugs().filter(s => s !== 'index')
+  const existingPages = ['index', 'map', 'faq', '_app', '_document']
+  const slugs = listSlugs().filter(s => !existingPages.includes(s))
   return { paths: slugs.map(s => ({ params: { slug: s }})), fallback: false }
 }
 
