@@ -1,0 +1,196 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in BlueSphere
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for reporting a bug!
+        
+        Before submitting, please search existing issues to avoid duplicates. 
+        Provide as much detail as possible to help us reproduce and fix the issue.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I am using the latest version of BlueSphere
+          required: true
+        - label: I have checked the documentation and FAQ
+          required: true
+
+  - type: input
+    id: summary
+    attributes:
+      label: Bug Summary
+      description: A clear and concise description of what the bug is
+      placeholder: "Data visualization shows incorrect temperature values..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed Description
+      description: Provide a detailed description of the issue
+      placeholder: |
+        1. What were you trying to do?
+        2. What happened instead?
+        3. What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Clear steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear description of what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: A clear description of what actually happened
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which part of BlueSphere is affected?
+      options:
+        - Map visualization
+        - Data charts/graphs
+        - Station information
+        - Marine heatwave detection
+        - API endpoints
+        - User interface
+        - Performance
+        - Authentication
+        - Data export
+        - Mobile interface
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Bug Severity
+      description: How severe is this bug?
+      options:
+        - Low (minor inconvenience)
+        - Medium (affects functionality)
+        - High (blocks important features)
+        - Critical (system unusable)
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser/Environment
+      description: What browser and version are you using?
+      placeholder: "Chrome 118.0, Safari 17.0, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device/OS
+      description: What device and operating system?
+      placeholder: "MacBook Pro (macOS 13.0), iPhone 14 (iOS 16), etc."
+    validations:
+      required: true
+
+  - type: input
+    id: screen_resolution
+    attributes:
+      label: Screen Resolution
+      description: Your screen resolution (if relevant)
+      placeholder: "1920x1080, 390x844, etc."
+
+  - type: textarea
+    id: console_logs
+    attributes:
+      label: Console Logs/Error Messages
+      description: Any error messages from browser console or network tab
+      placeholder: |
+        Please paste any relevant error messages here:
+        ```
+        Error: TypeError: Cannot read property...
+        ```
+
+  - type: textarea
+    id: network_info
+    attributes:
+      label: Network Information
+      description: Any relevant network conditions or errors
+      placeholder: |
+        - Connection type (WiFi/Mobile)
+        - API response times
+        - Failed network requests
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots/Videos
+      description: Add screenshots or videos to help explain the problem
+      placeholder: |
+        Drag and drop images/videos here or paste links
+        Screenshots are especially helpful for UI issues
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem
+      placeholder: |
+        - Does this happen consistently?
+        - Did this work before?
+        - Any workarounds you found?
+        - Related issues or discussions
+
+  - type: checkboxes
+    id: user_type
+    attributes:
+      label: User Type
+      description: How do you primarily use BlueSphere?
+      options:
+        - label: Climate scientist/researcher
+        - label: Policy maker/government
+        - label: Climate activist/NGO
+        - label: Student/educator
+        - label: Marine industry professional
+        - label: General public/interested user
+
+  - type: input
+    id: priority_justification
+    attributes:
+      label: Business Impact
+      description: Why is fixing this bug important? (for prioritization)
+      placeholder: "This affects daily research workflow for climate scientists..."

@@ -6,7 +6,22 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start -p ${PORT:-4000}",
-    "test:e2e": "playwright test"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:unit": "jest --testPathPattern=__tests__",
+    "test:integration": "jest --testPathPattern=integration",
+    "test:api": "jest --testPathPattern=api",
+    "test:e2e": "playwright test",
+    "test:visual": "playwright test --project=chromium --grep=visual",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:api && npm run test:e2e",
+    "export": "next build",
+    "build:github": "DEPLOYMENT_TARGET=github-pages next build",
+    "build:render": "next build",
+    "deploy:preview": "npm run build && npm start"
   },
   "dependencies": {
     "@react-leaflet/core": "^2.1.0",
@@ -28,6 +43,8 @@
     "@types/node": "24.3.1",
     "@types/react": "19.1.12",
     "autoprefixer": "10.4.20",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "^15.5.2",
     "postcss": "8.4.41",
     "tailwindcss": "3.4.10",
     "typescript": "5.9.2"

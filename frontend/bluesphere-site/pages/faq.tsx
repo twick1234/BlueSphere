@@ -11,6 +11,7 @@ export default function FAQ({ html }: { html: string }){
 
   // naive filter: split by double newlines and filter blocks containing query (client-side only)
   const blocks = useMemo(()=>{
+    if (typeof window === 'undefined') return []; // Skip during SSR
     const div = document.createElement('div'); div.innerHTML = html;
     const text = div.innerText;
     const lines = text.split('\n\n');

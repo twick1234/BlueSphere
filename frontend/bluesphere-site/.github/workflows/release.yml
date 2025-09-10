@@ -1,0 +1,452 @@
+name: 'Release Management'
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      prerelease:
+        description: 'Create as prerelease'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  # Job 1: Determine Release Strategy
+  prepare-release:
+    name: 'Prepare Release'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      should-release: ${{ steps.version.outputs.should-release }}
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine version bump
+        id: version
+        run: |
+          current_version=$(npm version --json | jq -r '.["bluesphere-site"]')
+          echo "Current version: $current_version"
+          
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # Manual release
+            release_type="${{ github.event.inputs.release_type }}"
+            new_version=$(npm version $release_type --no-git-tag-version)
+            should_release="true"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            # Tag-based release
+            new_version="${{ github.ref_name }}"
+            should_release="true"
+          else
+            # Check if we should auto-release based on commit messages
+            commits=$(git log --pretty=format:"%s" $(git describe --tags --abbrev=0)..HEAD 2>/dev/null || git log --pretty=format:"%s")
+            
+            if echo "$commits" | grep -qE "^(BREAKING CHANGE|feat!|fix!|perf!)"; then
+              release_type="major"
+            elif echo "$commits" | grep -qE "^feat"; then
+              release_type="minor"
+            elif echo "$commits" | grep -qE "^(fix|perf)"; then
+              release_type="patch"
+            else
+              should_release="false"
+            fi
+            
+            if [[ "$should_release" == "true" ]]; then
+              new_version=$(npm version $release_type --no-git-tag-version)
+            else
+              new_version=$current_version
+            fi
+          fi
+          
+          echo "version=$new_version" >> $GITHUB_OUTPUT
+          echo "tag=v$new_version" >> $GITHUB_OUTPUT
+          echo "should-release=${should_release:-true}" >> $GITHUB_OUTPUT
+          echo "New version: $new_version"
+
+  # Job 2: Build Release Assets
+  build-release:
+    name: 'Build Release Assets'
+    runs-on: ubuntu-latest
+    needs: prepare-release
+    if: needs.prepare-release.outputs.should-release == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Create release bundle
+        run: |
+          mkdir -p release-assets
+          tar -czf release-assets/bluesphere-site-${{ needs.prepare-release.outputs.version }}.tar.gz \
+            .next/ public/ package.json package-lock.json next.config.js \
+            --exclude='.next/cache'
+
+      - name: Generate build info
+        run: |
+          cat > release-assets/build-info.json << EOF
+          {
+            "version": "${{ needs.prepare-release.outputs.version }}",
+            "tag": "${{ needs.prepare-release.outputs.tag }}",
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "buildDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "nodeVersion": "${{ env.NODE_VERSION }}",
+            "repository": "${{ github.repository }}"
+          }
+          EOF
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-assets
+          path: release-assets/
+          retention-days: 7
+
+  # Job 3: Generate Changelog
+  generate-changelog:
+    name: 'Generate Changelog'
+    runs-on: ubuntu-latest
+    needs: prepare-release
+    if: needs.prepare-release.outputs.should-release == 'true'
+    outputs:
+      changelog: ${{ steps.changelog.outputs.changelog }}
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const { execSync } = require('child_process');
+            
+            // Get commits since last tag
+            let lastTag;
+            try {
+              lastTag = execSync('git describe --tags --abbrev=0', { encoding: 'utf8' }).trim();
+            } catch (error) {
+              lastTag = 'HEAD~10'; // Fallback for first release
+            }
+            
+            const commits = execSync(`git log --pretty=format:"%s|%H|%an|%ad" --date=short ${lastTag}..HEAD`, { encoding: 'utf8' }).trim();
+            
+            if (!commits) {
+              return 'No changes since last release.';
+            }
+            
+            const commitLines = commits.split('\n');
+            const features = [];
+            const fixes = [];
+            const breaking = [];
+            const others = [];
+            
+            commitLines.forEach(line => {
+              const [message, hash, author, date] = line.split('|');
+              const shortHash = hash.substring(0, 7);
+              const commitInfo = `- ${message} (${shortHash}) by @${author}`;
+              
+              if (message.startsWith('BREAKING CHANGE') || message.includes('!:')) {
+                breaking.push(commitInfo);
+              } else if (message.startsWith('feat')) {
+                features.push(commitInfo);
+              } else if (message.startsWith('fix')) {
+                fixes.push(commitInfo);
+              } else {
+                others.push(commitInfo);
+              }
+            });
+            
+            let changelog = `## Changes in ${{ needs.prepare-release.outputs.tag }}\n\n`;
+            
+            if (breaking.length > 0) {
+              changelog += `### 🚨 Breaking Changes\n${breaking.join('\n')}\n\n`;
+            }
+            
+            if (features.length > 0) {
+              changelog += `### ✨ New Features\n${features.join('\n')}\n\n`;
+            }
+            
+            if (fixes.length > 0) {
+              changelog += `### 🐛 Bug Fixes\n${fixes.join('\n')}\n\n`;
+            }
+            
+            if (others.length > 0) {
+              changelog += `### 📝 Other Changes\n${others.join('\n')}\n\n`;
+            }
+            
+            changelog += `\n**Full Changelog**: https://github.com/${{ github.repository }}/compare/${lastTag}...${{ needs.prepare-release.outputs.tag }}`;
+            
+            return changelog;
+
+  # Job 4: Create GitHub Release
+  create-release:
+    name: 'Create GitHub Release'
+    runs-on: ubuntu-latest
+    needs: [prepare-release, build-release, generate-changelog]
+    if: needs.prepare-release.outputs.should-release == 'true'
+    outputs:
+      release_id: ${{ steps.create_release.outputs.result }}
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download release assets
+        uses: actions/download-artifact@v3
+        with:
+          name: release-assets
+          path: release-assets/
+
+      - name: Create and push tag
+        if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ needs.prepare-release.outputs.tag }}" -m "Release ${{ needs.prepare-release.outputs.tag }}"
+          git push origin "${{ needs.prepare-release.outputs.tag }}"
+
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const { owner, repo } = context.repo;
+            
+            const release = await github.rest.repos.createRelease({
+              owner,
+              repo,
+              tag_name: '${{ needs.prepare-release.outputs.tag }}',
+              name: 'BlueSphere ${{ needs.prepare-release.outputs.version }}',
+              body: `${{ needs.generate-changelog.outputs.changelog }}`,
+              draft: false,
+              prerelease: ${{ github.event.inputs.prerelease || false }},
+              generate_release_notes: true
+            });
+            
+            // Upload build assets
+            const files = ['bluesphere-site-${{ needs.prepare-release.outputs.version }}.tar.gz', 'build-info.json'];
+            
+            for (const file of files) {
+              const filePath = `release-assets/${file}`;
+              if (fs.existsSync(filePath)) {
+                await github.rest.repos.uploadReleaseAsset({
+                  owner,
+                  repo,
+                  release_id: release.data.id,
+                  name: file,
+                  data: fs.readFileSync(filePath)
+                });
+              }
+            }
+            
+            return release.data.id;
+
+  # Job 5: Update Documentation
+  update-docs:
+    name: 'Update Documentation'
+    runs-on: ubuntu-latest
+    needs: [prepare-release, create-release]
+    if: needs.prepare-release.outputs.should-release == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update CHANGELOG.md
+        run: |
+          # Create CHANGELOG.md if it doesn't exist
+          if [ ! -f CHANGELOG.md ]; then
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "All notable changes to BlueSphere will be documented in this file." >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+          fi
+          
+          # Prepend new changelog entry
+          {
+            head -3 CHANGELOG.md
+            echo ""
+            echo "${{ needs.generate-changelog.outputs.changelog }}"
+            echo ""
+            tail -n +4 CHANGELOG.md
+          } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+
+      - name: Update package.json version
+        run: |
+          npm version ${{ needs.prepare-release.outputs.version }} --no-git-tag-version
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md package.json package-lock.json
+          git commit -m "chore(release): update changelog and version to ${{ needs.prepare-release.outputs.version }}" || true
+          git push origin main
+
+  # Job 6: Post-Release Notifications
+  notify-release:
+    name: 'Notify Release'
+    runs-on: ubuntu-latest
+    needs: [prepare-release, create-release, update-docs]
+    if: always() && needs.prepare-release.outputs.should-release == 'true'
+    
+    steps:
+      - name: Notify team of release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const version = '${{ needs.prepare-release.outputs.version }}';
+            const tag = '${{ needs.prepare-release.outputs.tag }}';
+            
+            // Create a discussion post
+            try {
+              await github.rest.repos.createDiscussion({
+                owner,
+                repo,
+                title: `🎉 BlueSphere ${version} Released!`,
+                body: `## 🚀 New Release Available: ${tag}
+                
+                BlueSphere ${version} has been successfully released and is now available.
+                
+                ### 📦 What's New
+                ${{ needs.generate-changelog.outputs.changelog }}
+                
+                ### 🔗 Links
+                - **Release Page**: https://github.com/${owner}/${repo}/releases/tag/${tag}
+                - **Production Site**: https://bluesphere.org
+                - **Documentation**: https://github.com/${owner}/${repo}#readme
+                
+                ### 🤝 Contributing
+                Thank you to all contributors who made this release possible!
+                
+                ---
+                
+                *This release was automatically created by GitHub Actions.*`,
+                category_id: 'general'
+              });
+            } catch (error) {
+              console.log('Could not create discussion (repository may not have discussions enabled)');
+            }
+            
+            // Comment on related issues
+            const changelog = `${{ needs.generate-changelog.outputs.changelog }}`;
+            const issueNumbers = changelog.match(/#(\d+)/g);
+            
+            if (issueNumbers) {
+              for (const match of issueNumbers) {
+                const issueNumber = parseInt(match.substring(1));
+                try {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: issueNumber,
+                    body: `🎉 **This issue has been resolved in ${tag}**\n\n` +
+                          `The fix is now available in production. Thank you for reporting this issue!\n\n` +
+                          `📝 **Release Notes**: https://github.com/${owner}/${repo}/releases/tag/${tag}`
+                  });
+                } catch (error) {
+                  console.log(`Could not comment on issue #${issueNumber}: ${error.message}`);
+                }
+              }
+            }
+
+  # Job 7: Performance Benchmarking
+  benchmark:
+    name: 'Performance Benchmark'
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: needs.prepare-release.outputs.should-release == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run performance benchmarks
+        run: |
+          echo "Running performance benchmarks for release ${{ needs.prepare-release.outputs.version }}"
+          npm run build
+          
+          # Analyze bundle size
+          du -sh .next/ > benchmark-results.txt
+          echo "Bundle analysis complete" >> benchmark-results.txt
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v3
+        with:
+          name: benchmark-results
+          path: benchmark-results.txt
+          retention-days: 30

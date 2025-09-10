@@ -1,0 +1,242 @@
+name: 📊 Data Issue
+description: Report issues with data accuracy, availability, or quality
+title: "[Data]: "
+labels: ["data", "needs-investigation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Data Issue Report
+        
+        Help us maintain high-quality ocean monitoring data by reporting any issues you've discovered.
+        Data accuracy is crucial for climate research and decision-making.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have verified this issue exists across multiple browser sessions
+          required: true
+        - label: I have checked if this is a known data source limitation
+          required: true
+        - label: I have searched existing data issues
+          required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Data Issue Type
+      description: What type of data problem are you reporting?
+      options:
+        - Missing data/gaps
+        - Incorrect values
+        - Inconsistent data
+        - Data source unavailable
+        - Data quality flags incorrect
+        - Delayed data updates
+        - API response errors
+        - Data export issues
+        - Visualization accuracy
+        - Other (specify below)
+    validations:
+      required: true
+
+  - type: input
+    id: affected_station
+    attributes:
+      label: Affected Station(s)
+      description: Which monitoring station(s) are affected?
+      placeholder: "Station ID, name, or 'Multiple stations' - be as specific as possible"
+    validations:
+      required: true
+
+  - type: input
+    id: data_parameter
+    attributes:
+      label: Data Parameter(s)
+      description: Which data type is affected?
+      placeholder: "Sea surface temperature, wave height, wind speed, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: time_period
+    attributes:
+      label: Time Period Affected
+      description: When did you notice this issue?
+      placeholder: "Specific date/time range: 2024-01-15 14:30 UTC to 2024-01-16 08:00 UTC"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue_description
+    attributes:
+      label: Detailed Issue Description
+      description: Provide a comprehensive description of the data problem
+      placeholder: |
+        Describe exactly what you observed:
+        - What values are you seeing?
+        - What values should you be seeing?
+        - How does this compare to historical data?
+        - Any patterns you've noticed?
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence/Screenshots
+      description: Provide evidence of the data issue
+      placeholder: |
+        Please include:
+        - Screenshots of the problematic data
+        - URL where the issue can be observed
+        - Comparison with authoritative sources
+        - Data export files if relevant
+        
+        Drag and drop files here or paste links
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Data Issue Severity
+      description: How severe is this data issue?
+      options:
+        - Low (minor discrepancy, doesn't affect analysis)
+        - Medium (noticeable error, may affect some analyses)
+        - High (significant error, affects research conclusions)
+        - Critical (completely wrong data, dangerous for decision-making)
+    validations:
+      required: true
+
+  - type: input
+    id: discovery_method
+    attributes:
+      label: How was this discovered?
+      description: How did you find this issue?
+      placeholder: "Routine analysis, comparison with other sources, automated alert, etc."
+
+  - type: textarea
+    id: comparison_sources
+    attributes:
+      label: Comparison with Other Sources
+      description: Have you checked this data against other sources?
+      placeholder: |
+        If you've compared with other data sources, please share:
+        - Which sources you checked (NOAA, local weather stations, etc.)
+        - What those sources show for the same time period
+        - Any discrepancies or confirmations
+
+  - type: textarea
+    id: impact_assessment
+    attributes:
+      label: Impact Assessment
+      description: How does this issue impact your work or research?
+      placeholder: |
+        Describe the impact:
+        - What analyses are affected?
+        - Does this change research conclusions?
+        - Are there safety or policy implications?
+        - How many users might be affected?
+
+  - type: checkboxes
+    id: data_characteristics
+    attributes:
+      label: Data Characteristics
+      description: Select all that apply to this data issue
+      options:
+        - label: Values are completely missing (null/empty)
+        - label: Values are outside normal range
+        - label: Values show impossible patterns (e.g., temperature jumps)
+        - label: Data quality flags are incorrect
+        - label: Timestamps are wrong
+        - label: Units appear incorrect
+        - label: Data is stale/not updating
+        - label: API returns errors
+        - label: Visualization doesn't match raw data
+
+  - type: input
+    id: expected_values
+    attributes:
+      label: Expected Value Range
+      description: What values would you expect to see?
+      placeholder: "Based on historical data, seasonal patterns, or other sources"
+
+  - type: input
+    id: actual_values
+    attributes:
+      label: Actual Values Observed
+      description: What values are you actually seeing?
+      placeholder: "Specific numbers, ranges, or patterns you've observed"
+
+  - type: textarea
+    id: data_source_info
+    attributes:
+      label: Data Source Information
+      description: Information about the underlying data source
+      placeholder: |
+        If you have insights about the data source:
+        - Original data provider (NOAA, BOM, etc.)
+        - Known maintenance periods
+        - Recent changes to data collection
+        - Sensor or equipment issues
+
+  - type: textarea
+    id: reproducibility
+    attributes:
+      label: Reproducibility
+      description: Can this issue be consistently reproduced?
+      placeholder: |
+        Please describe:
+        - Is this happening consistently?
+        - Does it occur on specific dates/times?
+        - Are multiple users seeing the same issue?
+        - Have you tried different browsers/devices?
+
+  - type: input
+    id: first_observed
+    attributes:
+      label: When First Observed
+      description: When did you first notice this issue?
+      placeholder: "Approximate date and time when you first saw this problem"
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Temporary Workaround
+      description: Have you found any workarounds?
+      placeholder: |
+        If you've found ways to work around this issue:
+        - Alternative data sources you're using
+        - Manual corrections you've applied
+        - Different time periods that work correctly
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: |
+        Additional details that might help:
+        - Your scientific/professional background
+        - How you typically use this data
+        - Similar issues you've seen before
+        - Seasonal or environmental factors that might be relevant
+
+  - type: checkboxes
+    id: urgency_factors
+    attributes:
+      label: Urgency Factors
+      description: Select any that apply to help us prioritize
+      options:
+        - label: Affects ongoing research with deadlines
+        - label: Used for operational/safety decisions
+        - label: Referenced in policy or regulatory work
+        - label: Impacts public-facing reports or alerts
+        - label: Part of automated systems or alerts
+        - label: Affects multiple user groups
+        - label: Could lead to incorrect climate conclusions
