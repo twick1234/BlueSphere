@@ -533,6 +533,12 @@ export default function Home() {
               href="/map"
             />
             <FeatureCard
+              icon="🚨"
+              title="Real-Time Alerts"
+              description="Critical ocean condition monitoring with customizable alert zones and instant notifications"
+              href="/alerts"
+            />
+            <FeatureCard
               icon="📊"
               title="Climate Analytics"
               description="Advanced data visualization and trend analysis to understand ocean-climate interactions"

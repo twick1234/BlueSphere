@@ -28,6 +28,8 @@ const Layout: React.FC<{children:any, title?:string}> = ({ children, title }) =>
           </div>
           <nav className="bs-nav">
             <NavLink href="/map">Map</NavLink>
+            <NavLink href="/alerts">Alerts</NavLink>
+            <NavLink href="/crisis">Crisis</NavLink>
             <NavLink href="/consistency">Consistency</NavLink>
             <NavLink href="/docs">Docs</NavLink>
             <NavLink href="/about">About</NavLink>
