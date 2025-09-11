@@ -19,6 +19,7 @@ interface BuoyData {
   name: string
   lat: number
   lon: number
+  provider?: string
   last_temp?: number
   status: 'active' | 'inactive' | 'warning'
 }
@@ -210,6 +211,48 @@ function ProfessionalSidebar({
       
       {!isCollapsed && (
         <>
+          {/* Climate Metrics Dashboard in Sidebar */}
+          <div className="sidebar-section climate-metrics-sidebar">
+            <h4>🌡️ Ocean Temperature Monitor</h4>
+            <div className="compact-climate-dashboard">
+              <div className="compact-metric-card critical pulse-animation">
+                <div className="compact-metric-header">
+                  <span className="compact-metric-icon">🌡️</span>
+                  <span className="compact-metric-status">RECORD HIGH</span>
+                </div>
+                <div className="compact-metric-value">{climateMetrics.globalTemp}°C</div>
+                <div className="compact-metric-label">Global Ocean Average</div>
+              </div>
+              
+              <div className="compact-metric-card emergency pulse-animation">
+                <div className="compact-metric-header">
+                  <span className="compact-metric-icon">🚨</span>
+                  <span className="compact-metric-status">CRITICAL</span>
+                </div>
+                <div className="compact-metric-value">+{climateMetrics.tempAnomaly}°C</div>
+                <div className="compact-metric-label">Above Pre-Industrial</div>
+              </div>
+              
+              <div className="compact-metric-card warning pulse-animation">
+                <div className="compact-metric-header">
+                  <span className="compact-metric-icon">🔥</span>
+                  <span className="compact-metric-status">ALERT</span>
+                </div>
+                <div className="compact-metric-value">{criticalBuoys.length}</div>
+                <div className="compact-metric-label">Marine Heatwaves</div>
+              </div>
+              
+              <div className="compact-metric-card info">
+                <div className="compact-metric-header">
+                  <span className="compact-metric-icon">📊</span>
+                  <span className="compact-metric-status">ANALYSIS</span>
+                </div>
+                <div className="compact-metric-value">{climateMetrics.avgTemp.toFixed(1)}°C</div>
+                <div className="compact-metric-label">Network Average</div>
+              </div>
+            </div>
+          </div>
+          
           <div className="sidebar-section">
             <h4>🌡️ Temperature Analysis</h4>
             <div className="analysis-grid">
@@ -384,6 +427,10 @@ export default function GlobalOceanMap() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [showEmergencyAlert, setShowEmergencyAlert] = useState(true)
   
+  // Derived state calculations
+  const emergencyBuoys = buoyData.filter(b => b.last_temp && b.last_temp > 26)
+  const criticalBuoys = buoyData.filter(b => b.last_temp && b.last_temp > 28)
+  
   // Auto-detect system dark mode preference
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -491,9 +538,6 @@ export default function GlobalOceanMap() {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
   }, [])
   
-  const emergencyBuoys = buoyData.filter(b => b.last_temp && b.last_temp > 26)
-  const criticalBuoys = buoyData.filter(b => b.last_temp && b.last_temp > 28)
-  
   if (loading) {
     return (
       <Layout>
@@ -582,102 +626,16 @@ export default function GlobalOceanMap() {
       </Head>
 
       <div className={`world-class-ocean-map ${isDarkMode ? 'dark-theme' : 'light-theme'} ${isFullscreen ? 'fullscreen-mode' : ''}`}>
-        {/* Professional Header */}
-        <header className="professional-header">
-          <div className="header-content">
-            <div className="header-top">
-              <div className="breadcrumb">
-                <Link href="/" className="breadcrumb-link">Home</Link>
-                <span className="breadcrumb-separator">→</span>
-                <span className="breadcrumb-current">Global Ocean Monitor</span>
-              </div>
-              
-              <div className="header-controls">
-                <button 
-                  className={`theme-toggle ${isDarkMode ? 'dark' : 'light'}`}
-                  onClick={() => setIsDarkMode(!isDarkMode)}
-                  title="Toggle theme"
-                >
-                  {isDarkMode ? '☀️' : '🌙'}
-                </button>
-                <button
-                  className="fullscreen-toggle"
-                  onClick={() => {
-                    if (!document.fullscreenElement) {
-                      document.documentElement.requestFullscreen?.()
-                    } else {
-                      document.exitFullscreen?.()
-                    }
-                  }}
-                  title="Toggle fullscreen"
-                >
-                  ⛶
-                </button>
-              </div>
-            </div>
-            
-            <div className="hero-section">
-              <h1 className="hero-title">
-                🌊 Global Ocean Climate Network
-              </h1>
-              <p className="hero-subtitle">
-                Real-time monitoring of <strong>{climateMetrics.activeStations}+ stations</strong> worldwide • 
-                Tracking the climate emergency with scientific precision
-              </p>
-            </div>
-            
-            {/* Enhanced Climate Metrics Dashboard */}
-            <div className="climate-dashboard">
-              <div className="metric-card critical pulse-animation">
-                <div className="metric-header">
-                  <span className="metric-icon">🌡️</span>
-                  <span className="metric-status">RECORD HIGH</span>
-                </div>
-                <div className="metric-value">{climateMetrics.globalTemp}°C</div>
-                <div className="metric-label">Global Ocean Average 2024</div>
-                <div className="metric-trend">↗️ +0.3°C from 2023</div>
-              </div>
-              
-              <div className="metric-card emergency pulse-animation">
-                <div className="metric-header">
-                  <span className="metric-icon">🚨</span>
-                  <span className="metric-status">CRITICAL</span>
-                </div>
-                <div className="metric-value">+{climateMetrics.tempAnomaly}°C</div>
-                <div className="metric-label">Above Pre-Industrial</div>
-                <div className="metric-trend">⚠️ Danger threshold exceeded</div>
-              </div>
-              
-              <div className="metric-card active">
-                <div className="metric-header">
-                  <span className="metric-icon">📡</span>
-                  <span className="metric-status">ACTIVE</span>
-                </div>
-                <div className="metric-value">{climateMetrics.activeStations}</div>
-                <div className="metric-label">Monitoring Stations</div>
-                <div className="metric-trend">🟢 {Math.round(climateMetrics.activeStations * 0.85)} online</div>
-              </div>
-              
-              <div className="metric-card warning pulse-animation">
-                <div className="metric-header">
-                  <span className="metric-icon">🔥</span>
-                  <span className="metric-status">ALERT</span>
-                </div>
-                <div className="metric-value">{emergencyBuoys.length}</div>
-                <div className="metric-label">Marine Heatwaves Active</div>
-                <div className="metric-trend">📈 +{Math.floor(Math.random() * 3 + 1)} this week</div>
-              </div>
-              
-              <div className="metric-card info">
-                <div className="metric-header">
-                  <span className="metric-icon">📊</span>
-                  <span className="metric-status">ANALYSIS</span>
-                </div>
-                <div className="metric-value">{climateMetrics.avgTemp.toFixed(1)}°C</div>
-                <div className="metric-label">Network Average</div>
-                <div className="metric-trend">🔍 {criticalBuoys.length} critical alerts</div>
-              </div>
-            </div>
+        {/* Compact Header Section */}
+        <div className="compact-header-section">
+          <div className="hero-section">
+            <h1 className="hero-title">
+              🌊 Global Ocean Climate Network
+            </h1>
+            <p className="hero-subtitle">
+              Real-time monitoring of <strong>{climateMetrics.activeStations}+ stations</strong> worldwide • 
+              Tracking the climate emergency with scientific precision
+            </p>
           </div>
           
           {/* Global Emergency Alert Banner */}
@@ -699,7 +657,7 @@ export default function GlobalOceanMap() {
               </div>
             </div>
           )}
-        </header>
+        </div>
         
         {/* Advanced Search Panel */}
         <SearchPanel
@@ -903,6 +861,89 @@ export default function GlobalOceanMap() {
         .hero-subtitle strong {
           color: #fbbf24;
           font-weight: 700;
+        }
+        
+        .compact-header-section {
+          padding: 2rem;
+          max-width: 1400px;
+          margin: 0 auto;
+          text-align: center;
+        }
+        
+        .compact-climate-dashboard {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+          margin-bottom: 1.5rem;
+        }
+        
+        .compact-metric-card {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+          padding: 1rem;
+          backdrop-filter: blur(10px);
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .compact-metric-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .compact-metric-card.critical {
+          border-color: rgba(239, 68, 68, 0.3);
+          background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .compact-metric-card.emergency {
+          border-color: rgba(220, 38, 38, 0.4);
+          background: rgba(220, 38, 38, 0.15);
+        }
+        
+        .compact-metric-card.warning {
+          border-color: rgba(251, 191, 36, 0.3);
+          background: rgba(251, 191, 36, 0.1);
+        }
+        
+        .compact-metric-card.info {
+          border-color: rgba(59, 130, 246, 0.3);
+          background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .compact-metric-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+        }
+        
+        .compact-metric-icon {
+          font-size: 1.1rem;
+        }
+        
+        .compact-metric-status {
+          font-size: 0.65rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          opacity: 0.8;
+        }
+        
+        .compact-metric-value {
+          font-size: 1.5rem;
+          font-weight: 800;
+          margin-bottom: 0.25rem;
+          line-height: 1;
+        }
+        
+        .compact-metric-label {
+          font-size: 0.8rem;
+          opacity: 0.9;
+          line-height: 1.2;
         }
         
         .climate-dashboard {

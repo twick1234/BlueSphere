@@ -135,6 +135,7 @@ interface BuoyData {
   name: string
   lat: number
   lon: number
+  provider?: string
   last_temp?: number
   status: 'active' | 'inactive' | 'warning'
 }
@@ -534,6 +535,7 @@ export default function OceanMap({
           backdrop-filter: blur(20px);
           border-radius: 12px;
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          z-index: 2000 !important;
         }
         
         .dark-mode .leaflet-popup-content-wrapper {
@@ -543,10 +545,275 @@ export default function OceanMap({
         
         .leaflet-popup-tip {
           background: rgba(255, 255, 255, 0.95);
+          z-index: 2000 !important;
         }
         
         .dark-mode .leaflet-popup-tip {
           background: rgba(30, 41, 59, 0.95);
+          z-index: 2000 !important;
+        }
+        
+        /* Enhanced Popup Styling */
+        .ocean-station-popup {
+          min-width: 280px;
+          padding: 0;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .popup-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(147, 197, 253, 0.05));
+        }
+        
+        .dark-mode .popup-header {
+          border-bottom-color: rgba(255, 255, 255, 0.1);
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
+        }
+        
+        .station-icon {
+          font-size: 24px;
+          min-width: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .station-info {
+          flex: 1;
+        }
+        
+        .station-name {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 700;
+          color: #1f2937;
+          line-height: 1.2;
+        }
+        
+        .dark-mode .station-name {
+          color: #f8fafc;
+        }
+        
+        .station-id {
+          margin: 2px 0 0 0;
+          font-size: 12px;
+          color: #6b7280;
+          font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+        }
+        
+        .dark-mode .station-id {
+          color: #9ca3af;
+        }
+        
+        .status-badge {
+          display: flex;
+        }
+        
+        .status-indicator {
+          padding: 4px 8px;
+          border-radius: 8px;
+          font-size: 10px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          border: 1px solid transparent;
+        }
+        
+        .status-active {
+          background: linear-gradient(135deg, #10b981, #059669);
+          color: white;
+          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+        }
+        
+        .status-warning {
+          background: linear-gradient(135deg, #f59e0b, #d97706);
+          color: white;
+          box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+        }
+        
+        .status-inactive {
+          background: linear-gradient(135deg, #6b7280, #4b5563);
+          color: white;
+          box-shadow: 0 2px 4px rgba(107, 114, 128, 0.3);
+        }
+        
+        .popup-data {
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        
+        .data-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark-mode .data-row {
+          border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .data-row:last-child {
+          border-bottom: none;
+        }
+        
+        .data-label {
+          font-size: 13px;
+          font-weight: 500;
+          color: #4b5563;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        
+        .dark-mode .data-label {
+          color: #9ca3af;
+        }
+        
+        .data-value {
+          font-size: 13px;
+          font-weight: 600;
+          color: #1f2937;
+        }
+        
+        .dark-mode .data-value {
+          color: #f3f4f6;
+        }
+        
+        .data-value.coordinate {
+          font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+          font-size: 12px;
+        }
+        
+        .data-value.temperature {
+          font-size: 16px;
+          font-weight: 700;
+          font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+        }
+        
+        .temp-extreme {
+          color: #dc2626;
+          text-shadow: 0 1px 2px rgba(220, 38, 38, 0.3);
+        }
+        
+        .temp-critical {
+          color: #ea580c;
+          text-shadow: 0 1px 2px rgba(234, 88, 12, 0.3);
+        }
+        
+        .temp-elevated {
+          color: #f59e0b;
+          text-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
+        }
+        
+        .temp-normal {
+          color: #10b981;
+          text-shadow: 0 1px 2px rgba(16, 185, 129, 0.3);
+        }
+        
+        .climate-assessment {
+          margin: 16px;
+          margin-top: 0;
+          border-radius: 12px;
+          overflow: hidden;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-mode .climate-assessment {
+          border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .assessment-extreme {
+          background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.1));
+        }
+        
+        .assessment-critical {
+          background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(251, 146, 60, 0.1));
+        }
+        
+        .assessment-elevated {
+          background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.1));
+        }
+        
+        .assessment-normal {
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(34, 197, 94, 0.1));
+        }
+        
+        .assessment-header {
+          padding: 12px 16px;
+          font-size: 13px;
+          font-weight: 700;
+          color: #374151;
+          background: rgba(255, 255, 255, 0.5);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-mode .assessment-header {
+          color: #e5e7eb;
+          background: rgba(0, 0, 0, 0.2);
+          border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .assessment-content {
+          padding: 12px 16px;
+        }
+        
+        .impact-level {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        
+        .impact-icon {
+          font-size: 16px;
+          min-width: 20px;
+          margin-top: 2px;
+        }
+        
+        .impact-text {
+          flex: 1;
+        }
+        
+        .impact-text strong {
+          display: block;
+          font-size: 12px;
+          font-weight: 700;
+          margin-bottom: 4px;
+          letter-spacing: 0.5px;
+        }
+        
+        .impact-text p {
+          margin: 0;
+          font-size: 11px;
+          line-height: 1.4;
+          color: #6b7280;
+        }
+        
+        .dark-mode .impact-text p {
+          color: #9ca3af;
+        }
+        
+        .impact-level.extreme .impact-text strong {
+          color: #dc2626;
+        }
+        
+        .impact-level.critical .impact-text strong {
+          color: #ea580c;
+        }
+        
+        .impact-level.elevated .impact-text strong {
+          color: #f59e0b;
+        }
+        
+        .impact-level.normal .impact-text strong {
+          color: #10b981;
         }
         
         .custom-advanced-buoy-icon {
@@ -660,105 +927,99 @@ export default function OceanMap({
             }}
           >
             <Popup className="professional-popup">
-              <div style={{ minWidth: '250px', padding: '8px 0' }}>
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  marginBottom: '12px',
-                  gap: '8px'
-                }}>
-                  <span style={{ fontSize: '18px' }}>
+              <div className="ocean-station-popup">
+                <div className="popup-header">
+                  <div className="station-icon">
                     {buoy.status === 'active' && buoy.last_temp && buoy.last_temp > 26 ? '🚨' :
                      buoy.status === 'active' && buoy.last_temp && buoy.last_temp > 23 ? '🌡️' :
-                     buoy.status === 'active' ? '✅' : '📡'}
-                  </span>
-                  <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
-                    {buoy.name}
-                  </h3>
-                </div>
-                
-                <div style={{ display: 'grid', gap: '8px', fontSize: '13px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontWeight: '500' }}>Station ID:</span>
-                    <span style={{ fontFamily: 'monospace' }}>{buoy.station_id}</span>
+                     buoy.status === 'active' ? '🌊' : '📡'}
                   </div>
-                  
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontWeight: '500' }}>Coordinates:</span>
-                    <span style={{ fontFamily: 'monospace' }}>
-                      {buoy.lat.toFixed(3)}°, {buoy.lon.toFixed(3)}°
-                    </span>
+                  <div className="station-info">
+                    <h3 className="station-name">{buoy.name}</h3>
+                    <p className="station-id">Station: {buoy.station_id}</p>
                   </div>
-                  
-                  {buoy.last_temp && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontWeight: '500' }}>Sea Temperature:</span>
-                      <span style={{ 
-                        fontFamily: 'monospace',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        color: getTemperatureColor(buoy.last_temp)
-                      }}>
-                        {buoy.last_temp.toFixed(1)}°C
-                      </span>
-                    </div>
-                  )}
-                  
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontWeight: '500' }}>Status:</span>
-                    <span style={{
-                      padding: '2px 8px',
-                      borderRadius: '6px',
-                      fontSize: '11px',
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      background: 
-                        buoy.status === 'active' ? '#10b981' :
-                        buoy.status === 'warning' ? '#f59e0b' : '#6b7280',
-                      color: 'white'
-                    }}>
+                  <div className="status-badge">
+                    <span className={`status-indicator status-${buoy.status}`}>
                       {buoy.status}
                     </span>
                   </div>
                 </div>
                 
+                <div className="popup-data">
+                  <div className="data-row">
+                    <span className="data-label">📍 Coordinates</span>
+                    <span className="data-value coordinate">
+                      {buoy.lat.toFixed(3)}°, {buoy.lon.toFixed(3)}°
+                    </span>
+                  </div>
+                  
+                  {buoy.last_temp && (
+                    <div className="data-row temperature-row">
+                      <span className="data-label">🌡️ Sea Temperature</span>
+                      <span className={`data-value temperature temp-${
+                        buoy.last_temp > 28 ? 'extreme' :
+                        buoy.last_temp > 26 ? 'critical' :
+                        buoy.last_temp > 23 ? 'elevated' : 'normal'
+                      }`}>
+                        {buoy.last_temp.toFixed(1)}°C
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="data-row">
+                    <span className="data-label">📡 Provider</span>
+                    <span className="data-value">{buoy.provider || 'Ocean Monitoring Network'}</span>
+                  </div>
+                </div>
+                
                 {/* Climate impact assessment */}
                 {buoy.status === 'active' && buoy.last_temp && (
-                  <div style={{ 
-                    marginTop: '12px',
-                    padding: '10px',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    lineHeight: 1.4,
-                    background: buoy.last_temp > 26 ? 
-                      'linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.1))' :
-                      buoy.last_temp > 23 ?
-                      'linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1))' :
-                      'linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1))'
-                  }}>
-                    <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
-                      Climate Impact Assessment:
+                  <div className={`climate-assessment assessment-${
+                    buoy.last_temp > 28 ? 'extreme' :
+                    buoy.last_temp > 26 ? 'critical' :
+                    buoy.last_temp > 23 ? 'elevated' : 'normal'
+                  }`}>
+                    <div className="assessment-header">
+                      🌊 Climate Impact Analysis
                     </div>
-                    {buoy.last_temp > 28 && (
-                      <div style={{ color: '#dc2626' }}>
-                        🔴 <strong>EXTREME HEAT:</strong> Severe coral bleaching risk, marine ecosystem collapse potential
-                      </div>
-                    )}
-                    {buoy.last_temp > 26 && buoy.last_temp <= 28 && (
-                      <div style={{ color: '#ea580c' }}>
-                        🟠 <strong>CRITICAL:</strong> High coral bleaching risk, marine heatwave conditions
-                      </div>
-                    )}
-                    {buoy.last_temp > 23 && buoy.last_temp <= 26 && (
-                      <div style={{ color: '#f59e0b' }}>
-                        🟡 <strong>ELEVATED:</strong> Monitor for marine heatwave development
-                      </div>
-                    )}
-                    {buoy.last_temp <= 23 && (
-                      <div style={{ color: '#10b981' }}>
-                        🟢 <strong>NORMAL:</strong> Temperature within acceptable range
-                      </div>
-                    )}
+                    <div className="assessment-content">
+                      {buoy.last_temp > 28 && (
+                        <div className="impact-level extreme">
+                          <span className="impact-icon">🔴</span>
+                          <div className="impact-text">
+                            <strong>EXTREME HEAT</strong>
+                            <p>Severe coral bleaching risk, marine ecosystem collapse potential</p>
+                          </div>
+                        </div>
+                      )}
+                      {buoy.last_temp > 26 && buoy.last_temp <= 28 && (
+                        <div className="impact-level critical">
+                          <span className="impact-icon">🟠</span>
+                          <div className="impact-text">
+                            <strong>CRITICAL</strong>
+                            <p>High coral bleaching risk, marine heatwave conditions</p>
+                          </div>
+                        </div>
+                      )}
+                      {buoy.last_temp > 23 && buoy.last_temp <= 26 && (
+                        <div className="impact-level elevated">
+                          <span className="impact-icon">🟡</span>
+                          <div className="impact-text">
+                            <strong>ELEVATED</strong>
+                            <p>Monitor for marine heatwave development</p>
+                          </div>
+                        </div>
+                      )}
+                      {buoy.last_temp <= 23 && (
+                        <div className="impact-level normal">
+                          <span className="impact-icon">🟢</span>
+                          <div className="impact-text">
+                            <strong>NORMAL</strong>
+                            <p>Temperature within acceptable range</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
