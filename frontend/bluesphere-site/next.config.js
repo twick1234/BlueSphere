@@ -4,8 +4,8 @@
 const nextConfig = {
   reactStrictMode: true,
   // Static export only for GitHub Pages deployment
-  // For Render deployment, we'll use server-side rendering with API routes
-  output: process.env.DEPLOYMENT_TARGET === 'github-pages' ? 'export' : undefined,
+  // For development and Render deployment, we'll use server-side rendering with API routes
+  // output: process.env.DEPLOYMENT_TARGET === 'github-pages' ? 'export' : undefined,
   trailingSlash: true,
   
   // Production environment configuration
