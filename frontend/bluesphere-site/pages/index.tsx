@@ -539,6 +539,12 @@ export default function Home() {
               href="/alerts"
             />
             <FeatureCard
+              icon="⏰"
+              title="Time-lapse Visualization"
+              description="Watch ocean temperature changes unfold over time with interactive climate animations"
+              href="/timelapse"
+            />
+            <FeatureCard
               icon="📊"
               title="Climate Analytics"
               description="Advanced data visualization and trend analysis to understand ocean-climate interactions"
