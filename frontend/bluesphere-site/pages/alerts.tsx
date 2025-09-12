@@ -3,10 +3,11 @@ import { useTheme } from '../contexts/ThemeContext';
 import AlertDashboard from '../components/AlertDashboard';
 import AlertSubscriptionManager from '../components/AlertSubscriptionManager';
 import NotificationManager from '../components/NotificationManager';
+import UserPreferences from '../components/UserPreferences';
 
 const AlertsPage = () => {
   const { isDarkMode } = useTheme();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'subscriptions' | 'notifications'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'subscriptions' | 'notifications' | 'preferences'>('dashboard');
 
   const containerClass = isDarkMode 
     ? 'bg-gray-900 min-h-screen' 
@@ -56,6 +57,12 @@ const AlertsPage = () => {
               >
                 Notification Management
               </button>
+              <button
+                onClick={() => setActiveTab('preferences')}
+                className={tabClass(activeTab === 'preferences')}
+              >
+                User Preferences
+              </button>
             </div>
           </div>
 
@@ -83,6 +90,14 @@ const AlertsPage = () => {
                 <NotificationManager 
                   isDarkMode={isDarkMode}
                   userEmail="user@example.com"
+                />
+              </div>
+            )}
+
+            {activeTab === 'preferences' && (
+              <div>
+                <UserPreferences 
+                  isDarkMode={isDarkMode}
                 />
               </div>
             )}

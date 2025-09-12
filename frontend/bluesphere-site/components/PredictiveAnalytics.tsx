@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChartBarIcon, ExclamationTriangleIcon, TrendingUpIcon } from '@heroicons/react/24/outline';
+import { ChartBarIcon, ExclamationTriangleIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
 
 interface PredictionData {
   region: string;
@@ -286,7 +286,7 @@ const PredictiveAnalytics: React.FC<PredictiveAnalyticsProps> = ({
     if (riskLevel === 'critical' || riskLevel === 'high') {
       return <ExclamationTriangleIcon className="h-4 w-4" />;
     }
-    return <TrendingUpIcon className="h-4 w-4" />;
+    return <ArrowTrendingUpIcon className="h-4 w-4" />;
   };
 
   const containerClass = isDarkMode 
