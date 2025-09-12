@@ -545,6 +545,12 @@ export default function Home() {
               href="/timelapse"
             />
             <FeatureCard
+              icon="🧠"
+              title="Predictive Analytics"
+              description="AI-powered forecasting for ocean temperature trends and marine heatwave risk assessment"
+              href="/analytics"
+            />
+            <FeatureCard
               icon="📊"
               title="Climate Analytics"
               description="Advanced data visualization and trend analysis to understand ocean-climate interactions"

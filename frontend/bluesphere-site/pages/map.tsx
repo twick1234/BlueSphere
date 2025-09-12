@@ -4,6 +4,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import Layout from '../components/Layout'
 import AlertDashboard from '../components/AlertDashboard'
+import RealTimeStatus from '../components/RealTimeStatus'
 
 // Dynamically import the map component to avoid SSR issues with Leaflet
 const OceanMap = dynamic(() => import('../components/OceanMap'), {
@@ -677,6 +678,14 @@ export default function GlobalOceanMap() {
           />
         </div>
         
+        {/* Real-Time Data Monitor */}
+        <div className="realtime-section">
+          <RealTimeStatus 
+            isDarkMode={isDarkMode} 
+            showCompact={true}
+          />
+        </div>
+        
         {/* Main Application Layout */}
         <div className="main-application">
           <div className="map-section">
@@ -1314,6 +1323,12 @@ export default function GlobalOceanMap() {
         }
         
         .alerts-section {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 2rem 1rem 2rem;
+        }
+        
+        .realtime-section {
           max-width: 1400px;
           margin: 0 auto;
           padding: 0 2rem 1rem 2rem;
