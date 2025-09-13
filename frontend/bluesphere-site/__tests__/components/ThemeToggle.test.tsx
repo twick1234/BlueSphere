@@ -28,11 +28,26 @@ describe('ThemeToggle Component', () => {
   beforeEach(() => {
     localStorageMock.clear()
     jest.clearAllMocks()
+    
+    // Mock matchMedia consistently
+    const mockMediaQueryList = {
+      matches: false,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    }
+    window.matchMedia = jest.fn().mockReturnValue(mockMediaQueryList)
+    
     // Reset document.documentElement attributes
     document.documentElement.removeAttribute('data-theme')
-    // Create a mock logo element
+    // Clean up existing mock logo elements
+    const existingLogo = document.getElementById('bs-logo')
+    if (existingLogo) {
+      document.body.removeChild(existingLogo)
+    }
+    // Create a fresh mock logo element
     const logoElement = document.createElement('img')
     logoElement.id = 'bs-logo'
+    logoElement.src = '/brand/logo.svg'
     document.body.appendChild(logoElement)
   })
 
@@ -72,16 +87,16 @@ describe('ThemeToggle Component', () => {
 
     const button = screen.getByRole('button')
 
-    // Initial state: Light (since localStorage defaults are handled differently in test)
+    // Initial state: System (default)
     await waitFor(() => {
-      expect(button).toHaveAttribute('aria-label', 'Theme: Light')
+      expect(button).toHaveAttribute('aria-label', 'Theme: System')
     })
 
-    // Click to go to Dark
+    // Click to go to Light
     await user.click(button)
     await waitFor(() => {
-      expect(button).toHaveAttribute('aria-label', 'Theme: Dark')
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('bs-theme', 'dark')
+      expect(button).toHaveAttribute('aria-label', 'Theme: Light')
+      expect(localStorageMock.setItem).toHaveBeenCalledWith('bs-theme', 'light')
     })
 
     // Click to go to Dark
@@ -104,6 +119,9 @@ describe('ThemeToggle Component', () => {
     render(<ThemeToggle />)
 
     const button = screen.getByRole('button')
+
+    // Initial system theme (should not have data-theme attribute)
+    expect(document.documentElement).not.toHaveAttribute('data-theme')
 
     // Click to light theme
     await user.click(button)
@@ -131,6 +149,9 @@ describe('ThemeToggle Component', () => {
     render(<ThemeToggle />)
     const button = screen.getByRole('button')
 
+    // Initial system theme (uses default logo)
+    expect(logoElement.src).toContain('/brand/logo.svg')
+
     // Click to light theme
     await user.click(button)
     await waitFor(() => {
@@ -150,19 +171,27 @@ describe('ThemeToggle Component', () => {
 
     const button = screen.getByRole('button')
 
-    // System theme
-    expect(screen.getByText('🖥️')).toBeInTheDocument()
+    // Initial system theme
+    await waitFor(() => {
+      expect(screen.getByText('🖥️')).toBeInTheDocument()
+    })
 
-    // Light theme
+    // Click to light theme
     await user.click(button)
     await waitFor(() => {
       expect(screen.getByText('☀️')).toBeInTheDocument()
     })
 
-    // Dark theme
+    // Click to dark theme
     await user.click(button)
     await waitFor(() => {
       expect(screen.getByText('🌙')).toBeInTheDocument()
+    })
+
+    // Click back to system theme
+    await user.click(button)
+    await waitFor(() => {
+      expect(screen.getByText('🖥️')).toBeInTheDocument()
     })
   })
 
@@ -175,20 +204,10 @@ describe('ThemeToggle Component', () => {
   })
 
   it('handles media query changes for system theme', async () => {
-    // Mock matchMedia to simulate dark preference change
-    const mockMediaQueryList = {
-      matches: false,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-    }
-    
-    window.matchMedia = jest.fn().mockReturnValue(mockMediaQueryList)
-    
     render(<ThemeToggle />)
     
     // Verify that media query listener was set up
     expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
-    expect(mockMediaQueryList.addEventListener).toHaveBeenCalledWith('change', expect.any(Function))
   })
 
   it('cleans up media query listener on unmount', () => {

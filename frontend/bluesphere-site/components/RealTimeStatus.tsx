@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SignalIcon, ExclamationTriangleIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { SignalIcon, ExclamationTriangleIcon, ClockIcon } from '@heroicons/react/outline';
 import { websocketManager, WebSocketMessage, TemperatureUpdate, AlertUpdate } from '../lib/websocket';
 
 interface RealTimeStatusProps {
