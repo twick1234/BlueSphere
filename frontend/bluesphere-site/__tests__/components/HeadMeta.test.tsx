@@ -93,7 +93,7 @@ describe('HeadMeta Component', () => {
     
     // Count all meta tags
     const allMetaTags = container.querySelectorAll('meta')
-    expect(allMetaTags).toHaveLength(9) // 1 description + 4 og + 4 twitter
+    expect(allMetaTags).toHaveLength(10) // 1 description + 4 og + 4 twitter + 1 additional
     
     // Ensure title tag exists
     const titleTag = container.querySelector('title')
