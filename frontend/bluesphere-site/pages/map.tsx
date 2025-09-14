@@ -542,7 +542,7 @@ export default function GlobalOceanMap() {
   
   if (loading) {
     return (
-      <Layout>
+      <Layout showNavigation={false}>
         <Head>
           <title>Global Ocean Monitoring Map - BlueSphere</title>
           <meta name="description" content="Interactive map showing real-time ocean temperature data from 300+ monitoring stations worldwide." />
@@ -621,7 +621,7 @@ export default function GlobalOceanMap() {
   }
 
   return (
-    <Layout>
+    <Layout showNavigation={false}>
       <Head>
         <title>Global Ocean Monitoring Map - BlueSphere</title>
         <meta name="description" content="Interactive map showing real-time ocean temperature data from 300+ monitoring stations worldwide. Track marine heatwaves, climate change impacts, and ocean conditions for climate action." />
@@ -630,12 +630,29 @@ export default function GlobalOceanMap() {
       <div className={`world-class-ocean-map ${isDarkMode ? 'dark-theme' : 'light-theme'} ${isFullscreen ? 'fullscreen-mode' : ''}`}>
         {/* Compact Header Section */}
         <div className="compact-header-section">
+          {/* Navigation Bar */}
+          <div className="map-navigation">
+            <div className="nav-brand">
+              <Link href="/" className="brand-link">
+                🌊 <span>BlueSphere</span>
+              </Link>
+            </div>
+            <nav className="nav-links">
+              <Link href="/" className="nav-link">Home</Link>
+              <Link href="/map" className="nav-link active">Map</Link>
+              <Link href="/alerts" className="nav-link">Alerts</Link>
+              <Link href="/analytics" className="nav-link">Analytics</Link>
+              <Link href="/architecture" className="nav-link">Architecture</Link>
+              <Link href="/about" className="nav-link">About</Link>
+            </nav>
+          </div>
+
           <div className="hero-section">
             <h1 className="hero-title">
               🌊 Global Ocean Climate Network
             </h1>
             <p className="hero-subtitle">
-              Real-time monitoring of <strong>{climateMetrics.activeStations}+ stations</strong> worldwide • 
+              Real-time monitoring of <strong>{climateMetrics.activeStations}+ stations</strong> worldwide •
               Tracking the climate emergency with scientific precision
             </p>
           </div>
@@ -886,6 +903,69 @@ export default function GlobalOceanMap() {
           max-width: 1400px;
           margin: 0 auto;
           text-align: center;
+        }
+
+        .map-navigation {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+          padding: 1rem 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-brand {
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+
+        .brand-link {
+          color: white;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .brand-link:hover {
+          opacity: 0.8;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 2rem;
+          align-items: center;
+        }
+
+        .nav-link {
+          color: rgba(255, 255, 255, 0.8);
+          text-decoration: none;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          font-weight: 500;
+        }
+
+        .nav-link:hover {
+          color: white;
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+          color: white;
+          background: rgba(255, 255, 255, 0.15);
+          font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+          .nav-links {
+            gap: 1rem;
+          }
+
+          .nav-link {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+          }
         }
         
         .compact-climate-dashboard {
