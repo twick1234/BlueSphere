@@ -6,47 +6,63 @@ const AnalyticsPage = () => {
   const [timeframe, setTimeframe] = useState<'7days' | '14days' | '30days' | '90days'>('30days');
 
   const AnalyticsContent = () => (
-    <>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4 text-gray-900">
+    <div className="bs-section">
+      {/* Hero Header */}
+      <div className="text-center mb-12">
+        <div className="bs-icon-wrapper mx-auto mb-6">
+          <span className="bs-icon">🧠</span>
+        </div>
+        <h1 className="bs-heading-1 mb-4">
           Predictive Analytics Dashboard
         </h1>
-        <p className="text-lg text-gray-600">
-          AI-powered ocean temperature forecasting and marine heatwave risk assessment
+        <p className="bs-text-body text-xl max-w-2xl mx-auto">
+          AI-powered ocean temperature forecasting and marine heatwave risk assessment powered by advanced machine learning
         </p>
       </div>
 
-      {/* Controls */}
-      <div className="mb-6 flex items-center space-x-4">
-        <label className="text-sm font-medium text-gray-900">
-          Forecast Period:
-        </label>
-        <select
-          value={timeframe}
-          onChange={(e) => setTimeframe(e.target.value as any)}
-          className="px-3 py-2 border bg-white border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="7days">Next 7 Days</option>
-          <option value="14days">Next 14 Days</option>
-          <option value="30days">Next 30 Days</option>
-          <option value="90days">Next 90 Days</option>
-        </select>
+      {/* Premium Controls */}
+      <div className="bs-premium-card p-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <span className="text-2xl">⏱️</span>
+            <div>
+              <label className="bs-heading-3 mb-1 block">Forecast Period</label>
+              <p className="bs-text-small">Select prediction timeframe for analysis</p>
+            </div>
+          </div>
+
+          <select
+            value={timeframe}
+            onChange={(e) => setTimeframe(e.target.value as any)}
+            className="bs-premium-card px-4 py-3 text-sm font-medium bg-white border-0 bs-focus-ring min-w-[200px]"
+          >
+            <option value="7days">🔮 Next 7 Days</option>
+            <option value="14days">📈 Next 14 Days</option>
+            <option value="30days">📊 Next 30 Days</option>
+            <option value="90days">🎯 Next 90 Days</option>
+          </select>
+        </div>
       </div>
 
-      {/* Predictive Analytics Component */}
-      <div className="mb-8">
+      {/* Analytics Component */}
+      <div className="mb-12">
         <PredictiveAnalytics
           isDarkMode={false}
           selectedTimeframe={timeframe}
         />
       </div>
 
-      {/* Information Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-        <div className="rounded-lg border p-6 bg-white border-gray-200">
-          <h3 className="text-lg font-semibold mb-3 text-gray-900">
-            Machine Learning Model
-          </h3>
+      {/* Information Grid */}
+      <div className="bs-grid bs-grid-auto mb-12">
+        <div className="bs-premium-card p-8">
+          <div className="flex items-center mb-6">
+            <div className="bs-icon-wrapper mr-4">
+              <span className="bs-icon">🤖</span>
+            </div>
+            <h3 className="bs-heading-3">
+              Machine Learning Model
+            </h3>
+          </div>
           <div className="space-y-3 text-sm text-gray-600">
             <p>
               <strong>Neural Network Architecture:</strong> Our ensemble model combines LSTM (Long Short-Term Memory) networks with traditional regression analysis to capture both temporal patterns and complex oceanographic relationships.
@@ -165,7 +181,7 @@ const AnalyticsPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 
   return (

@@ -33,21 +33,75 @@ const AnimatedCounter = ({ target, suffix = '', duration = 2000 }: { target: num
 // Climate Stats Component
 const ClimateStats = () => {
   const stats = [
-    { value: 1.1, suffix: "°C", label: "Global Temperature Rise", desc: "Since pre-industrial times" },
-    { value: 421, suffix: " ppm", label: "Atmospheric CO₂", desc: "Highest in 3 million years" },
-    { value: 23, suffix: "cm", label: "Sea Level Rise", desc: "Since 1880" },
-    { value: 13, suffix: "%", label: "Arctic Ice Lost", desc: "Per decade since 1979" }
+    {
+      value: 1.1,
+      suffix: "°C",
+      label: "Global Temperature Rise",
+      desc: "Since pre-industrial times",
+      icon: "🌡️",
+      trend: "+0.18°C per decade",
+      color: "from-red-500 to-orange-500",
+      bgGradient: "from-red-50 via-orange-50 to-red-50"
+    },
+    {
+      value: 421,
+      suffix: " ppm",
+      label: "Atmospheric CO₂",
+      desc: "Highest in 3 million years",
+      icon: "💨",
+      trend: "+2.4 ppm annually",
+      color: "from-purple-500 to-indigo-500",
+      bgGradient: "from-purple-50 via-indigo-50 to-purple-50"
+    },
+    {
+      value: 23,
+      suffix: "cm",
+      label: "Sea Level Rise",
+      desc: "Since 1880",
+      icon: "🌊",
+      trend: "+3.4mm per year",
+      color: "from-blue-500 to-cyan-500",
+      bgGradient: "from-blue-50 via-cyan-50 to-blue-50"
+    },
+    {
+      value: 13,
+      suffix: "%",
+      label: "Arctic Ice Lost",
+      desc: "Per decade since 1979",
+      icon: "🧊",
+      trend: "Accelerating loss",
+      color: "from-teal-500 to-green-500",
+      bgGradient: "from-teal-50 via-green-50 to-teal-50"
+    }
   ]
-  
+
   return (
-    <div className="climate-stats">
+    <div className="climate-stats-grid">
       {stats.map((stat, index) => (
-        <div key={index} className="stat-item">
-          <div className="stat-value">
-            <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+        <div key={index} className={`premium-stat-card bg-gradient-to-br ${stat.bgGradient}`}>
+          <div className="stat-icon-header">
+            <div className="stat-icon-wrapper">
+              <span className="stat-icon">{stat.icon}</span>
+            </div>
+            <div className="stat-trend">
+              <span className="trend-indicator">↗️</span>
+              <span className="trend-text">{stat.trend}</span>
+            </div>
           </div>
-          <div className="stat-label">{stat.label}</div>
-          <div className="stat-desc">{stat.desc}</div>
+
+          <div className="stat-main-content">
+            <div className={`stat-value-premium bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+              <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+            </div>
+            <div className="stat-label-premium">{stat.label}</div>
+            <div className="stat-desc-premium">{stat.desc}</div>
+          </div>
+
+          <div className="stat-visual-accent">
+            <div className={`accent-line bg-gradient-to-r ${stat.color}`}></div>
+          </div>
+
+          <div className="hover-overlay"></div>
         </div>
       ))}
     </div>
@@ -217,48 +271,138 @@ export default function Home() {
           line-height: 1.6;
         }
         
-        .climate-stats {
+        .climate-stats-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
           gap: 2rem;
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 0 2rem;
         }
-        
-        .stat-item {
-          background: white;
-          padding: 2rem;
+
+        .premium-stat-card {
+          position: relative;
+          padding: 2.5rem;
+          border-radius: 24px;
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow:
+            0 25px 50px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          overflow: hidden;
+        }
+
+        .premium-stat-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow:
+            0 35px 80px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .stat-icon-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 2rem;
+        }
+
+        .stat-icon-wrapper {
+          width: 64px;
+          height: 64px;
           border-radius: 20px;
-          text-align: center;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-          border: 1px solid #e2e8f0;
-          transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        
-        .stat-item:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+        .stat-icon {
+          font-size: 1.75rem;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
-        
-        .stat-value {
-          font-size: 3rem;
+
+        .stat-trend {
+          text-align: right;
+          font-size: 0.8rem;
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .trend-indicator {
+          display: block;
+          font-size: 1rem;
+          margin-bottom: 0.25rem;
+        }
+
+        .trend-text {
+          display: block;
+          font-size: 0.75rem;
+          opacity: 0.8;
+        }
+
+        .stat-main-content {
+          text-align: left;
+          margin-bottom: 1.5rem;
+        }
+
+        .stat-value-premium {
+          font-size: clamp(2.5rem, 5vw, 3.5rem);
           font-weight: 800;
-          color: #dc2626;
-          margin-bottom: 0.5rem;
           line-height: 1;
+          margin-bottom: 0.75rem;
+          letter-spacing: -0.02em;
         }
-        
-        .stat-label {
+
+        .stat-label-premium {
           font-size: 1.25rem;
           font-weight: 600;
-          color: #0f172a;
+          color: #1e293b;
           margin-bottom: 0.5rem;
+          line-height: 1.2;
         }
-        
-        .stat-desc {
+
+        .stat-desc-premium {
           color: #64748b;
           font-size: 0.9rem;
+          line-height: 1.4;
+          font-weight: 500;
+        }
+
+        .stat-visual-accent {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          opacity: 0;
+          transition: all 0.3s ease;
+        }
+
+        .accent-line {
+          height: 100%;
+          border-radius: 2px 2px 0 0;
+        }
+
+        .premium-stat-card:hover .stat-visual-accent {
+          opacity: 1;
+        }
+
+        .hover-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .premium-stat-card:hover .hover-overlay {
+          opacity: 1;
         }
         
         .features-section {

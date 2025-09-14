@@ -1,5 +1,10 @@
-// NDBC WTMP Data Ingestion Pipeline
-// Matches PRD specification for NDBC realtime2 text parsing and ERSST v5 integration
+/*
+ * BlueSphere NDBC Data Ingestion Pipeline
+ * Copyright (c) 2025 Mark Lindon — BlueSphere
+ *
+ * NDBC WTMP Data Ingestion Pipeline
+ * Matches PRD specification for NDBC realtime2 text parsing and ERSST v5 integration
+ */
 import { promises as fs } from 'fs'
 import path from 'path'
 

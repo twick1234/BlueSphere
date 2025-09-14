@@ -1,6 +1,10 @@
-// BlueSphere Shark Tracking System
-// Real-time tagged shark monitoring integration
-// Data sources: OCEARCH, NOAA Fisheries, Shark Tracker Network
+/*
+ * BlueSphere Shark Tracking System
+ * Copyright (c) 2025 Mark Lindon — BlueSphere
+ *
+ * Real-time tagged shark monitoring integration
+ * Data sources: OCEARCH, NOAA Fisheries, Shark Tracker Network
+ */
 
 export interface SharkData {
   id: string
