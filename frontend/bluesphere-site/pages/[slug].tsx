@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2024–2025 Mark Lindon — BlueSphere
+import React from 'react'
 import Layout from '../components/Layout'
 import { getPage, listSlugs } from '../lib/content'
 

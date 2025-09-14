@@ -321,6 +321,158 @@
   ring-offset: 2px;
 }
 
+/* Mobile Responsiveness Enhancements */
+@media (max-width: 640px) {
+  /* Mobile Typography Scale */
+  :root {
+    --bs-font-size-hero: clamp(2rem, 8vw, 3rem);
+    --bs-font-size-h1: clamp(1.75rem, 6vw, 2.5rem);
+    --bs-font-size-h2: clamp(1.5rem, 5vw, 2rem);
+    --bs-font-size-h3: clamp(1.25rem, 4vw, 1.5rem);
+    --bs-space-xl: 2rem;
+    --bs-space-2xl: 2.5rem;
+  }
+
+  /* Mobile Section Adjustments */
+  .bs-section {
+    padding: var(--bs-space-lg) 0;
+    padding-left: var(--bs-space-md);
+    padding-right: var(--bs-space-md);
+  }
+
+  /* Mobile Grid System */
+  .bs-grid-2,
+  .bs-grid-3,
+  .bs-grid-4 {
+    grid-template-columns: 1fr;
+    gap: var(--bs-space-md);
+  }
+
+  /* Mobile Cards */
+  .bs-premium-card {
+    padding: var(--bs-space-md);
+    border-radius: var(--bs-border-radius-md);
+    margin-bottom: var(--bs-space-md);
+  }
+
+  /* Mobile Buttons */
+  .bs-btn-primary,
+  .bs-btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: var(--bs-space-md) var(--bs-space-lg);
+    font-size: var(--bs-font-size-body);
+  }
+
+  /* Mobile Icon Wrapper */
+  .bs-icon-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+
+  .bs-icon {
+    font-size: 1.5rem;
+  }
+
+  /* Mobile Hero Sections */
+  .bs-section-hero {
+    min-height: 70vh;
+    padding: var(--bs-space-xl) var(--bs-space-md);
+  }
+
+  /* Mobile Text Adjustments */
+  .bs-heading-hero,
+  .bs-heading-1,
+  .bs-heading-2,
+  .bs-heading-3 {
+    text-align: center;
+    margin-bottom: var(--bs-space-md);
+  }
+
+  .bs-text-body {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Tablet Adjustments */
+  .bs-grid-3,
+  .bs-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bs-section {
+    padding-left: var(--bs-space-lg);
+    padding-right: var(--bs-space-lg);
+  }
+}
+
+@media (max-width: 1024px) {
+  /* Small Desktop/Large Tablet */
+  .bs-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .bs-animate-fade-in,
+  .bs-animate-slide-up,
+  .bs-animate-pulse-glow {
+    animation: none !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .bs-premium-card {
+    border: 2px solid #000000;
+    box-shadow: none;
+  }
+
+  .bs-btn-primary {
+    border: 2px solid #000000;
+  }
+
+  .bs-glass-bg {
+    background: #ffffff;
+    backdrop-filter: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .bs-premium-card {
+    box-shadow: none;
+    border: 1px solid #000000;
+    break-inside: avoid;
+  }
+
+  .bs-btn-primary,
+  .bs-btn-secondary {
+    display: none;
+  }
+
+  .bs-animate-fade-in,
+  .bs-animate-slide-up,
+  .bs-animate-pulse-glow {
+    animation: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+}
+
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -333,4 +485,21 @@
   .bs-heading-3 { color: #cbd5e1; }
   .bs-text-body { color: #94a3b8; }
   .bs-text-small { color: #64748b; }
+}
+
+/* Touch-Friendly Enhancements */
+@media (hover: none) and (pointer: coarse) {
+  .bs-btn-primary,
+  .bs-btn-secondary {
+    min-height: 44px; /* Apple's recommended touch target size */
+    padding: var(--bs-space-md) var(--bs-space-lg);
+  }
+
+  .bs-premium-card:hover {
+    transform: none; /* Disable hover effects on touch devices */
+  }
+
+  .bs-premium-card {
+    transition: none;
+  }
 }

@@ -1,3 +1,10 @@
+/*
+ * BlueSphere Layout Component
+ * Copyright (c) 2025 Mark Lindon — BlueSphere
+ *
+ * Main layout wrapper with navigation and branding
+ */
+
 import React from 'react'
 import Link from 'next/link'
 import HeadMeta from './HeadMeta'
@@ -36,6 +43,7 @@ const Layout: React.FC<{children:any, title?:string, showNavigation?:boolean}> =
               <NavLink href="/architecture">Architecture</NavLink>
               <NavLink href="/crisis">Crisis</NavLink>
               <NavLink href="/consistency">Consistency</NavLink>
+              <NavLink href="/stories">Stories</NavLink>
               <NavLink href="/docs">Docs</NavLink>
               <NavLink href="/about">About</NavLink>
               <NavLink href="/sources">Sources</NavLink>

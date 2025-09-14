@@ -1,0 +1,480 @@
+{
+  "timestamp": "2025-09-14T07:34:15.254Z",
+  "summary": {
+    "total": 78,
+    "passed": 67,
+    "failed": 11,
+    "duration": 24,
+    "successRate": 86
+  },
+  "tests": [
+    {
+      "testName": "Node.js version",
+      "passed": true,
+      "details": "Current: v24.7.0, Required: >= 18",
+      "timestamp": "2025-09-14T07:33:51.387Z"
+    },
+    {
+      "testName": "npm version",
+      "passed": true,
+      "details": "Version: 11.5.1",
+      "timestamp": "2025-09-14T07:33:51.574Z"
+    },
+    {
+      "testName": "package.json exists",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json valid JSON",
+      "passed": true,
+      "details": "Successfully parsed",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has name",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has version",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has scripts",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has dependencies",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has dev script",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has build script",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "package.json has start script",
+      "passed": true,
+      "details": "Present",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical dependency next",
+      "passed": true,
+      "details": "Version: 14.2.5",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical dependency react",
+      "passed": true,
+      "details": "Version: 18.2.0",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical dependency react-dom",
+      "passed": true,
+      "details": "Version: 18.2.0",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: pages/_app.tsx",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: pages/_document.tsx",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: pages/index.tsx",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: components/Layout.tsx",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: lib/data-ingestion.ts",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: styles/premium-theme.css",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical file: public/brand/logo.svg",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical directory: pages",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical directory: components",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical directory: lib",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical directory: styles",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Critical directory: public",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "node_modules directory exists",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:51.575Z"
+    },
+    {
+      "testName": "Security audit (high-level vulnerabilities)",
+      "passed": false,
+      "details": "Error: Command failed: npm audit --audit-level=high\nnpm notice\nnpm notice New minor version of npm available! 11.5.1 -> 11.6.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.0\nnpm notice To update run: npm install -g npm@11.6.0\nnpm notice\n",
+      "timestamp": "2025-09-14T07:33:53.479Z"
+    },
+    {
+      "testName": "Check for outdated packages",
+      "passed": true,
+      "details": "Command correctly failed as expected",
+      "timestamp": "2025-09-14T07:33:57.267Z"
+    },
+    {
+      "testName": "Copyright notice in components/Layout.tsx",
+      "passed": false,
+      "details": "Missing content: Mark Lindon — BlueSphere",
+      "timestamp": "2025-09-14T07:33:57.268Z"
+    },
+    {
+      "testName": "Current year in components/Layout.tsx",
+      "passed": false,
+      "details": "Missing content: 2025",
+      "timestamp": "2025-09-14T07:33:57.268Z"
+    },
+    {
+      "testName": "Copyright notice in lib/data-ingestion.ts",
+      "passed": true,
+      "details": "Content found",
+      "timestamp": "2025-09-14T07:33:57.268Z"
+    },
+    {
+      "testName": "Current year in lib/data-ingestion.ts",
+      "passed": true,
+      "details": "Content found",
+      "timestamp": "2025-09-14T07:33:57.268Z"
+    },
+    {
+      "testName": "Copyright notice in lib/performance.ts",
+      "passed": true,
+      "details": "Content found",
+      "timestamp": "2025-09-14T07:33:57.269Z"
+    },
+    {
+      "testName": "Current year in lib/performance.ts",
+      "passed": true,
+      "details": "Content found",
+      "timestamp": "2025-09-14T07:33:57.269Z"
+    },
+    {
+      "testName": "Copyright notice in styles/premium-theme.css",
+      "passed": true,
+      "details": "Content found",
+      "timestamp": "2025-09-14T07:33:57.269Z"
+    },
+    {
+      "testName": "Current year in styles/premium-theme.css",
+      "passed": true,
+      "details": "Content found",
+      "timestamp": "2025-09-14T07:33:57.269Z"
+    },
+    {
+      "testName": "TypeScript config exists",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:57.269Z"
+    },
+    {
+      "testName": "Next.js TypeScript definitions",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:33:57.269Z"
+    },
+    {
+      "testName": "TypeScript compilation check",
+      "passed": false,
+      "details": "Error: Command failed: npx tsc --noEmit",
+      "timestamp": "2025-09-14T07:33:59.774Z"
+    },
+    {
+      "testName": "ESLint configuration",
+      "passed": true,
+      "details": "Found: .eslintrc.json",
+      "timestamp": "2025-09-14T07:33:59.774Z"
+    },
+    {
+      "testName": "ESLint validation",
+      "passed": false,
+      "details": "Error: Command failed: npm run lint\nInvalid Options:\n- Unknown options: useEslintrc, extensions, resolvePluginsRelativeTo, rulePaths, ignorePath, reportUnusedDisableDirectives\n- 'extensions' has been removed.\n- 'resolvePluginsRelativeTo' has been removed.\n- 'ignorePath' has been removed.\n- 'rulePaths' has been removed. Please define your rules using plugins.\n- 'reportUnusedDisableDirectives' has been removed. Please use the 'overrideConfig.linterOptions.reportUnusedDisableDirectives' option instead.\n",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page count",
+      "passed": true,
+      "details": "Found 14 pages",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page [slug].tsx has React import",
+      "passed": false,
+      "details": "Missing React import",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page [slug].tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page alerts.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page alerts.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page analytics.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page analytics.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page architecture.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page architecture.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page coral.tsx has React import",
+      "passed": false,
+      "details": "Missing React import",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page coral.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page education.tsx has React import",
+      "passed": false,
+      "details": "Missing React import",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page education.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.332Z"
+    },
+    {
+      "testName": "Page faq.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page faq.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page health.tsx has React import",
+      "passed": false,
+      "details": "Missing React import",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page health.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page historical.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page historical.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page index.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page index.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page map.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page map.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page migration.tsx has React import",
+      "passed": false,
+      "details": "Missing React import",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page migration.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page pollution.tsx has React import",
+      "passed": false,
+      "details": "Missing React import",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page pollution.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page timelapse.tsx has React import",
+      "passed": true,
+      "details": "React properly imported",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "Page timelapse.tsx has default export",
+      "passed": true,
+      "details": "Default export found",
+      "timestamp": "2025-09-14T07:34:00.333Z"
+    },
+    {
+      "testName": "NOAA NDBC API accessibility",
+      "passed": true,
+      "details": "Status: 200",
+      "timestamp": "2025-09-14T07:34:02.178Z"
+    },
+    {
+      "testName": "OCEARCH API accessibility",
+      "passed": true,
+      "details": "Status: 200",
+      "timestamp": "2025-09-14T07:34:04.314Z"
+    },
+    {
+      "testName": "Production build",
+      "passed": true,
+      "details": "Command executed successfully",
+      "timestamp": "2025-09-14T07:34:15.253Z"
+    },
+    {
+      "testName": "Build directory created",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:34:15.253Z"
+    },
+    {
+      "testName": "Static assets generated",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:34:15.253Z"
+    },
+    {
+      "testName": "Build manifest created",
+      "passed": true,
+      "details": "File found",
+      "timestamp": "2025-09-14T07:34:15.253Z"
+    },
+    {
+      "testName": "Build manifest valid",
+      "passed": true,
+      "details": "Pages: 18",
+      "timestamp": "2025-09-14T07:34:15.253Z"
+    }
+  ]
+}
