@@ -642,6 +642,7 @@ export default function GlobalOceanMap() {
               <Link href="/map" className="nav-link active">Map</Link>
               <Link href="/alerts" className="nav-link">Alerts</Link>
               <Link href="/analytics" className="nav-link">Analytics</Link>
+              <Link href="/historical" className="nav-link">Historical</Link>
               <Link href="/architecture" className="nav-link">Architecture</Link>
               <Link href="/about" className="nav-link">About</Link>
             </nav>

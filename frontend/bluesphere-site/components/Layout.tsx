@@ -31,6 +31,7 @@ const Layout: React.FC<{children:any, title?:string, showNavigation?:boolean}> =
               <NavLink href="/map">Map</NavLink>
               <NavLink href="/alerts">Alerts</NavLink>
               <NavLink href="/analytics">Analytics</NavLink>
+              <NavLink href="/historical">Historical</NavLink>
               <NavLink href="/timelapse">Time-lapse</NavLink>
               <NavLink href="/architecture">Architecture</NavLink>
               <NavLink href="/crisis">Crisis</NavLink>
