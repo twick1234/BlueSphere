@@ -207,116 +207,197 @@ class OCEARCHService {
   static getEnhancedMockData(): SharkData[] {
     const currentTime = new Date()
 
-    return [
+    // Generate comprehensive realistic shark database
+    const sharks: SharkData[] = []
+
+    // Famous real sharks with enhanced data
+    const famousSharks = [
       {
         id: 'mary_lee_2024',
         name: 'Mary Lee',
         species: 'Carcharodon carcharias',
-        sex: 'F',
+        sex: 'F' as const,
         length_m: 4.8,
         weight_kg: 1633,
         tag_date: '2012-09-17T00:00:00Z',
-        last_ping: new Date(currentTime.getTime() - 47 * 60 * 1000).toISOString(), // 47 minutes ago
+        last_ping: new Date(currentTime.getTime() - 47 * 60 * 1000).toISOString(),
         lat: 33.7490,
         lon: -78.8767,
         depth_m: 45,
         water_temp_c: 24.1,
         location_description: 'Off Wrightsville Beach, North Carolina',
         tracking_organization: 'OCEARCH',
-        confidence_level: 'High',
-        status: 'Active'
+        confidence_level: 'High' as const,
+        status: 'Active' as const
       },
       {
         id: 'nukumi_2024',
         name: 'Nukumi',
         species: 'Carcharodon carcharias',
-        sex: 'F',
+        sex: 'F' as const,
         length_m: 5.2,
         weight_kg: 1900,
         tag_date: '2019-10-02T00:00:00Z',
-        last_ping: new Date(currentTime.getTime() - 2.3 * 60 * 60 * 1000).toISOString(), // 2.3 hours ago
+        last_ping: new Date(currentTime.getTime() - 2.3 * 60 * 60 * 1000).toISOString(),
         lat: 41.5203,
         lon: -69.9795,
         depth_m: 78,
         water_temp_c: 17.8,
         location_description: 'Georges Bank, Massachusetts',
         tracking_organization: 'OCEARCH',
-        confidence_level: 'High',
-        status: 'Active'
+        confidence_level: 'High' as const,
+        status: 'Active' as const
       },
       {
-        id: 'breton_2024',
-        name: 'Breton',
-        species: 'Carcharodon carcharias',
-        sex: 'M',
-        length_m: 3.8,
-        weight_kg: 1437,
-        tag_date: '2020-09-12T00:00:00Z',
-        last_ping: new Date(currentTime.getTime() - 8.5 * 60 * 60 * 1000).toISOString(), // 8.5 hours ago
-        lat: 27.9506,
-        lon: -82.4572,
-        depth_m: 23,
-        water_temp_c: 27.2,
-        location_description: 'Tampa Bay, Florida',
-        tracking_organization: 'OCEARCH',
-        confidence_level: 'High',
-        status: 'Active'
-      },
-      {
-        id: 'white_shark_cafe_1',
+        id: 'deep_blue_2024',
         name: 'Deep Blue',
         species: 'Carcharodon carcharias',
-        sex: 'F',
+        sex: 'F' as const,
         length_m: 6.1,
         weight_kg: 2500,
         tag_date: '2021-01-15T00:00:00Z',
-        last_ping: new Date(currentTime.getTime() - 1.2 * 60 * 60 * 1000).toISOString(), // 1.2 hours ago
+        last_ping: new Date(currentTime.getTime() - 1.2 * 60 * 60 * 1000).toISOString(),
         lat: 26.1234,
         lon: -135.5678,
         depth_m: 892,
         water_temp_c: 4.2,
         location_description: 'White Shark Café, Pacific Ocean',
         tracking_organization: 'Stanford Tagging Consortium',
-        confidence_level: 'High',
-        status: 'Active'
-      },
-      {
-        id: 'tiger_shark_bahamas',
-        name: 'Emma',
-        species: 'Galeocerdo cuvier',
-        sex: 'F',
-        length_m: 4.2,
-        weight_kg: 1200,
-        tag_date: '2023-03-22T00:00:00Z',
-        last_ping: new Date(currentTime.getTime() - 25 * 60 * 1000).toISOString(), // 25 minutes ago
-        lat: 24.7836,
-        lon: -77.7834,
-        depth_m: 15,
-        water_temp_c: 28.5,
-        location_description: 'Andros Island, Bahamas',
-        tracking_organization: 'Bahamas Marine Research',
-        confidence_level: 'High',
-        status: 'Active'
-      },
-      {
-        id: 'hammerhead_galapagos',
-        name: 'Hammer Time',
-        species: 'Sphyrna lewini',
-        sex: 'M',
-        length_m: 3.1,
-        weight_kg: 180,
-        tag_date: '2023-11-08T00:00:00Z',
-        last_ping: new Date(currentTime.getTime() - 4.7 * 60 * 60 * 1000).toISOString(), // 4.7 hours ago
-        lat: -0.9538,
-        lon: -89.6180,
-        depth_m: 156,
-        water_temp_c: 22.1,
-        location_description: 'Darwin Island, Galápagos',
-        tracking_organization: 'Galápagos Research Initiative',
-        confidence_level: 'Medium',
-        status: 'Active'
+        confidence_level: 'High' as const,
+        status: 'Active' as const
       }
     ]
+
+    sharks.push(...famousSharks)
+
+    // Shark species with realistic parameters
+    const sharkSpecies = [
+      {
+        species: 'Carcharodon carcharias',
+        commonName: 'Great White Shark',
+        avgLength: [3.5, 6.0],
+        avgWeight: [1000, 2500],
+        regions: [
+          { name: 'California Coast', lat: [34, 38], lon: [-125, -120] },
+          { name: 'Cape Cod', lat: [41, 42], lon: [-71, -69] },
+          { name: 'South Africa', lat: [-35, -33], lon: [18, 22] },
+          { name: 'Australia', lat: [-37, -34], lon: [138, 151] }
+        ]
+      },
+      {
+        species: 'Galeocerdo cuvier',
+        commonName: 'Tiger Shark',
+        avgLength: [3.0, 5.5],
+        avgWeight: [400, 1400],
+        regions: [
+          { name: 'Hawaiian Islands', lat: [19, 22], lon: [-161, -154] },
+          { name: 'Bahamas', lat: [23, 27], lon: [-80, -74] },
+          { name: 'Queensland', lat: [-28, -10], lon: [142, 154] }
+        ]
+      },
+      {
+        species: 'Sphyrna lewini',
+        commonName: 'Scalloped Hammerhead',
+        avgLength: [1.5, 4.0],
+        avgWeight: [50, 300],
+        regions: [
+          { name: 'Galápagos Islands', lat: [-2, 2], lon: [-92, -89] },
+          { name: 'Costa Rica', lat: [8, 11], lon: [-87, -82] },
+          { name: 'Red Sea', lat: [12, 30], lon: [32, 43] }
+        ]
+      },
+      {
+        species: 'Rhincodon typus',
+        commonName: 'Whale Shark',
+        avgLength: [5.0, 12.0],
+        avgWeight: [9000, 21000],
+        regions: [
+          { name: 'Maldives', lat: [-1, 7], lon: [72, 74] },
+          { name: 'Philippines', lat: [5, 19], lon: [116, 127] },
+          { name: 'Mexico - Yucatan', lat: [20, 22], lon: [-89, -86] }
+        ]
+      },
+      {
+        species: 'Carcharhinus amblyrhynchos',
+        commonName: 'Grey Reef Shark',
+        avgLength: [1.3, 2.6],
+        avgWeight: [20, 40],
+        regions: [
+          { name: 'Great Barrier Reef', lat: [-24, -10], lon: [142, 154] },
+          { name: 'French Polynesia', lat: [-23, -8], lon: [-154, -134] },
+          { name: 'Maldives', lat: [-1, 7], lon: [72, 74] }
+        ]
+      },
+      {
+        species: 'Carcharhinus leucas',
+        commonName: 'Bull Shark',
+        avgLength: [2.0, 3.5],
+        avgWeight: [130, 315],
+        regions: [
+          { name: 'Florida Keys', lat: [24, 26], lon: [-82, -80] },
+          { name: 'South Africa', lat: [-35, -28], lon: [15, 33] },
+          { name: 'Nicaragua - Lake Nicaragua', lat: [11, 12], lon: [-86, -84] }
+        ]
+      }
+    ]
+
+    // Generate hundreds of realistic sharks
+    const maleNames = ['Zeus', 'Thor', 'Atlas', 'Neptune', 'Poseidon', 'Triton', 'Apollo', 'Ares', 'Titan', 'Storm', 'Ranger', 'Hunter', 'Striker', 'Voyager', 'Explorer', 'Maverick', 'Phoenix', 'Shadow', 'Thunder', 'Lightning', 'Blaze', 'Frost', 'Steel', 'Vortex', 'Echo', 'Diesel', 'Turbo', 'Rocket', 'Jet', 'Comet']
+    const femaleNames = ['Luna', 'Aurora', 'Stella', 'Nova', 'Celeste', 'Marina', 'Coral', 'Pearl', 'Aqua', 'Sapphire', 'Crystal', 'Diamond', 'Ruby', 'Emerald', 'Jade', 'Opal', 'Ivory', 'Amber', 'Violet', 'Rose', 'Lily', 'Iris', 'Vera', 'Grace', 'Hope', 'Faith', 'Joy', 'Harmony', 'Serenity', 'Bliss']
+    const organizations = ['OCEARCH', 'Stanford Tagging Consortium', 'NOAA Fisheries', 'Wildlife Conservation Society', 'Shark Research Institute', 'Marine Conservation International', 'Ocean Tracking Network', 'Bimini Biological Field Station', 'Monterey Bay Aquarium', 'Australian Institute of Marine Science']
+
+    let sharkId = 100
+    for (const speciesData of sharkSpecies) {
+      const numSharksForSpecies = Math.floor(Math.random() * 60) + 40 // 40-100 sharks per species
+
+      for (let i = 0; i < numSharksForSpecies; i++) {
+        const sex = Math.random() > 0.5 ? 'M' : 'F'
+        const names = sex === 'M' ? maleNames : femaleNames
+        const name = names[Math.floor(Math.random() * names.length)]
+        const region = speciesData.regions[Math.floor(Math.random() * speciesData.regions.length)]
+
+        const lat = region.lat[0] + Math.random() * (region.lat[1] - region.lat[0])
+        const lon = region.lon[0] + Math.random() * (region.lon[1] - region.lon[0])
+        const length = speciesData.avgLength[0] + Math.random() * (speciesData.avgLength[1] - speciesData.avgLength[0])
+        const weight = speciesData.avgWeight[0] + Math.random() * (speciesData.avgWeight[1] - speciesData.avgWeight[0])
+
+        // Vary ping times to simulate real tracking
+        const hoursAgo = Math.random() * 168 // Up to 7 days ago
+        const lastPing = new Date(currentTime.getTime() - hoursAgo * 60 * 60 * 1000)
+
+        // Determine status based on last ping
+        let status: 'Active' | 'Inactive' | 'Lost_Signal' = 'Active'
+        if (hoursAgo > 72) status = 'Inactive'
+        if (hoursAgo > 120) status = 'Lost_Signal'
+
+        // Realistic depths based on species
+        let depth = Math.random() * 200 // Default shallow-medium depth
+        if (speciesData.species === 'Rhincodon typus') depth = Math.random() * 50 // Whale sharks stay shallow
+        if (speciesData.species === 'Carcharodon carcharias') depth = Math.random() * 800 // Great whites go deep
+
+        sharks.push({
+          id: `${speciesData.species.replace(' ', '_').toLowerCase()}_${sharkId++}`,
+          name: `${name}${i > 29 ? ` ${Math.floor(i/30) + 1}` : ''}`, // Add numbers for duplicates
+          species: speciesData.species,
+          sex: sex,
+          length_m: Math.round(length * 10) / 10,
+          weight_kg: Math.round(weight),
+          tag_date: new Date(currentTime.getTime() - Math.random() * 1095 * 24 * 60 * 60 * 1000).toISOString(), // Tagged within last 3 years
+          last_ping: lastPing.toISOString(),
+          lat: Math.round(lat * 10000) / 10000,
+          lon: Math.round(lon * 10000) / 10000,
+          depth_m: Math.round(depth),
+          water_temp_c: Math.round((15 + Math.random() * 15) * 10) / 10, // 15-30°C range
+          location_description: region.name,
+          tracking_organization: organizations[Math.floor(Math.random() * organizations.length)],
+          confidence_level: Math.random() > 0.2 ? 'High' : Math.random() > 0.5 ? 'Medium' : 'Low',
+          status: status
+        })
+      }
+    }
+
+    console.log(`Generated ${sharks.length} tracked sharks`)
+    return sharks
   }
 
   // Get specific shark's tracking history
