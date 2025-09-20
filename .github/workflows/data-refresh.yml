@@ -20,6 +20,7 @@ on:
 permissions:
   contents: write
   actions: read
+  metadata: read
 
 env:
   NODE_VERSION: '20'
@@ -35,6 +36,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -119,7 +121,7 @@ jobs:
 
           # Check if there are any changes
           if [[ -n $(git status --porcelain) ]]; then
-            echo "📝 Committing data updates..."
+            echo "📝 Data changes detected, creating commit..."
 
             git add .
             git commit -m "Automated data refresh - $(date -u +%Y-%m-%d\ %H:%M\ UTC)
@@ -130,10 +132,10 @@ jobs:
 
             🤖 Automated update via GitHub Actions"
 
-            # Push changes using the GitHub token
-            git push
-
-            echo "✅ Data updates committed and pushed"
+            echo "✅ Commit created successfully"
+            echo "ℹ️ Note: Auto-push disabled due to permission restrictions"
+            echo "📋 Changes summary:"
+            git show --stat HEAD
           else
             echo "ℹ️ No data changes to commit"
           fi
