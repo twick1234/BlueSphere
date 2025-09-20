@@ -322,9 +322,9 @@ ${latestAnalysis.recommendations.longTerm.map(rec => `- ${rec}`).join('\n')}
     });
 
     return {
-      immediate: [...new Set(immediate)], // Remove duplicates
-      shortTerm: [...new Set(shortTerm)],
-      longTerm: [...new Set(longTerm)]
+      immediate: Array.from(new Set(immediate)), // Remove duplicates
+      shortTerm: Array.from(new Set(shortTerm)),
+      longTerm: Array.from(new Set(longTerm))
     };
   }
 }

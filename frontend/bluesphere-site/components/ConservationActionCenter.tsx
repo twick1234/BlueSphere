@@ -199,7 +199,7 @@ const ConservationActionCenter: React.FC<ConservationActionCenterProps> = ({
     .slice(0, maxActions);
 
   const handleJoinAction = (actionId: string, actionTitle: string) => {
-    setUserActions(prev => new Set([...prev, actionId]));
+    setUserActions(prev => new Set(Array.from(prev).concat(actionId)));
     setShowSuccessMessage(`Successfully joined: ${actionTitle}`);
 
     setTimeout(() => {

@@ -514,6 +514,214 @@ export class BlueSphereAgentSystem {
     return 'Low (1-2 weeks)';
   }
 
+  // QA Engineer helper methods
+  private analyzeQualityRequirements(request: string, domain: string): string {
+    return `Quality assurance analysis for marine platform feature: "${request}"
+
+    Testing requirements:
+    - Data accuracy validation for ocean sensor readings
+    - Real-time system performance testing
+    - Marine data quality control verification
+    - User acceptance testing with marine researchers
+
+    Quality standards:
+    - GPS accuracy within 10 meters for animal tracking
+    - Data freshness under 5 minutes for real-time feeds
+    - API response times under 100ms for critical queries
+    - 99.9% uptime for continuous ocean monitoring`;
+  }
+
+  private generateQARecommendations(request: string, domain: string): string[] {
+    const baseRecommendations = [
+      'Implement automated testing for data validation',
+      'Create test scenarios for marine research workflows',
+      'Establish performance benchmarks for ocean data processing'
+    ];
+
+    if (request.toLowerCase().includes('real-time')) {
+      return [
+        ...baseRecommendations,
+        'Test WebSocket connections under high load',
+        'Validate data streaming performance',
+        'Monitor memory usage during continuous processing'
+      ];
+    }
+
+    return baseRecommendations;
+  }
+
+  private defineQADeliverables(request: string): string[] {
+    return [
+      'Test strategy document',
+      'Automated test suites',
+      'Data quality validation framework',
+      'User acceptance test plans',
+      'Performance testing results'
+    ];
+  }
+
+  private estimateQAEffort(request: string): string {
+    if (request.toLowerCase().includes('complex') || request.toLowerCase().includes('ai')) return 'High (3-4 weeks)';
+    if (request.toLowerCase().includes('api') || request.toLowerCase().includes('real-time')) return 'Medium (2-3 weeks)';
+    return 'Low (1-2 weeks)';
+  }
+
+  // DevOps Engineer helper methods
+  private analyzeInfrastructureRequirements(request: string, domain: string): string {
+    return `Infrastructure analysis for marine platform feature: "${request}"
+
+    Infrastructure needs:
+    - Scalable cloud architecture for ocean-scale data processing
+    - Global CDN for marine research team access
+    - Real-time data pipeline with high availability
+    - Automated scaling for seasonal data spikes
+
+    Operational requirements:
+    - 24/7 monitoring for critical ocean monitoring systems
+    - Disaster recovery for marine conservation data
+    - Security compliance for research data sharing
+    - Cost optimization for large-scale data storage`;
+  }
+
+  private generateDevOpsRecommendations(request: string, domain: string): string[] {
+    const baseRecommendations = [
+      'Implement Infrastructure as Code with Terraform',
+      'Set up comprehensive monitoring and alerting',
+      'Plan disaster recovery strategy'
+    ];
+
+    if (request.toLowerCase().includes('real-time')) {
+      return [
+        ...baseRecommendations,
+        'Configure auto-scaling for data processing',
+        'Implement real-time monitoring dashboards',
+        'Set up automated failover systems'
+      ];
+    }
+
+    return baseRecommendations;
+  }
+
+  private defineDevOpsDeliverables(request: string): string[] {
+    return [
+      'Infrastructure as Code templates',
+      'CI/CD pipeline configuration',
+      'Monitoring and alerting setup',
+      'Disaster recovery procedures',
+      'Security compliance documentation'
+    ];
+  }
+
+  private estimateDevOpsEffort(request: string): string {
+    if (request.toLowerCase().includes('migration') || request.toLowerCase().includes('platform')) return 'High (4-6 weeks)';
+    if (request.toLowerCase().includes('monitoring') || request.toLowerCase().includes('scaling')) return 'Medium (2-3 weeks)';
+    return 'Low (1-2 weeks)';
+  }
+
+  // UX Designer helper methods
+  private analyzeUserExperienceRequirements(request: string, domain: string, stakeholders: string[]): string {
+    return `User experience analysis for marine platform feature: "${request}"
+
+    User needs:
+    - Marine researchers need intuitive data visualization interfaces
+    - Field scientists require mobile-optimized tools for boat access
+    - Conservation managers need executive dashboard views
+    - Citizen scientists need simplified data contribution interfaces
+
+    UX considerations:
+    - Accessibility for diverse user groups and abilities
+    - Performance optimization for low-bandwidth maritime connections
+    - Offline capability for remote ocean research locations
+    - Multi-language support for international collaboration`;
+  }
+
+  private generateUXRecommendations(request: string, domain: string): string[] {
+    const baseRecommendations = [
+      'Conduct user research with marine scientists',
+      'Create responsive design for mobile field work',
+      'Design accessible interfaces for diverse users'
+    ];
+
+    if (request.toLowerCase().includes('visualization') || request.toLowerCase().includes('map')) {
+      return [
+        ...baseRecommendations,
+        'Optimize map rendering for large datasets',
+        'Design intuitive data filtering controls',
+        'Create mobile-first interaction patterns'
+      ];
+    }
+
+    return baseRecommendations;
+  }
+
+  private defineUXDeliverables(request: string): string[] {
+    return [
+      'User research reports',
+      'Wireframes and prototypes',
+      'Design system documentation',
+      'Usability testing results',
+      'Accessibility compliance report'
+    ];
+  }
+
+  private estimateUXEffort(request: string): string {
+    if (request.toLowerCase().includes('platform') || request.toLowerCase().includes('redesign')) return 'High (4-6 weeks)';
+    if (request.toLowerCase().includes('interface') || request.toLowerCase().includes('mobile')) return 'Medium (2-4 weeks)';
+    return 'Low (1-2 weeks)';
+  }
+
+  // Data Scientist helper methods
+  private analyzeDataScienceRequirements(request: string, domain: string): string {
+    return `Data science analysis for marine platform feature: "${request}"
+
+    Machine learning opportunities:
+    - Predictive modeling for marine ecosystem health
+    - Anomaly detection in ocean sensor data streams
+    - Classification of marine species from tracking patterns
+    - Time series forecasting for climate impact assessment
+
+    Data requirements:
+    - Historical ocean data for model training
+    - Real-time feature engineering for predictions
+    - Data quality monitoring and drift detection
+    - Model validation with marine research institutions`;
+  }
+
+  private generateDataScienceRecommendations(request: string, domain: string): string[] {
+    const baseRecommendations = [
+      'Establish data quality monitoring pipelines',
+      'Create feature stores for ML model inputs',
+      'Implement model versioning and A/B testing'
+    ];
+
+    if (request.toLowerCase().includes('prediction') || request.toLowerCase().includes('forecast')) {
+      return [
+        ...baseRecommendations,
+        'Build time series forecasting models',
+        'Implement real-time model serving',
+        'Create model performance monitoring'
+      ];
+    }
+
+    return baseRecommendations;
+  }
+
+  private defineDataScienceDeliverables(request: string): string[] {
+    return [
+      'Data analysis reports',
+      'Machine learning models',
+      'Model validation results',
+      'Feature engineering pipelines',
+      'Predictive analytics dashboards'
+    ];
+  }
+
+  private estimateDataScienceEffort(request: string): string {
+    if (request.toLowerCase().includes('ai') || request.toLowerCase().includes('prediction')) return 'High (6-8 weeks)';
+    if (request.toLowerCase().includes('analytics') || request.toLowerCase().includes('insights')) return 'Medium (3-4 weeks)';
+    return 'Low (1-2 weeks)';
+  }
+
   private calculateCoordinatedTimeline(ba: AgentResponse, pm: AgentResponse, eng: AgentResponse): string {
     const efforts = [ba.estimatedEffort, pm.estimatedEffort, eng.estimatedEffort];
     const hasHigh = efforts.some(e => e.includes('High'));

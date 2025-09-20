@@ -447,7 +447,7 @@ const Layout: React.FC<LayoutProps> = ({
       `}</style>
 
       <div>
-        <HeadMeta title={title} />
+        <HeadMeta />
 
         {showNavigation && (
           <>
