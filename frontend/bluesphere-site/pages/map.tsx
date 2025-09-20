@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -409,7 +409,7 @@ function ProfessionalSidebar({
   )
 }
 
-export default function GlobalOceanMap() {
+function GlobalOceanMap() {
   const [buoyData, setBuoyData] = useState<BuoyData[]>([])
   const [climateMetrics, setClimateMetrics] = useState<ClimateMetrics>({
     globalTemp: 17.23,
@@ -1954,4 +1954,8 @@ export default function GlobalOceanMap() {
       `}</style>
     </Layout>
   )
+}
+
+export default function MapPage() {
+  return <GlobalOceanMap />
 }

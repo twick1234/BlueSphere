@@ -1,741 +1,284 @@
-// SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2024–2025 Mark Lindon — BlueSphere
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Layout from '../components/Layout'
+/*
+ * BlueSphere Homepage - Complete Redesign
+ * Copyright (c) 2025 Mark Lindon — BlueSphere
+ */
 
-// Animated Counter Component
-const AnimatedCounter = ({ target, suffix = '', duration = 2000 }: { target: number, suffix?: string, duration?: number }) => {
-  const [count, setCount] = useState(0)
-  
-  useEffect(() => {
-    let startTime: number
-    let animationFrame: number
-    
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / duration, 1)
-      
-      setCount(Math.floor(progress * target))
-      
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate)
-      }
-    }
-    
-    animationFrame = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(animationFrame)
-  }, [target, duration])
-  
-  return <span>{count.toLocaleString()}{suffix}</span>
-}
+import React from 'react';
+import Layout from '../components/Layout';
+import { PageHeader, PageSection, Card, Button, Grid, Stats } from '../components/PageLayout';
 
-// Climate Stats Component
-const ClimateStats = () => {
+const HomePage = () => {
   const stats = [
-    {
-      value: 1.1,
-      suffix: "°C",
-      label: "Global Temperature Rise",
-      desc: "Since pre-industrial times",
-      icon: "🌡️",
-      trend: "+0.18°C per decade",
-      color: "from-red-500 to-orange-500",
-      bgGradient: "from-red-50 via-orange-50 to-red-50"
-    },
-    {
-      value: 421,
-      suffix: " ppm",
-      label: "Atmospheric CO₂",
-      desc: "Highest in 3 million years",
-      icon: "💨",
-      trend: "+2.4 ppm annually",
-      color: "from-purple-500 to-indigo-500",
-      bgGradient: "from-purple-50 via-indigo-50 to-purple-50"
-    },
-    {
-      value: 23,
-      suffix: "cm",
-      label: "Sea Level Rise",
-      desc: "Since 1880",
-      icon: "🌊",
-      trend: "+3.4mm per year",
-      color: "from-blue-500 to-cyan-500",
-      bgGradient: "from-blue-50 via-cyan-50 to-blue-50"
-    },
-    {
-      value: 13,
-      suffix: "%",
-      label: "Arctic Ice Lost",
-      desc: "Per decade since 1979",
-      icon: "🧊",
-      trend: "Accelerating loss",
-      color: "from-teal-500 to-green-500",
-      bgGradient: "from-teal-50 via-green-50 to-teal-50"
-    }
-  ]
+    { label: 'Ocean Sensors', value: '15,000+', change: '+12% this month', trend: 'up' as const },
+    { label: 'Data Points', value: '2.4M', change: '+8% this month', trend: 'up' as const },
+    { label: 'Marine Species', value: '1,200+', change: 'New discoveries weekly', trend: 'neutral' as const },
+    { label: 'Countries', value: '85', change: 'Global coverage', trend: 'neutral' as const }
+  ];
 
   return (
-    <div className="climate-stats-grid">
-      {stats.map((stat, index) => (
-        <div key={index} className={`premium-stat-card bg-gradient-to-br ${stat.bgGradient}`}>
-          <div className="stat-icon-header">
-            <div className="stat-icon-wrapper">
-              <span className="stat-icon">{stat.icon}</span>
-            </div>
-            <div className="stat-trend">
-              <span className="trend-indicator">↗️</span>
-              <span className="trend-text">{stat.trend}</span>
-            </div>
-          </div>
-
-          <div className="stat-main-content">
-            <div className={`stat-value-premium bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-              <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-            </div>
-            <div className="stat-label-premium">{stat.label}</div>
-            <div className="stat-desc-premium">{stat.desc}</div>
-          </div>
-
-          <div className="stat-visual-accent">
-            <div className={`accent-line bg-gradient-to-r ${stat.color}`}></div>
-          </div>
-
-          <div className="hover-overlay"></div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-// Feature Card Component
-const FeatureCard = ({ icon, title, description, href }: { icon: string, title: string, description: string, href: string }) => (
-  <Link href={href} className="feature-card">
-    <div className="feature-icon">{icon}</div>
-    <h3 className="feature-title">{title}</h3>
-    <p className="feature-desc">{description}</p>
-    <div className="feature-arrow">→</div>
-  </Link>
-)
-
-export default function Home() {
-  const [isVisible, setIsVisible] = useState(false)
-  
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
-  
-  return (
-    <>
+    <Layout title="BlueSphere - Advanced Ocean Monitoring Platform">
       <style jsx>{`
-        .hero-section {
-          min-height: 90vh;
-          background: linear-gradient(135deg, 
-            #0ea5e9 0%, 
-            #3b82f6 25%, 
-            #1e40af 50%, 
-            #1e3a8a 75%, 
-            #0f172a 100%
-          );
+        .hero {
+          background: linear-gradient(135deg, #f6f8fa 0%, #ffffff 100%);
+          padding: 80px 24px 64px;
+          text-align: center;
+          border-bottom: 1px solid #d0d7de;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .hero {
+            background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+            border-bottom-color: #30363d;
+          }
+        }
+
+        .hero-content {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .hero-title {
+          font-size: 48px;
+          font-weight: 600;
+          line-height: 1.1;
+          color: #24292f;
+          margin: 0 0 16px 0;
+        }
+
+        .hero-subtitle {
+          font-size: 20px;
+          color: #656d76;
+          margin: 0 0 32px 0;
+          line-height: 1.4;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .hero-title {
+            color: #e6edf3;
+          }
+          .hero-subtitle {
+            color: #7d8590;
+          }
+        }
+
+        .hero-buttons {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          flex-wrap: wrap;
+          margin-bottom: 48px;
+        }
+
+        .feature-icon {
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(135deg, #0969da, #0550ae);
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
-          overflow: hidden;
-          margin: -24px -16px 0;
-          animation: ${isVisible ? 'fadeIn' : 'none'} 1.5s ease-out;
-        }
-        
-        .hero-bg-effects {
-          position: absolute;
-          inset: 0;
-          background: 
-            radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.2) 0%, transparent 50%);
-        }
-        
-        .hero-content {
-          text-align: center;
           color: white;
-          z-index: 2;
-          max-width: 1000px;
-          padding: 0 2rem;
-          animation: ${isVisible ? 'slideUp' : 'none'} 1.2s ease-out 0.3s both;
+          font-size: 24px;
+          margin-bottom: 16px;
         }
-        
-        .hero-title {
-          font-size: clamp(2.5rem, 6vw, 4.5rem);
-          font-weight: 800;
-          line-height: 1.1;
-          margin-bottom: 1.5rem;
-          background: linear-gradient(135deg, #ffffff, #e0f2fe, #b3e5fc);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          letter-spacing: -0.02em;
+
+        .feature-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #24292f;
+          margin: 0 0 8px 0;
         }
-        
-        .hero-subtitle {
-          font-size: clamp(1.25rem, 3vw, 1.75rem);
-          margin-bottom: 2rem;
-          color: rgba(255, 255, 255, 0.9);
-          font-weight: 400;
-          line-height: 1.4;
-          max-width: 800px;
+
+        .feature-description {
+          color: #656d76;
+          line-height: 1.5;
+          margin: 0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .feature-title {
+            color: #e6edf3;
+          }
+          .feature-description {
+            color: #7d8590;
+          }
+        }
+
+        .section-title {
+          font-size: 32px;
+          font-weight: 600;
+          color: #24292f;
+          margin: 0 0 16px 0;
+          text-align: center;
+        }
+
+        .section-subtitle {
+          font-size: 16px;
+          color: #656d76;
+          text-align: center;
+          margin: 0 0 48px 0;
+          max-width: 600px;
           margin-left: auto;
           margin-right: auto;
         }
-        
-        .urgency-banner {
-          background: rgba(239, 68, 68, 0.9);
-          padding: 0.75rem 1.5rem;
-          border-radius: 50px;
-          font-weight: 600;
-          margin-bottom: 2rem;
-          display: inline-block;
-          animation: pulse 2s infinite;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          backdrop-filter: blur(10px);
-        }
-        
-        .cta-buttons {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          flex-wrap: wrap;
-          margin-top: 2rem;
-        }
-        
-        .cta-primary, .cta-secondary {
-          padding: 1rem 2rem;
-          border-radius: 50px;
-          font-weight: 600;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          transition: all 0.3s ease;
-          font-size: 1.1rem;
-          border: 2px solid transparent;
-        }
-        
-        .cta-primary {
-          background: linear-gradient(135deg, #10b981, #059669);
-          color: white;
-          box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-        }
-        
-        .cta-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
-          text-decoration: none;
-        }
-        
-        .cta-secondary {
-          background: rgba(255, 255, 255, 0.15);
-          color: white;
-          border-color: rgba(255, 255, 255, 0.3);
-          backdrop-filter: blur(10px);
-        }
-        
-        .cta-secondary:hover {
-          background: rgba(255, 255, 255, 0.25);
-          transform: translateY(-2px);
-          text-decoration: none;
-        }
-        
-        .stats-section {
-          padding: 5rem 0;
-          background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-          margin: 0 -16px;
-        }
-        
-        .stats-header {
-          text-align: center;
-          max-width: 800px;
-          margin: 0 auto 4rem;
-          padding: 0 2rem;
-        }
-        
-        .stats-title {
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin-bottom: 1rem;
-        }
-        
-        .stats-subtitle {
-          font-size: 1.25rem;
-          color: #64748b;
-          line-height: 1.6;
-        }
-        
-        .climate-stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 2rem;
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 0 2rem;
-        }
 
-        .premium-stat-card {
-          position: relative;
-          padding: 2.5rem;
-          border-radius: 24px;
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow:
-            0 25px 50px rgba(0, 0, 0, 0.08),
-            0 0 0 1px rgba(255, 255, 255, 0.5),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow: hidden;
-        }
-
-        .premium-stat-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow:
-            0 35px 80px rgba(0, 0, 0, 0.12),
-            0 0 0 1px rgba(255, 255, 255, 0.6),
-            inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-
-        .stat-icon-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 2rem;
-        }
-
-        .stat-icon-wrapper {
-          width: 64px;
-          height: 64px;
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.9);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-icon {
-          font-size: 1.75rem;
-          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-
-        .stat-trend {
-          text-align: right;
-          font-size: 0.8rem;
-          color: #64748b;
-          font-weight: 500;
-        }
-
-        .trend-indicator {
-          display: block;
-          font-size: 1rem;
-          margin-bottom: 0.25rem;
-        }
-
-        .trend-text {
-          display: block;
-          font-size: 0.75rem;
-          opacity: 0.8;
-        }
-
-        .stat-main-content {
-          text-align: left;
-          margin-bottom: 1.5rem;
-        }
-
-        .stat-value-premium {
-          font-size: clamp(2.5rem, 5vw, 3.5rem);
-          font-weight: 800;
-          line-height: 1;
-          margin-bottom: 0.75rem;
-          letter-spacing: -0.02em;
-        }
-
-        .stat-label-premium {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: #1e293b;
-          margin-bottom: 0.5rem;
-          line-height: 1.2;
-        }
-
-        .stat-desc-premium {
-          color: #64748b;
-          font-size: 0.9rem;
-          line-height: 1.4;
-          font-weight: 500;
-        }
-
-        .stat-visual-accent {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
-          opacity: 0;
-          transition: all 0.3s ease;
-        }
-
-        .accent-line {
-          height: 100%;
-          border-radius: 2px 2px 0 0;
-        }
-
-        .premium-stat-card:hover .stat-visual-accent {
-          opacity: 1;
-        }
-
-        .hover-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .premium-stat-card:hover .hover-overlay {
-          opacity: 1;
-        }
-        
-        .features-section {
-          padding: 5rem 0;
-          background: white;
-          margin: 0 -16px;
-        }
-        
-        .features-header {
-          text-align: center;
-          max-width: 800px;
-          margin: 0 auto 4rem;
-          padding: 0 2rem;
-        }
-        
-        .features-title {
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin-bottom: 1rem;
-        }
-        
-        .features-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 2rem;
-        }
-        
-        .feature-card {
-          background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-          padding: 2.5rem;
-          border-radius: 20px;
-          text-decoration: none;
-          color: inherit;
-          border: 1px solid #e2e8f0;
-          transition: all 0.4s ease;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .feature-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-          transition: left 0.6s ease;
-        }
-        
-        .feature-card:hover::before {
-          left: 100%;
-        }
-        
-        .feature-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-          border-color: #3b82f6;
-          text-decoration: none;
-        }
-        
-        .feature-icon {
-          font-size: 3rem;
-          margin-bottom: 1.5rem;
-          display: block;
-        }
-        
-        .feature-title {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin-bottom: 1rem;
-        }
-        
-        .feature-desc {
-          color: #64748b;
-          line-height: 1.6;
-          margin-bottom: 1.5rem;
-        }
-        
-        .feature-arrow {
-          color: #3b82f6;
-          font-size: 1.5rem;
-          font-weight: bold;
-          transition: transform 0.3s ease;
-        }
-        
-        .feature-card:hover .feature-arrow {
-          transform: translateX(5px);
-        }
-        
-        .cta-section {
-          padding: 6rem 0;
-          background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
-          margin: 0 -16px;
-          text-align: center;
-          color: white;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .cta-section::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: 
-            radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 70% 80%, rgba(56, 189, 248, 0.2) 0%, transparent 50%);
-        }
-        
-        .cta-content {
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 0 2rem;
-          position: relative;
-          z-index: 2;
-        }
-        
-        .cta-title {
-          font-size: 3rem;
-          font-weight: 800;
-          margin-bottom: 1.5rem;
-          line-height: 1.2;
-        }
-        
-        .cta-subtitle {
-          font-size: 1.25rem;
-          margin-bottom: 2.5rem;
-          opacity: 0.9;
-          line-height: 1.6;
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-          from { 
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to { 
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
-        
-        /* Dark mode support */
         @media (prefers-color-scheme: dark) {
-          .stats-section {
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+          .section-title {
+            color: #e6edf3;
           }
-          
-          .stats-title, .features-title {
-            color: #f1f5f9;
-          }
-          
-          .stat-item {
-            background: #1e293b;
-            border-color: #334155;
-          }
-          
-          .stat-label {
-            color: #f1f5f9;
-          }
-          
-          .features-section {
-            background: #0b1020;
-          }
-          
-          .feature-card {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            border-color: #475569;
-          }
-          
-          .feature-title {
-            color: #f1f5f9;
+          .section-subtitle {
+            color: #7d8590;
           }
         }
-        
-        /* Responsive design */
+
         @media (max-width: 768px) {
-          .hero-content {
-            padding: 0 1rem;
+          .hero {
+            padding: 48px 16px 40px;
           }
-          
-          .cta-buttons {
+          .hero-title {
+            font-size: 32px;
+          }
+          .hero-subtitle {
+            font-size: 16px;
+          }
+          .hero-buttons {
             flex-direction: column;
             align-items: center;
           }
-          
-          .climate-stats {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            padding: 0 1rem;
-          }
-          
-          .features-grid {
-            grid-template-columns: 1fr;
-            padding: 0 1rem;
-          }
-          
-          .stat-value {
-            font-size: 2.5rem;
-          }
-          
-          .stats-title, .features-title, .cta-title {
-            font-size: 2rem;
+          .section-title {
+            font-size: 24px;
           }
         }
       `}</style>
-      
-      <Layout>
-        {/* Hero Section */}
-        <section className="hero-section">
-          <div className="hero-bg-effects"></div>
-          <div className="hero-content">
-            <div className="urgency-banner">
-              🚨 Climate Emergency: Act Now
-            </div>
-            <h1 className="hero-title">
-              Monitor Our Ocean.<br />
-              Save Our Planet.
-            </h1>
-            <p className="hero-subtitle">
-              Real-time ocean monitoring and climate data visualization 
-              to drive urgent action on the climate crisis. 
-              Every degree matters. Every action counts.
+
+      <section className="hero">
+        <div className="hero-content">
+          <h1 className="hero-title">Monitor Our Oceans in Real-Time</h1>
+          <p className="hero-subtitle">
+            Advanced AI-powered platform tracking marine ecosystems, climate patterns,
+            and wildlife movements across the globe in real-time.
+          </p>
+          <div className="hero-buttons">
+            <Button href="/map" variant="primary" size="lg">
+              🗺️ Explore Ocean Map
+            </Button>
+            <Button href="/sharks" variant="secondary" size="lg">
+              🦈 Track Sharks
+            </Button>
+            <Button href="/analytics" variant="ghost" size="lg">
+              📊 View Analytics
+            </Button>
+          </div>
+          <Stats stats={stats} />
+        </div>
+      </section>
+
+      <PageSection>
+        <h2 className="section-title">Real-Time Ocean Intelligence</h2>
+        <p className="section-subtitle">
+          Cutting-edge technology meets marine science to deliver unprecedented
+          insights into our planet's most critical ecosystems.
+        </p>
+
+        <Grid cols={3}>
+          <Card hover>
+            <div className="feature-icon">🌊</div>
+            <h3 className="feature-title">Live Ocean Monitoring</h3>
+            <p className="feature-description">
+              Real-time temperature, currents, and weather data from thousands
+              of sensors across the globe, updated every minute.
             </p>
-            <div className="cta-buttons">
-              <Link href="/map" className="cta-primary">
-                Explore Ocean Data 🌊
-              </Link>
-              <Link href="/about" className="cta-secondary">
-                Learn About the Crisis
-              </Link>
+            <div style={{ marginTop: '16px' }}>
+              <Button href="/map" variant="ghost" size="sm">
+                View Live Map →
+              </Button>
             </div>
-          </div>
-        </section>
-        
-        {/* Climate Statistics */}
-        <section className="stats-section">
-          <div className="stats-header">
-            <h2 className="stats-title">The Climate Reality</h2>
-            <p className="stats-subtitle">
-              Critical indicators showing the urgent need for ocean monitoring and climate action
+          </Card>
+
+          <Card hover>
+            <div className="feature-icon">🦈</div>
+            <h3 className="feature-title">Marine Wildlife Tracking</h3>
+            <p className="feature-description">
+              Track sharks, whales, and other marine animals with satellite tags,
+              revealing migration patterns and habitat usage.
             </p>
-          </div>
-          <ClimateStats />
-        </section>
-        
-        {/* Features Section */}
-        <section className="features-section">
-          <div className="features-header">
-            <h2 className="features-title">Powerful Ocean Intelligence</h2>
-          </div>
-          <div className="features-grid">
-            <FeatureCard
-              icon="🌊"
-              title="Live Ocean Monitoring"
-              description="Real-time sea surface temperatures, currents, and marine conditions with satellite-grade precision"
-              href="/map"
-            />
-            <FeatureCard
-              icon="🚨"
-              title="Real-Time Alerts"
-              description="Critical ocean condition monitoring with customizable alert zones and instant notifications"
-              href="/alerts"
-            />
-            <FeatureCard
-              icon="⏰"
-              title="Time-lapse Visualization"
-              description="Watch ocean temperature changes unfold over time with interactive climate animations"
-              href="/timelapse"
-            />
-            <FeatureCard
-              icon="🧠"
-              title="Predictive Analytics"
-              description="AI-powered forecasting for ocean temperature trends and marine heatwave risk assessment"
-              href="/analytics"
-            />
-            <FeatureCard
-              icon="📊"
-              title="Climate Analytics"
-              description="Advanced data visualization and trend analysis to understand ocean-climate interactions"
-              href="/consistency"
-            />
-            <FeatureCard
-              icon="🔬"
-              title="Scientific Research"
-              description="Access peer-reviewed data and methodologies used by climate scientists worldwide"
-              href="/docs"
-            />
-            <FeatureCard
-              icon="📚"
-              title="Educational Resources"
-              description="Comprehensive learning materials for students, educators, and climate advocates"
-              href="/stories"
-            />
-          </div>
-        </section>
-        
-        {/* Call to Action */}
-        <section className="cta-section">
-          <div className="cta-content">
-            <h2 className="cta-title">
-              The Ocean is Our Climate System
-            </h2>
-            <p className="cta-subtitle">
-              Join thousands of scientists, policymakers, and activists using BlueSphere 
-              to understand and communicate the climate crisis through ocean data.
-            </p>
-            <div className="cta-buttons">
-              <Link href="/map" className="cta-primary">
-                Start Exploring 🚀
-              </Link>
-              <Link href="/about" className="cta-secondary">
-                Our Mission
-              </Link>
+            <div style={{ marginTop: '16px' }}>
+              <Button href="/sharks" variant="ghost" size="sm">
+                Track Animals →
+              </Button>
             </div>
+          </Card>
+
+          <Card hover>
+            <div className="feature-icon">🤖</div>
+            <h3 className="feature-title">AI Predictive Analytics</h3>
+            <p className="feature-description">
+              Machine learning models predict marine heatwaves, ecosystem changes,
+              and species population trends before they happen.
+            </p>
+            <div style={{ marginTop: '16px' }}>
+              <Button href="/analytics" variant="ghost" size="sm">
+                View Predictions →
+              </Button>
+            </div>
+          </Card>
+        </Grid>
+      </PageSection>
+
+      <PageSection>
+        <h2 className="section-title">Conservation in Action</h2>
+        <p className="section-subtitle">
+          Our data directly supports marine conservation efforts and policy decisions worldwide.
+        </p>
+
+        <Grid cols={2}>
+          <Card>
+            <h3 className="feature-title">🚨 Crisis Response</h3>
+            <p className="feature-description">
+              Real-time alerts for marine heatwaves, coral bleaching events,
+              and ecosystem threats enable rapid response from conservation teams.
+            </p>
+            <div style={{ marginTop: '16px' }}>
+              <Button href="/crisis" variant="primary" size="sm">
+                Crisis Monitor
+              </Button>
+            </div>
+          </Card>
+
+          <Card>
+            <h3 className="feature-title">📚 Educational Resources</h3>
+            <p className="feature-description">
+              Interactive stories, data visualizations, and educational content
+              help people understand and protect our oceans.
+            </p>
+            <div style={{ marginTop: '16px' }}>
+              <Button href="/stories" variant="primary" size="sm">
+                Ocean Stories
+              </Button>
+            </div>
+          </Card>
+        </Grid>
+      </PageSection>
+
+      <PageSection>
+        <div style={{ textAlign: 'center', padding: '48px 0' }}>
+          <h2 className="section-title">Ready to Explore?</h2>
+          <p className="section-subtitle">
+            Join thousands of researchers, conservationists, and ocean enthusiasts
+            using BlueSphere to understand and protect our marine ecosystems.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Button href="/map" variant="primary" size="lg">
+              Start Exploring
+            </Button>
+            <Button href="/about" variant="secondary" size="lg">
+              Learn More
+            </Button>
           </div>
-        </section>
-      </Layout>
-    </>
-  )
-}
+        </div>
+      </PageSection>
+    </Layout>
+  );
+};
+
+export default HomePage;

@@ -377,6 +377,24 @@ const StorytellingContent: React.FC<StorytellingContentProps> = ({
     performanceCache.set(`story_${story.id}`, story, 60); // Cache for 1 hour
   };
 
+  const getVisualizationLink = (content: string) => {
+    // Determine the appropriate visualization based on content
+    if (content.toLowerCase().includes('mary lee') || content.toLowerCase().includes('shark')) {
+      return '/sharks';
+    }
+    if (content.toLowerCase().includes('temperature') || content.toLowerCase().includes('heatwave') || content.toLowerCase().includes('bleaching')) {
+      return '/timelapse';
+    }
+    if (content.toLowerCase().includes('population') || content.toLowerCase().includes('whale') || content.toLowerCase().includes('recovery')) {
+      return '/analytics';
+    }
+    if (content.toLowerCase().includes('depth') || content.toLowerCase().includes('mariana') || content.toLowerCase().includes('exploration')) {
+      return '/map';
+    }
+    // Default fallback
+    return '/analytics';
+  };
+
   const renderStorySection = (section: StorySection, index: number) => {
     switch (section.type) {
       case 'text':
@@ -418,6 +436,12 @@ const StorytellingContent: React.FC<StorytellingContentProps> = ({
         );
 
       case 'data-viz':
+        const visualizationLink = getVisualizationLink(section.content);
+        const buttonText = section.content.toLowerCase().includes('map') ? 'Explore Interactive Map' :
+                          section.content.toLowerCase().includes('temperature') || section.content.toLowerCase().includes('anomaly') ? 'View Temperature Time-lapse' :
+                          section.content.toLowerCase().includes('shark') ? 'Track Live Sharks' :
+                          'Explore Data Visualization';
+
         return (
           <div key={index} className="bs-premium-card p-6 mb-6">
             <div className="text-center">
@@ -426,9 +450,9 @@ const StorytellingContent: React.FC<StorytellingContentProps> = ({
                 {section.content}
               </div>
               {section.metadata?.interactive && (
-                <button className="bs-btn-primary mt-4">
-                  Explore Interactive Visualization
-                </button>
+                <a href={visualizationLink} className="bs-btn-primary mt-4">
+                  {buttonText}
+                </a>
               )}
             </div>
           </div>
