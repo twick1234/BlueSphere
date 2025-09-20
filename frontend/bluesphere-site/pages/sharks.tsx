@@ -38,6 +38,41 @@ interface TrackedShark {
   pings: number;
 }
 
+// Convert TrackedShark to SharkData interface
+const convertToSharkData = (shark: TrackedShark): SharkData => ({
+  id: shark.id,
+  name: shark.name,
+  species: shark.species,
+  sex: shark.sex === 'male' ? 'M' : shark.sex === 'female' ? 'F' : 'Unknown',
+  length_m: shark.length,
+  weight_kg: shark.weight,
+  tag_date: shark.tagDate,
+  last_ping: shark.lastPing,
+  lat: shark.lat,
+  lon: shark.lon,
+  tracking_organization: 'BlueSphere Network',
+  confidence_level: 'High' as const,
+  status: shark.status === 'active' ? 'Active' : shark.status === 'inactive' ? 'Inactive' : 'Lost_Signal'
+});
+
+// Convert SharkData back to TrackedShark for state management
+const convertFromSharkData = (sharkData: SharkData): TrackedShark => ({
+  id: sharkData.id,
+  name: sharkData.name,
+  species: sharkData.species,
+  length: sharkData.length_m,
+  weight: sharkData.weight_kg,
+  sex: sharkData.sex === 'M' ? 'male' : sharkData.sex === 'F' ? 'female' : 'unknown',
+  tagDate: sharkData.tag_date,
+  lastPing: sharkData.last_ping,
+  lat: sharkData.lat,
+  lon: sharkData.lon,
+  status: sharkData.status === 'Active' ? 'active' : sharkData.status === 'Inactive' ? 'inactive' : 'missing',
+  totalDistance: 0, // Default values for TrackedShark-specific fields
+  daysSinceTag: Math.floor((Date.now() - new Date(sharkData.tag_date).getTime()) / (1000 * 60 * 60 * 24)),
+  pings: 0
+});
+
 const SharksPage = () => {
   const [selectedShark, setSelectedShark] = useState<TrackedShark | null>(null);
   const [activeTab, setActiveTab] = useState<'map' | 'list' | 'stats'>('map');
@@ -652,9 +687,9 @@ const SharksPage = () => {
             {activeTab === 'map' && (
               <div className="map-container">
                 <EnhancedSharkMap
-                  sharks={filteredSharks}
-                  onSharkSelect={setSelectedShark}
-                  selectedShark={selectedShark}
+                  sharks={filteredSharks.map(convertToSharkData)}
+                  onSharkSelect={(sharkData) => setSelectedShark(convertFromSharkData(sharkData))}
+                  selectedSharkId={selectedShark?.id || null}
                 />
               </div>
             )}
