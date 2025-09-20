@@ -137,14 +137,25 @@ jobs:
 
             # Pull latest changes and push
             echo "🔄 Pulling latest changes from remote..."
-            git pull origin main --rebase
+            if git pull origin main --rebase; then
+              echo "✅ Successfully synced with remote"
+            else
+              echo "⚠️ Pull failed, trying alternative approach..."
+              git fetch origin main
+              git rebase origin/main
+            fi
 
             echo "🚀 Pushing changes to repository..."
             if git push origin main; then
               echo "✅ Data updates committed and pushed successfully"
             else
-              echo "❌ Failed to push changes"
-              exit 1
+              echo "❌ Failed to push changes, trying force push with lease..."
+              if git push origin main --force-with-lease; then
+                echo "✅ Force push successful"
+              else
+                echo "❌ All push attempts failed"
+                exit 1
+              fi
             fi
           else
             echo "ℹ️ No data changes to commit"
