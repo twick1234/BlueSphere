@@ -9,7 +9,7 @@ export default function Page({ html, title }:{ html:string, title:string }){
 }
 
 export async function getStaticPaths(){
-  const existingPages = ['index', 'map', 'faq', '_app', '_document', 'education', 'health', 'coral', 'migration', 'pollution']
+  const existingPages = ['index', 'map', 'faq', '_app', '_document', 'education', 'health', 'coral', 'migration', 'pollution', 'about', 'crisis', 'docs', 'sources', 'alerts', 'architecture', 'analytics', 'historical', 'gallery', 'conservation', 'timelapse', 'sharks']
   const slugs = listSlugs().filter(s => !existingPages.includes(s))
   return { paths: slugs.map(s => ({ params: { slug: s }})), fallback: false }
 }
