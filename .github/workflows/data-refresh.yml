@@ -135,7 +135,10 @@ jobs:
             echo "📋 Changes summary:"
             git show --stat HEAD
 
-            # Push changes using the GitHub token
+            # Pull latest changes and push
+            echo "🔄 Pulling latest changes from remote..."
+            git pull origin main --rebase
+
             echo "🚀 Pushing changes to repository..."
             if git push origin main; then
               echo "✅ Data updates committed and pushed successfully"
