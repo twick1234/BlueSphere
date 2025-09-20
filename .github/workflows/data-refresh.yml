@@ -132,10 +132,17 @@ jobs:
 
             🤖 Automated update via GitHub Actions"
 
-            echo "✅ Commit created successfully"
-            echo "ℹ️ Note: Auto-push disabled due to permission restrictions"
             echo "📋 Changes summary:"
             git show --stat HEAD
+
+            # Push changes using the GitHub token
+            echo "🚀 Pushing changes to repository..."
+            if git push origin main; then
+              echo "✅ Data updates committed and pushed successfully"
+            else
+              echo "❌ Failed to push changes"
+              exit 1
+            fi
           else
             echo "ℹ️ No data changes to commit"
           fi
