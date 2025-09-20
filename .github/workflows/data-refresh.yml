@@ -17,6 +17,10 @@ on:
           - 'ersst'
           - 'satellite'
 
+permissions:
+  contents: write
+  actions: read
+
 env:
   NODE_VERSION: '20'
   WORKING_DIRECTORY: 'frontend/bluesphere-site'
@@ -28,6 +32,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -44,14 +50,12 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "🌊 Starting NDBC data refresh at $(date)"
-
           # Call the data ingestion API endpoint
           curl -X POST http://localhost:3000/api/ingestion/run \
             --max-time 300 \
             --retry 3 \
             --retry-delay 10 \
             --fail-with-body || echo "Warning: Data ingestion may have issues"
-
           echo "✅ NDBC data refresh completed at $(date)"
         continue-on-error: true
 
@@ -59,7 +63,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "🛰️ Checking for satellite data updates..."
-
           # This would integrate with satellite data APIs
           # For now, placeholder for future implementation
           if [ "${{ github.event.inputs.source }}" == "all" ] || [ "${{ github.event.inputs.source }}" == "satellite" ]; then
@@ -71,7 +74,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "📈 Checking for ERSST data updates..."
-
           # Monthly ERSST updates
           if [ "${{ github.event.inputs.source }}" == "all" ] || [ "${{ github.event.inputs.source }}" == "ersst" ]; then
             echo "ERSST historical data refresh would run here"
@@ -82,15 +84,12 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "🔍 Running data quality checks..."
-
           # Basic data validation
           node -e "
           const fs = require('fs');
-
           // Check if we have recent data
           const now = new Date();
           const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
-
           console.log('Data quality check completed');
           console.log('Last update: ' + now.toISOString());
           "
@@ -99,7 +98,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "📊 Generating data refresh summary..."
-
           # Create summary for monitoring
           cat > data-refresh-summary.json << EOF
           {
@@ -109,7 +107,6 @@ jobs:
             "next_scheduled": "$(date -u -d '+6 hours' +%Y-%m-%dT%H:%M:%SZ)"
           }
           EOF
-
           echo "Summary generated:"
           cat data-refresh-summary.json
 
@@ -132,7 +129,7 @@ jobs:
 
             🤖 Automated update via GitHub Actions"
 
-            # Push changes
+            # Push changes using the GitHub token
             git push
 
             echo "✅ Data updates committed and pushed"
@@ -144,7 +141,6 @@ jobs:
         if: success()
         run: |
           echo "🚀 Triggering site rebuild if data changed..."
-
           # This could trigger a rebuild of the static site
           # For GitHub Pages, a push to main will trigger rebuild
           echo "Site will rebuild automatically with new data"
@@ -155,7 +151,6 @@ jobs:
           echo "📢 Data refresh workflow completed"
           echo "Status: ${{ job.status }}"
           echo "Time: $(date -u)"
-
           # In production, this could send Slack/email notifications
           echo "Notification sent to monitoring systems"
 
@@ -172,18 +167,15 @@ jobs:
       - name: Check data freshness
         run: |
           echo "🏥 Running health checks..."
-
           # Check if data is recent
           echo "✅ Data freshness: OK"
           echo "✅ API endpoints: OK"
           echo "✅ Quality flags: OK"
-
           echo "Health check completed successfully"
 
       - name: Generate monitoring report
         run: |
           echo "📋 Generating monitoring report..."
-
           cat > monitoring-report.md << 'EOF'
           # BlueSphere Data Health Report
 
@@ -202,5 +194,4 @@ jobs:
           ---
           *Automated report from BlueSphere monitoring*
           EOF
-
           echo "Monitoring report generated"
