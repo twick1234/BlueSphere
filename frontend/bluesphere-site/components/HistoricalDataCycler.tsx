@@ -6,7 +6,7 @@
  * Displays animated visualization of ocean temperature changes over 5-year periods
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import * as d3 from 'd3';
 
 interface HistoricalDataPoint {
@@ -51,7 +51,7 @@ const HistoricalDataCycler: React.FC<HistoricalDataCyclerProps> = ({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Generate mock historical data (in production, this would fetch from API)
-  const generateHistoricalData = (): HistoricalDataPoint[] => {
+  const generateHistoricalData = useMemo(() => (): HistoricalDataPoint[] => {
     const mockData: HistoricalDataPoint[] = [];
     const stationCoords = {
       '41001': { lat: 34.7, lon: -72.7, baseTemp: 20 },
@@ -65,7 +65,7 @@ const HistoricalDataCycler: React.FC<HistoricalDataCyclerProps> = ({
       for (let month = 1; month <= 12; month++) {
         const daysInMonth = new Date(year, month, 0).getDate();
 
-        for (let day = 1; day <= daysInMonth; day += 7) { // Weekly data points
+        for (let day = 1; day <= daysInMonth; day += 30) { // Monthly data points for better performance
           stations.forEach(stationId => {
             const coords = stationCoords[stationId as keyof typeof stationCoords];
             if (!coords) return;
@@ -104,24 +104,24 @@ const HistoricalDataCycler: React.FC<HistoricalDataCyclerProps> = ({
     }
 
     return mockData;
-  };
+  }, [startYear, endYear, stations]);
+
+  // Generate historical data with memoization for performance
+  const historicalData = useMemo(() => {
+    return generateHistoricalData();
+  }, [generateHistoricalData]);
 
   // Load historical data
   useEffect(() => {
     setLoading(true);
-
-    // Simulate API call delay
-    setTimeout(() => {
-      try {
-        const historicalData = generateHistoricalData();
-        setData(historicalData);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load historical data');
-        setLoading(false);
-      }
-    }, 1000);
-  }, [startYear, endYear, stations.join(',')]);
+    try {
+      setData(historicalData);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load historical data');
+      setLoading(false);
+    }
+  }, [historicalData]);
 
   // Auto-play cycling
   useEffect(() => {

@@ -11,22 +11,13 @@ const ConservationPage = () => {
   return (
     <>
       <style jsx>{`
-        /* Safari-specific fixes */
         .hero-section {
-          background: linear-gradient(135deg,
-            #10b981 0%,
-            #059669 25%,
-            #047857 50%,
-            #064e3b 100%
-          );
+          background: linear-gradient(135deg, #10b981 0%, #059669 25%, #047857 50%, #064e3b 100%);
           color: white;
           padding: 4rem 0;
           margin: -24px -16px 0;
           position: relative;
           overflow: hidden;
-          /* Safari fix for gradient background */
-          -webkit-background-size: 100% 100%;
-          background-attachment: scroll;
         }
 
         .hero-bg-effects {
@@ -35,9 +26,6 @@ const ConservationPage = () => {
           background:
             radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
             radial-gradient(circle at 70% 20%, rgba(34, 197, 94, 0.2) 0%, transparent 50%);
-          /* Safari fixes */
-          -webkit-transform: translateZ(0);
-          transform: translateZ(0);
         }
 
         .hero-content {
@@ -47,9 +35,6 @@ const ConservationPage = () => {
           max-width: 1000px;
           margin: 0 auto;
           padding: 0 2rem;
-          /* Safari text rendering fix */
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
         }
 
         .hero-title {
@@ -57,19 +42,13 @@ const ConservationPage = () => {
           font-weight: 800;
           margin-bottom: 1rem;
           background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 50%, #b3e5fc 100%);
-          /* Safari-specific text gradient fixes */
           -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
           background-clip: text;
-          /* Fallback for older Safari versions */
+          -webkit-text-fill-color: transparent;
           color: white;
           letter-spacing: -0.02em;
-          /* Force hardware acceleration */
-          -webkit-transform: translateZ(0);
-          transform: translateZ(0);
         }
 
-        /* Safari fallback - if gradient text isn't supported */
         @supports not (-webkit-background-clip: text) {
           .hero-title {
             color: white !important;
@@ -84,16 +63,12 @@ const ConservationPage = () => {
           margin-left: auto;
           margin-right: auto;
           line-height: 1.6;
-          /* Safari text rendering */
-          -webkit-font-smoothing: antialiased;
         }
 
         .stats-banner {
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(20px);
-          /* Safari fallback for backdrop-filter */
-          -webkit-backdrop-filter: blur(20px);
           background: rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           border-radius: 16px;
           padding: 2rem;
           margin: 2rem auto 0;
@@ -108,8 +83,6 @@ const ConservationPage = () => {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
           gap: 2rem;
-          /* Safari grid fixes */
-          -webkit-grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         }
 
         .stat-item {
@@ -118,9 +91,6 @@ const ConservationPage = () => {
           padding: 1rem;
           border-radius: 12px;
           border: 1px solid rgba(255, 255, 255, 0.2);
-          /* Safari compatibility */
-          -webkit-transform: translateZ(0);
-          transform: translateZ(0);
         }
 
         .stat-number {
@@ -128,7 +98,6 @@ const ConservationPage = () => {
           font-weight: 800;
           display: block;
           margin-bottom: 0.25rem;
-          /* Safari number rendering */
           font-variant-numeric: tabular-nums;
         }
 
@@ -155,15 +124,11 @@ const ConservationPage = () => {
           font-weight: 600;
           transition: all 0.3s ease;
           border: 1px solid rgba(255, 255, 255, 0.3);
-          /* Safari button fixes */
           -webkit-appearance: none;
           appearance: none;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          /* Force hardware acceleration */
-          -webkit-transform: translateZ(0);
-          transform: translateZ(0);
         }
 
         .cta-btn:hover {
@@ -171,15 +136,10 @@ const ConservationPage = () => {
           transform: translateY(-2px);
           text-decoration: none;
           color: white;
-          /* Safari hover fix */
-          -webkit-transform: translateY(-2px) translateZ(0);
         }
 
         .conservation-section {
           margin: 0 -16px;
-          /* Safari margin fix */
-          -webkit-transform: translateZ(0);
-          transform: translateZ(0);
         }
 
         .impact-section {
@@ -241,8 +201,6 @@ const ConservationPage = () => {
         .impact-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          /* Safari hover fix */
-          -webkit-transform: translateY(-5px) translateZ(0);
         }
 
         .impact-icon {
@@ -331,7 +289,10 @@ const ConservationPage = () => {
         }
       `}</style>
 
-      <Layout title="Conservation Action Center - BlueSphere">
+      <Layout
+        title="Marine Conservation Action Center — Ocean Protection | BlueSphere"
+        description="Take action for marine conservation. Discover ocean protection initiatives, track conservation progress, and join global efforts to protect coral reefs, marine life, and ocean ecosystems."
+      >
         {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-bg-effects"></div>

@@ -346,7 +346,10 @@ const AboutPage = () => {
         }
       `}</style>
 
-      <Layout title="About BlueSphere - Ocean Monitoring Platform">
+      <Layout
+        title="About BlueSphere — Advanced Ocean Monitoring & Research Platform"
+        description="Learn about BlueSphere's mission to monitor ocean health through real-time data, shark tracking, and marine conservation research. Supporting scientists and educators worldwide."
+      >
         {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-bg-effects"></div>

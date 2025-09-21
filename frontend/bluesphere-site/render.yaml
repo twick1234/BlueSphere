@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: bluesphere-frontend
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18.x
+      - key: NEXT_TELEMETRY_DISABLED
+        value: 1
+      - key: PORT
+        value: 10000
+    autoDeploy: true
+    branch: main
+    rootDir: .
+    healthCheckPath: /
+    buildFilter:
+      paths:
+        - "**/*"
+      ignoredPaths: []

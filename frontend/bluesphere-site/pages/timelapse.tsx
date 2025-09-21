@@ -31,7 +31,8 @@ const TimeLapsePage = () => {
     'Coral Triangle'
   ];
 
-  const TimeLapseContent = () => (
+  const TimeLapseContent = () => {
+    return (
     <>
       <style jsx>{`
         /* Dark mode styles for Safari compatibility */
@@ -185,8 +186,8 @@ const TimeLapsePage = () => {
             <p>
               <strong>Regional Data:</strong> Specific temperature measurements from key marine ecosystems and monitoring stations.
             </p>
+            </div>
           </div>
-        </div>
 
           <div className="info-card rounded-lg border p-6">
             <h3 className="text-lg font-semibold mb-3">
@@ -209,9 +210,9 @@ const TimeLapsePage = () => {
               <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
               <span><strong>Below Normal:</strong> Cooler than average, may indicate climate pattern shifts</span>
             </div>
+            </div>
           </div>
         </div>
-      </div>
 
         {/* Key Insights */}
         <div className="info-card mt-8 rounded-lg border p-6">
@@ -234,11 +235,12 @@ const TimeLapsePage = () => {
             <div className="text-sm font-medium">Coral Bleaching</div>
             <div className="text-xs opacity-75">Global reef impact</div>
           </div>
-          </div>
+        </div>
         </div>
       </div>
     </>
-  );
+    );
+  };
 
   return (
     <Layout title="Ocean Temperature Time-lapse - BlueSphere">

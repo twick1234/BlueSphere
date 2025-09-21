@@ -96,10 +96,11 @@ function SearchPanel({
             className="search-input"
           />
           {searchQuery && (
-            <button 
+            <button
               onClick={() => onSearchChange('')}
               className="clear-button"
               title="Clear search"
+              aria-label="Clear search input"
             >
               ✕
             </button>
@@ -107,10 +108,12 @@ function SearchPanel({
         </div>
         
         {!isExpanded && (
-          <button 
+          <button
             onClick={() => setIsExpanded(true)}
             className="expand-button"
             title="Expand search"
+            aria-label="Expand search panel"
+            aria-expanded="false"
           >
             ⚡
           </button>
@@ -542,11 +545,12 @@ function GlobalOceanMap() {
   
   if (loading) {
     return (
-      <Layout showNavigation={false}>
-        <Head>
-          <title>Global Ocean Monitoring Map - BlueSphere</title>
-          <meta name="description" content="Interactive map showing real-time ocean temperature data from 300+ monitoring stations worldwide." />
-          </Head>
+      <Layout
+        showNavigation={false}
+        title="Global Ocean Monitoring Map - BlueSphere"
+        description="Interactive map showing real-time ocean temperature data from 15,000+ monitoring stations worldwide. View current conditions, marine life tracking, and environmental data."
+        keywords="ocean map, real-time ocean data, sea temperature map, marine monitoring stations, ocean sensors, interactive ocean map"
+      >
         <SkeletonLoader isDarkMode={isDarkMode} />
         <style jsx>{`
           .skeleton-container {
@@ -621,11 +625,12 @@ function GlobalOceanMap() {
   }
 
   return (
-    <Layout showNavigation={false}>
-      <Head>
-        <title>Global Ocean Monitoring Map - BlueSphere</title>
-        <meta name="description" content="Interactive map showing real-time ocean temperature data from 300+ monitoring stations worldwide. Track marine heatwaves, climate change impacts, and ocean conditions for climate action." />
-      </Head>
+    <Layout
+      showNavigation={false}
+      title="Global Ocean Monitoring Map - BlueSphere"
+      description="Interactive map showing real-time ocean temperature data from 15,000+ monitoring stations worldwide. View current conditions, marine life tracking, and environmental data."
+      keywords="ocean map, real-time ocean data, sea temperature map, marine monitoring stations, ocean sensors, interactive ocean map"
+    >
 
       <div className={`world-class-ocean-map ${isDarkMode ? 'dark-theme' : 'light-theme'} ${isFullscreen ? 'fullscreen-mode' : ''}`}>
         {/* Compact Header Section */}

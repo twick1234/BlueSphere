@@ -16,7 +16,11 @@ const HomePage = () => {
   ];
 
   return (
-    <Layout title="BlueSphere - Advanced Ocean Monitoring Platform">
+    <Layout
+      title="BlueSphere — Global Ocean Monitoring Platform"
+      description="Real-time ocean temperature monitoring, shark tracking, and climate data from 15,000+ sensors worldwide. Open-source marine conservation platform for researchers and educators."
+      keywords="ocean monitoring, marine data, sea temperature, ocean currents, oceanography, marine biology, climate data, ocean sensors, marine ecosystem"
+    >
       <style jsx>{`
         .hero {
           background: linear-gradient(135deg, #f6f8fa 0%, #ffffff 100%);

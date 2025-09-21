@@ -95,7 +95,7 @@ const ArchitecturePage = () => {
 
       {/* Data Sources */}
       <div className="mb-8 bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-2xl font-semibent mb-4 text-gray-900">Data Sources</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900">Data Sources</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-blue-50 rounded-lg">
             <h3 className="font-semibold text-blue-900">NOAA NDBC</h3>

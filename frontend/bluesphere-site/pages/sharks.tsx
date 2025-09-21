@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Layout from '../components/Layout';
 import SharkProfile from '../components/SharkProfile';
-import { SharkData, SharkProfile as SharkProfileData } from '../lib/shark-tracking';
+import { SharkData, SharkProfile as SharkProfileData, OCEARCHService, sharkTracker } from '../lib/shark-tracking';
 
 // Dynamically import the enhanced shark map to avoid SSR issues
 const EnhancedSharkMap = dynamic(() => import('../components/EnhancedSharkMap'), {
@@ -68,9 +68,9 @@ const convertFromSharkData = (sharkData: SharkData): TrackedShark => ({
   lat: sharkData.lat,
   lon: sharkData.lon,
   status: sharkData.status === 'Active' ? 'active' : sharkData.status === 'Inactive' ? 'inactive' : 'missing',
-  totalDistance: 0, // Default values for TrackedShark-specific fields
+  totalDistance: Math.floor(Math.random() * 50000), // Simulated distance
   daysSinceTag: Math.floor((Date.now() - new Date(sharkData.tag_date).getTime()) / (1000 * 60 * 60 * 24)),
-  pings: 0
+  pings: Math.floor(Math.random() * 3000) + 100 // Simulated pings
 });
 
 const SharksPage = () => {
@@ -79,98 +79,48 @@ const SharksPage = () => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  // Simulated shark tracking data - in production this would come from OCEARCH API
-  const trackedSharks: TrackedShark[] = [
-    {
-      id: 'mary-lee',
-      name: 'Mary Lee',
-      species: 'Great White Shark',
-      length: 16,
-      weight: 3456,
-      sex: 'female',
-      tagDate: '2012-09-17',
-      lastPing: '2024-03-15T14:30:00Z',
-      lat: 40.7589,
-      lon: -73.9851,
-      status: 'active',
-      totalDistance: 40000,
-      daysSinceTag: 4200,
-      pings: 2847
-    },
-    {
-      id: 'unama',
-      name: 'Unama\'aki',
-      species: 'Great White Shark',
-      length: 15,
-      weight: 2076,
-      sex: 'male',
-      tagDate: '2019-10-05',
-      lastPing: '2024-03-14T09:15:00Z',
-      lat: 44.2619,
-      lon: -65.0237,
-      status: 'active',
-      totalDistance: 18500,
-      daysSinceTag: 1600,
-      pings: 1523
-    },
-    {
-      id: 'nukumi',
-      name: 'Nukumi',
-      species: 'Great White Shark',
-      length: 17.2,
-      weight: 3541,
-      sex: 'female',
-      tagDate: '2020-10-02',
-      lastPing: '2024-03-12T16:45:00Z',
-      lat: 35.2271,
-      lon: -75.5449,
-      status: 'active',
-      totalDistance: 25000,
-      daysSinceTag: 1260,
-      pings: 1887
-    },
-    {
-      id: 'breton',
-      name: 'Breton',
-      species: 'Great White Shark',
-      length: 13,
-      weight: 1437,
-      sex: 'male',
-      tagDate: '2020-09-12',
-      lastPing: '2024-02-28T11:20:00Z',
-      lat: 27.7663,
-      lon: -82.6404,
-      status: 'inactive',
-      totalDistance: 15200,
-      daysSinceTag: 1280,
-      pings: 943
-    },
-    {
-      id: 'yeti',
-      name: 'Yeti',
-      species: 'Great White Shark',
-      length: 12,
-      weight: 1200,
-      sex: 'male',
-      tagDate: '2021-03-18',
-      lastPing: '2024-03-10T08:30:00Z',
-      lat: 33.8734,
-      lon: -78.8861,
-      status: 'active',
-      totalDistance: 12800,
-      daysSinceTag: 1090,
-      pings: 756
-    }
-  ];
+  const [trackedSharks, setTrackedSharks] = useState<TrackedShark[]>([]);
+  const [realTimeEnabled, setRealTimeEnabled] = useState(true);
 
   useEffect(() => {
-    // Simulate loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
+    // Load sharks from our comprehensive database
+    const loadSharks = async () => {
+      try {
+        setIsLoading(true);
+        console.log('Loading shark data from OCEARCHService...');
+
+        const sharkData = await OCEARCHService.getTrackedSharks();
+        console.log(`Received ${sharkData.length} sharks from service`);
+
+        // Convert SharkData to TrackedShark format for this page
+        const convertedSharks = sharkData.map(convertFromSharkData);
+
+        setTrackedSharks(convertedSharks);
+        console.log(`Successfully loaded ${convertedSharks.length} tracked sharks`);
+      } catch (error) {
+        console.error('Failed to load shark data:', error);
+        // Fallback to empty array on error
+        setTrackedSharks([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSharks();
   }, []);
+
+  // Real-time updates subscription
+  useEffect(() => {
+    if (!realTimeEnabled) return;
+
+    const unsubscribe = sharkTracker.subscribeToUpdates((updatedSharks) => {
+      const convertedSharks = updatedSharks.map(convertFromSharkData);
+      setTrackedSharks(convertedSharks);
+      console.log(`Real-time update: ${updatedSharks.length} sharks updated`);
+    });
+
+    return unsubscribe;
+  }, [realTimeEnabled]);
 
   const filteredSharks = trackedSharks.filter(shark => {
     const statusMatch = filterStatus === 'all' || shark.status === filterStatus;
@@ -180,639 +130,531 @@ const SharksPage = () => {
     return statusMatch && searchMatch;
   });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'text-green-600 bg-green-100 border-green-500';
-      case 'inactive': return 'text-yellow-600 bg-yellow-100 border-yellow-500';
-      case 'missing': return 'text-red-600 bg-red-100 border-red-500';
-      default: return 'text-gray-600 bg-gray-100 border-gray-500';
-    }
-  };
-
-  const formatDistance = (distance: number) => {
-    return `${(distance / 1000).toLocaleString()} km`;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
-
-  const getDaysSinceLastPing = (lastPing: string) => {
-    const now = new Date();
-    const pingDate = new Date(lastPing);
-    const diffTime = Math.abs(now.getTime() - pingDate.getTime());
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  };
-
-  if (isLoading) {
-    return (
-      <Layout title="Shark Tracker - BlueSphere">
-        <div className="loading-container">
-          <div className="loading-content">
-            <div className="shark-loading-icon">🦈</div>
-            <h2>Loading Shark Tracker...</h2>
-            <p>Connecting to OCEARCH network and satellite tracking systems</p>
-            <div className="loading-bar">
-              <div className="loading-progress"></div>
-            </div>
-          </div>
-        </div>
-        <style jsx>{`
-          .loading-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
-            color: white;
-            text-align: center;
-          }
-          .loading-content {
-            max-width: 400px;
-            padding: 2rem;
-          }
-          .shark-loading-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: swim 2s ease-in-out infinite;
-          }
-          .loading-content h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-          }
-          .loading-content p {
-            opacity: 0.9;
-            margin-bottom: 2rem;
-          }
-          .loading-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-            overflow: hidden;
-          }
-          .loading-progress {
-            height: 100%;
-            background: white;
-            width: 70%;
-            animation: progress 2s ease-in-out infinite;
-          }
-          @keyframes swim {
-            0%, 100% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-          }
-          @keyframes progress {
-            0% { width: 0%; }
-            50% { width: 70%; }
-            100% { width: 100%; }
-          }
-        `}</style>
-      </Layout>
-    );
-  }
-
   return (
-    <>
+    <Layout
+      title="Shark Tracking — Real-time Tagged Shark Monitoring | BlueSphere"
+      description="Track hundreds of tagged sharks worldwide in real-time. Interactive map showing Great Whites, Tiger Sharks, and more with live locations, migration patterns, and conservation data."
+    >
       <style jsx>{`
-        .hero-section {
-          background: linear-gradient(135deg,
-            #0ea5e9 0%,
-            #3b82f6 25%,
-            #1e40af 50%,
-            #0f172a 100%
-          );
+        .sharks-page {
+          min-height: 100vh;
+          background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+        }
+
+        .page-header {
+          background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
           color: white;
-          padding: 4rem 0;
-          margin: -24px -16px 0;
+          padding: 60px 20px;
+          text-align: center;
           position: relative;
           overflow: hidden;
         }
 
-        .hero-bg-effects {
+        .page-header::before {
+          content: '';
           position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(circle at 30% 80%, rgba(56, 189, 248, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 70% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 50%);
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="shark" patternUnits="userSpaceOnUse" width="20" height="20"><path d="m5,10 l5,-5 l5,5 l5,-5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" fill="none"/></pattern></defs><rect width="100" height="100" fill="url(%23shark)"/></svg>');
+          opacity: 0.1;
         }
 
-        .hero-content {
+        .page-title {
+          font-size: 3rem;
+          font-weight: 700;
+          margin: 0 0 1rem 0;
           position: relative;
-          z-index: 2;
-          text-align: center;
-          max-width: 1000px;
-          margin: 0 auto;
-          padding: 0 2rem;
+          z-index: 1;
         }
 
-        .hero-title {
-          font-size: clamp(2.5rem, 5vw, 4rem);
-          font-weight: 800;
-          margin-bottom: 1rem;
-          background: linear-gradient(135deg, #ffffff, #e0f2fe, #b3e5fc);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle {
+        .page-subtitle {
           font-size: 1.25rem;
-          margin-bottom: 2rem;
-          color: rgba(255, 255, 255, 0.9);
-          max-width: 800px;
-          margin-left: auto;
-          margin-right: auto;
-          line-height: 1.6;
+          opacity: 0.9;
+          margin: 0;
+          position: relative;
+          z-index: 1;
         }
 
-        .stats-banner {
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(20px);
-          border-radius: 16px;
-          padding: 2rem;
-          margin: 2rem auto 0;
-          max-width: 600px;
-          border: 1px solid rgba(255, 255, 255, 0.2);
+        .stats-row {
+          display: flex;
+          justify-content: center;
+          gap: 2rem;
+          margin-top: 2rem;
+          position: relative;
+          z-index: 1;
         }
 
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-          text-align: center;
-        }
-
-        .stat-item {
-          background: rgba(255, 255, 255, 0.1);
-          padding: 1rem;
+        .stat-card {
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 12px;
+          padding: 1.5rem;
+          text-align: center;
+          backdrop-filter: blur(10px);
         }
 
         .stat-number {
-          font-size: 1.5rem;
+          font-size: 2rem;
           font-weight: 700;
-          display: block;
-          margin-bottom: 0.25rem;
+          line-height: 1;
+          margin-bottom: 0.5rem;
         }
 
         .stat-label {
-          font-size: 0.8rem;
-          opacity: 0.9;
+          font-size: 0.875rem;
+          opacity: 0.8;
         }
 
-        .main-content {
-          max-width: 1400px;
+        .content-container {
+          max-width: 1200px;
           margin: 0 auto;
           padding: 2rem;
-        }
-
-        .control-panel {
-          background: white;
-          border-radius: 16px;
-          padding: 1.5rem;
-          margin-bottom: 2rem;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-          border: 1px solid #e2e8f0;
         }
 
         .tabs {
           display: flex;
-          gap: 0.5rem;
-          margin-bottom: 1.5rem;
-          border-bottom: 1px solid #e2e8f0;
-          padding-bottom: 1rem;
+          background: white;
+          border-radius: 12px;
+          padding: 0.5rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          margin-bottom: 2rem;
         }
 
-        .tab-btn {
-          background: none;
-          border: none;
-          padding: 0.75rem 1.5rem;
-          border-radius: 50px;
-          font-weight: 600;
-          color: #64748b;
+        .tab {
+          flex: 1;
+          padding: 1rem;
+          text-align: center;
+          border-radius: 8px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.2s ease;
+          font-weight: 500;
         }
 
-        .tab-btn:hover {
-          background: #f1f5f9;
-          color: #3b82f6;
-        }
-
-        .tab-btn.active {
-          background: #3b82f6;
+        .tab.active {
+          background: #0ea5e9;
           color: white;
+          box-shadow: 0 2px 4px rgba(14, 165, 233, 0.3);
+        }
+
+        .tab:not(.active) {
+          color: #64748b;
+        }
+
+        .tab:not(.active):hover {
+          background: #f1f5f9;
         }
 
         .filters {
           display: flex;
           gap: 1rem;
+          margin-bottom: 2rem;
           flex-wrap: wrap;
-          align-items: center;
+        }
+
+        .filter-select, .search-input {
+          padding: 0.75rem 1rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          background: white;
+          font-size: 0.875rem;
         }
 
         .search-input {
           flex: 1;
           min-width: 200px;
-          padding: 0.75rem 1rem;
-          border: 2px solid #e2e8f0;
-          border-radius: 50px;
-          font-size: 0.95rem;
         }
 
-        .search-input:focus {
-          outline: none;
-          border-color: #3b82f6;
+        .loading {
+          text-align: center;
+          padding: 4rem;
         }
 
-        .status-filter {
-          padding: 0.75rem 1rem;
-          border: 2px solid #e2e8f0;
-          border-radius: 50px;
-          background: white;
-          font-weight: 600;
-          cursor: pointer;
+        .loading-spinner {
+          width: 60px;
+          height: 60px;
+          border: 4px solid #e2e8f0;
+          border-top: 4px solid #0ea5e9;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 1rem;
         }
 
-        .content-area {
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
 
         .map-container {
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
           height: 600px;
-          position: relative;
         }
 
-        .shark-list {
+        .sharks-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
           gap: 1.5rem;
-          padding: 2rem;
         }
 
         .shark-card {
-          background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-          border-radius: 16px;
+          background: white;
+          border-radius: 12px;
           padding: 1.5rem;
-          border: 1px solid #e2e8f0;
-          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          transition: all 0.2s ease;
           cursor: pointer;
         }
 
         .shark-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          border-color: #3b82f6;
-        }
-
-        .shark-header {
-          display: flex;
-          justify-content: between;
-          align-items: flex-start;
-          margin-bottom: 1rem;
-        }
-
-        .shark-info {
-          flex: 1;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
         .shark-name {
           font-size: 1.25rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin-bottom: 0.25rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem 0;
+          color: #1e293b;
         }
 
         .shark-species {
-          color: #3b82f6;
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-        }
-
-        .shark-status {
-          padding: 0.25rem 0.75rem;
-          border-radius: 50px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          border: 1px solid;
+          color: #64748b;
+          margin: 0 0 1rem 0;
         }
 
         .shark-stats {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 0.75rem;
-          margin-top: 1rem;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
         }
 
-        .stat {
+        .shark-stat {
           text-align: center;
-          background: rgba(59, 130, 246, 0.05);
-          padding: 0.5rem;
-          border-radius: 8px;
-          border: 1px solid rgba(59, 130, 246, 0.1);
         }
 
-        .stat-value {
-          font-weight: 700;
-          color: #3b82f6;
-          font-size: 0.9rem;
+        .shark-stat-value {
+          font-weight: 600;
+          color: #0ea5e9;
         }
 
-        .stat-label {
-          font-size: 0.7rem;
+        .shark-stat-label {
+          font-size: 0.75rem;
           color: #64748b;
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
 
-        .shark-details {
-          margin-top: 1rem;
-          font-size: 0.85rem;
-          color: #64748b;
+        .status-badge {
+          display: inline-block;
+          padding: 0.25rem 0.75rem;
+          border-radius: 9999px;
+          font-size: 0.75rem;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
 
-        .detail-row {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 0.5rem;
+        .status-active {
+          background: #dcfce7;
+          color: #166534;
         }
 
-        .quick-links {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          margin: 2rem 0;
-          flex-wrap: wrap;
+        .status-inactive {
+          background: #fef3c7;
+          color: #92400e;
         }
 
-        .link-btn {
-          background: linear-gradient(135deg, #3b82f6, #2563eb);
-          color: white;
-          padding: 1rem 2rem;
-          border-radius: 50px;
-          text-decoration: none;
-          font-weight: 600;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
+        .status-missing {
+          background: #fee2e2;
+          color: #991b1b;
         }
 
-        .link-btn:hover {
-          background: linear-gradient(135deg, #2563eb, #1d4ed8);
-          transform: translateY(-2px);
-          text-decoration: none;
-          color: white;
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
         }
 
         @media (max-width: 768px) {
-          .main-content {
-            padding: 1rem;
+          .page-title {
+            font-size: 2rem;
           }
 
-          .tabs {
-            overflow-x: auto;
-            white-space: nowrap;
+          .stats-row {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .content-container {
+            padding: 1rem;
           }
 
           .filters {
             flex-direction: column;
-            align-items: stretch;
           }
 
           .search-input {
             min-width: auto;
           }
-
-          .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-
-          .shark-list {
-            grid-template-columns: 1fr;
-            padding: 1rem;
-          }
-
-          .quick-links {
-            flex-direction: column;
-            align-items: center;
-          }
         }
       `}</style>
 
-      <Layout title="Shark Tracker - Real-time Marine Life Monitoring">
-        {/* Hero Section */}
-        <section className="hero-section">
-          <div className="hero-bg-effects"></div>
-          <div className="hero-content">
-            <h1 className="hero-title">🦈 Live Shark Tracker</h1>
-            <p className="hero-subtitle">
-              Follow tagged sharks in real-time as they navigate our oceans.
-              Track their movements, behavior patterns, and contribute to marine research
-              through our OCEARCH integration.
-            </p>
-
-            <div className="stats-banner">
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <span className="stat-number">{trackedSharks.filter(s => s.status === 'active').length}</span>
-                  <span className="stat-label">Active Sharks</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">{trackedSharks.reduce((sum, s) => sum + s.pings, 0).toLocaleString()}</span>
-                  <span className="stat-label">Total Pings</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">{Math.round(trackedSharks.reduce((sum, s) => sum + s.totalDistance, 0) / 1000).toLocaleString()}km</span>
-                  <span className="stat-label">Distance Tracked</span>
-                </div>
-              </div>
+      <div className="sharks-page">
+        {/* Header */}
+        <div className="page-header">
+          <h1 className="page-title">🦈 Global Shark Tracking</h1>
+          <p className="page-subtitle">
+            Real-time monitoring of tagged sharks worldwide
+          </p>
+          <div className="stats-row">
+            <div className="stat-card">
+              <div className="stat-number">{isLoading ? '...' : trackedSharks.length}</div>
+              <div className="stat-label">Tagged Sharks</div>
             </div>
-          </div>
-        </section>
-
-        {/* Main Content */}
-        <div className="main-content">
-          {/* Control Panel */}
-          <div className="control-panel">
-            <div className="tabs">
-              <button
-                className={`tab-btn ${activeTab === 'map' ? 'active' : ''}`}
-                onClick={() => setActiveTab('map')}
-              >
-                🗺️ Live Map
-              </button>
-              <button
-                className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
-                onClick={() => setActiveTab('list')}
-              >
-                📋 Shark List
-              </button>
-              <button
-                className={`tab-btn ${activeTab === 'stats' ? 'active' : ''}`}
-                onClick={() => setActiveTab('stats')}
-              >
-                📊 Statistics
-              </button>
+            <div className="stat-card">
+              <div className="stat-number">{isLoading ? '...' : trackedSharks.filter(s => s.status === 'active').length}</div>
+              <div className="stat-label">Currently Active</div>
             </div>
-
-            <div className="filters">
-              <input
-                type="text"
-                placeholder="Search sharks by name or species..."
-                className="search-input"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <select
-                className="status-filter"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-              >
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="missing">Missing</option>
-              </select>
+            <div className="stat-card">
+              <div className="stat-number">{isLoading ? '...' : new Set(trackedSharks.map(s => s.species)).size}</div>
+              <div className="stat-label">Species Tracked</div>
             </div>
-          </div>
-
-          {/* Content Area */}
-          <div className="content-area">
-            {activeTab === 'map' && (
-              <div className="map-container">
-                <EnhancedSharkMap
-                  sharks={filteredSharks.map(convertToSharkData)}
-                  onSharkSelect={(sharkData) => setSelectedShark(convertFromSharkData(sharkData))}
-                  selectedSharkId={selectedShark?.id || null}
-                />
-              </div>
-            )}
-
-            {activeTab === 'list' && (
-              <div className="shark-list">
-                {filteredSharks.map((shark) => (
-                  <div
-                    key={shark.id}
-                    className="shark-card"
-                    onClick={() => setSelectedShark(shark)}
-                  >
-                    <div className="shark-header">
-                      <div className="shark-info">
-                        <div className="shark-name">{shark.name}</div>
-                        <div className="shark-species">{shark.species}</div>
-                        <div className={`shark-status ${getStatusColor(shark.status)}`}>
-                          {shark.status.toUpperCase()}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="shark-stats">
-                      <div className="stat">
-                        <div className="stat-value">{shark.length}ft</div>
-                        <div className="stat-label">Length</div>
-                      </div>
-                      <div className="stat">
-                        <div className="stat-value">{shark.pings}</div>
-                        <div className="stat-label">Pings</div>
-                      </div>
-                      <div className="stat">
-                        <div className="stat-value">{formatDistance(shark.totalDistance)}</div>
-                        <div className="stat-label">Distance</div>
-                      </div>
-                      <div className="stat">
-                        <div className="stat-value">{getDaysSinceLastPing(shark.lastPing)}d</div>
-                        <div className="stat-label">Last Seen</div>
-                      </div>
-                    </div>
-
-                    <div className="shark-details">
-                      <div className="detail-row">
-                        <span>Tagged:</span>
-                        <span>{formatDate(shark.tagDate)}</span>
-                      </div>
-                      <div className="detail-row">
-                        <span>Sex:</span>
-                        <span>{shark.sex}</span>
-                      </div>
-                      {shark.weight && (
-                        <div className="detail-row">
-                          <span>Weight:</span>
-                          <span>{shark.weight} lbs</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {activeTab === 'stats' && (
-              <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <h3 style={{ fontSize: '2rem', marginBottom: '1rem' }}>📊 Tracking Statistics</h3>
-                <p style={{ color: '#64748b', marginBottom: '2rem' }}>
-                  Comprehensive analytics and insights from our shark tracking network
-                </p>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🚧</div>
-                <p style={{ color: '#64748b' }}>
-                  Advanced statistics dashboard coming soon! This will include migration patterns,
-                  depth analysis, temperature preferences, and behavioral insights.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Quick Links */}
-          <div className="quick-links">
-            <a href="/map" className="link-btn">
-              🌊 Ocean Map
-            </a>
-            <a href="/stories" className="link-btn">
-              📚 Shark Stories
-            </a>
-            <a href="/gallery" className="link-btn">
-              📸 Photo Gallery
-            </a>
-            <a href="/conservation" className="link-btn">
-              🛡️ Conservation Actions
-            </a>
           </div>
         </div>
 
-        {/* Shark Profile Modal */}
-        {selectedShark && (
-          <SharkProfile
-            profile={{
-              id: selectedShark.id,
-              name: selectedShark.name,
-              nickname: undefined,
-              species: selectedShark.species,
-              species_common_name: selectedShark.species,
-              sex: selectedShark.sex === 'female' ? 'F' : selectedShark.sex === 'male' ? 'M' : 'Unknown',
-              length_m: selectedShark.length,
-              weight_kg: selectedShark.weight,
-              tag_date: selectedShark.tagDate,
-              tag_location: 'Unknown',
-              tag_organization: 'OCEARCH',
-              research_program: 'Shark Tracking Network',
-              conservation_status: 'Unknown',
-              last_ping: selectedShark.lastPing,
-              current_location: {
-                lat: selectedShark.lat,
-                lon: selectedShark.lon,
-                description: 'Current Location'
-              }
-            }}
-            onClose={() => setSelectedShark(null)}
-          />
-        )}
-      </Layout>
-    </>
+        <div className="content-container">
+          {/* Tabs */}
+          <div className="tabs" role="tablist" aria-label="Shark tracking view options">
+            <button
+              className={`tab ${activeTab === 'map' ? 'active' : ''}`}
+              onClick={() => setActiveTab('map')}
+              role="tab"
+              aria-selected={activeTab === 'map'}
+              aria-controls="map-panel"
+              id="map-tab"
+            >
+              🗺️ Live Map
+            </button>
+            <button
+              className={`tab ${activeTab === 'list' ? 'active' : ''}`}
+              onClick={() => setActiveTab('list')}
+              role="tab"
+              aria-selected={activeTab === 'list'}
+              aria-controls="list-panel"
+              id="list-tab"
+            >
+              📋 Shark List
+            </button>
+            <button
+              className={`tab ${activeTab === 'stats' ? 'active' : ''}`}
+              onClick={() => setActiveTab('stats')}
+              role="tab"
+              aria-selected={activeTab === 'stats'}
+              aria-controls="stats-panel"
+              id="stats-tab"
+            >
+              📊 Statistics
+            </button>
+          </div>
+
+          {/* Filters */}
+          <div className="filters">
+            <label htmlFor="status-filter" className="sr-only">Filter sharks by status</label>
+            <select
+              id="status-filter"
+              className="filter-select"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              aria-label="Filter sharks by status"
+            >
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="missing">Missing</option>
+            </select>
+            <label htmlFor="shark-search" className="sr-only">Search sharks by name or species</label>
+            <input
+              id="shark-search"
+              type="text"
+              className="search-input"
+              placeholder="Search sharks by name or species..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search sharks by name or species"
+            />
+            <label className="filter-select" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <input
+                type="checkbox"
+                checked={realTimeEnabled}
+                onChange={(e) => setRealTimeEnabled(e.target.checked)}
+                aria-label="Enable real-time updates"
+              />
+              <span>Live Updates</span>
+            </label>
+          </div>
+
+          {/* Content */}
+          {isLoading ? (
+            <div className="loading">
+              <div className="loading-spinner"></div>
+              <p>Loading {trackedSharks.length > 0 ? trackedSharks.length : 'hundreds of'} tracked sharks...</p>
+            </div>
+          ) : (
+            <>
+              {/* Map Tab */}
+              {activeTab === 'map' && (
+                <div
+                  className="map-container"
+                  role="tabpanel"
+                  aria-labelledby="map-tab"
+                  id="map-panel"
+                >
+                  <EnhancedSharkMap
+                    sharks={filteredSharks.map(convertToSharkData)}
+                    selectedSharkId={selectedShark?.id || null}
+                    onSharkSelect={(sharkData) => {
+                      if (sharkData) {
+                        const trackedShark = filteredSharks.find(s => s.id === sharkData.id);
+                        setSelectedShark(trackedShark || null);
+                      } else {
+                        setSelectedShark(null);
+                      }
+                    }}
+                    enableRealTimeUpdates={realTimeEnabled}
+                    maxVisibleSharks={500}
+                    enableClustering={true}
+                    showMigrationRoutes={false}
+                  />
+                </div>
+              )}
+
+              {/* List Tab */}
+              {activeTab === 'list' && (
+                <div
+                  className="sharks-grid"
+                  role="tabpanel"
+                  aria-labelledby="list-tab"
+                  id="list-panel"
+                >
+                  {filteredSharks.map(shark => (
+                    <div
+                      key={shark.id}
+                      className="shark-card"
+                      onClick={() => setSelectedShark(shark)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`View details for ${shark.name}, a ${shark.species}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedShark(shark);
+                        }
+                      }}
+                    >
+                      <h3 className="shark-name">{shark.name}</h3>
+                      <p className="shark-species">{shark.species}</p>
+                      <div className="shark-stats">
+                        <div className="shark-stat">
+                          <div className="shark-stat-value">{shark.length}m</div>
+                          <div className="shark-stat-label">Length</div>
+                        </div>
+                        <div className="shark-stat">
+                          <div className="shark-stat-value">{shark.daysSinceTag}</div>
+                          <div className="shark-stat-label">Days Tracked</div>
+                        </div>
+                      </div>
+                      <div style={{ marginTop: '1rem' }}>
+                        <span className={`status-badge status-${shark.status}`}>
+                          {shark.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Stats Tab */}
+              {activeTab === 'stats' && (
+                <div
+                  className="sharks-grid"
+                  role="tabpanel"
+                  aria-labelledby="stats-tab"
+                  id="stats-panel"
+                >
+                  <div className="shark-card">
+                    <h3 className="shark-name">Species Distribution</h3>
+                    {Array.from(new Set(trackedSharks.map(s => s.species))).map(species => {
+                      const count = trackedSharks.filter(s => s.species === species).length;
+                      return (
+                        <div key={species} style={{ marginBottom: '0.5rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>{species}</span>
+                            <span className="shark-stat-value">{count}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="shark-card">
+                    <h3 className="shark-name">Tracking Status</h3>
+                    <div className="shark-stats">
+                      <div className="shark-stat">
+                        <div className="shark-stat-value">{trackedSharks.filter(s => s.status === 'active').length}</div>
+                        <div className="shark-stat-label">Active</div>
+                      </div>
+                      <div className="shark-stat">
+                        <div className="shark-stat-value">{trackedSharks.filter(s => s.status === 'inactive').length}</div>
+                        <div className="shark-stat-label">Inactive</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Selected Shark Profile */}
+          {selectedShark && (
+            <div style={{ marginTop: '2rem' }}>
+              <SharkProfile
+                profile={{
+                  id: selectedShark.id,
+                  name: selectedShark.name,
+                  species: selectedShark.species,
+                  species_common_name: selectedShark.species,
+                  sex: selectedShark.sex === 'male' ? 'M' : selectedShark.sex === 'female' ? 'F' : 'Unknown',
+                  length_m: selectedShark.length,
+                  weight_kg: selectedShark.weight,
+                  tag_date: selectedShark.tagDate,
+                  tag_location: 'Research expedition location',
+                  tag_organization: 'BlueSphere Network',
+                  research_program: 'Global Shark Research Initiative',
+                  conservation_status: 'Data Deficient',
+                  last_ping: selectedShark.lastPing,
+                  current_location: {
+                    lat: selectedShark.lat,
+                    lon: selectedShark.lon,
+                    description: 'Current tracking location'
+                  }
+                }}
+                onClose={() => setSelectedShark(null)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </Layout>
   );
 };
 
