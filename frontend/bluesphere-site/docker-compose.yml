@@ -1,0 +1,110 @@
+# BlueSphere Development Environment
+# Complete Docker Compose setup for local development
+
+version: '3.8'
+
+services:
+  # Main Next.js Application
+  bluesphere-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: bluesphere-frontend
+    ports:
+      - "4000:3000"
+    volumes:
+      # Bind mount for hot reloading
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+    networks:
+      - bluesphere-network
+    depends_on:
+      - bluesphere-db
+      - bluesphere-redis
+    restart: unless-stopped
+
+  # PostgreSQL Database for marine data
+  bluesphere-db:
+    image: postgres:15-alpine
+    container_name: bluesphere-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=bluesphere_marine
+      - POSTGRES_USER=bluesphere_admin
+      - POSTGRES_PASSWORD=marine_secure_2025
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bluesphere-network
+    restart: unless-stopped
+
+  # Redis for caching marine data and real-time features
+  bluesphere-redis:
+    image: redis:7-alpine
+    container_name: bluesphere-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - bluesphere-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # NGINX Reverse Proxy for production-like setup
+  bluesphere-proxy:
+    image: nginx:alpine
+    container_name: bluesphere-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    networks:
+      - bluesphere-network
+    depends_on:
+      - bluesphere-app
+    restart: unless-stopped
+
+  # Marine Data Processing Service (Future API)
+  bluesphere-api:
+    image: node:18-alpine
+    container_name: bluesphere-api
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://bluesphere_admin:marine_secure_2025@bluesphere-db:5432/bluesphere_marine
+      - REDIS_URL=redis://bluesphere-redis:6379
+    networks:
+      - bluesphere-network
+    depends_on:
+      - bluesphere-db
+      - bluesphere-redis
+    restart: unless-stopped
+    command: sh -c "npm install && npm run dev"
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  bluesphere-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

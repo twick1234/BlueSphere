@@ -1,0 +1,116 @@
+# BlueSphere Render Deployment Configuration with Docker
+# Production deployment using Docker containers
+
+services:
+  # Main Next.js Application
+  - type: web
+    name: bluesphere-frontend
+    env: docker
+    plan: starter
+    region: oregon
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    buildCommand: ""
+    startCommand: ""
+    healthCheckPath: /health
+
+    # Environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: PORT
+        value: "3000"
+      - key: HOSTNAME
+        value: "0.0.0.0"
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+
+    # Auto-deploy settings
+    autoDeploy: true
+
+    # Scaling configuration
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+      targetMemoryPercent: 70
+      targetCPUPercent: 70
+
+    # Disk configuration
+    disk:
+      name: bluesphere-data
+      sizeGB: 1
+      mountPath: /app/data
+
+    # Custom domains (optional)
+    # domains:
+    #   - bluesphere.marine
+    #   - www.bluesphere.marine
+
+  # PostgreSQL Database
+  - type: pserv
+    name: bluesphere-postgres
+    env: docker
+    plan: starter
+    region: oregon
+
+    # Use official PostgreSQL with PostGIS
+    image:
+      url: postgis/postgis:15-3.3-alpine
+
+    # Environment variables for PostgreSQL
+    envVars:
+      - key: POSTGRES_DB
+        value: bluesphere_marine
+      - key: POSTGRES_USER
+        value: bluesphere_admin
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+
+    # Persistent storage
+    disk:
+      name: postgres-data
+      sizeGB: 10
+      mountPath: /var/lib/postgresql/data
+
+    # Health check
+    healthCheckPath: /
+
+  # Redis Cache
+  - type: pserv
+    name: bluesphere-redis
+    env: docker
+    plan: starter
+    region: oregon
+
+    # Use official Redis Alpine
+    image:
+      url: redis:7-alpine
+
+    # Redis configuration
+    startCommand: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+    # Persistent storage for Redis
+    disk:
+      name: redis-data
+      sizeGB: 1
+      mountPath: /data
+
+# Environment variable groups for easier management
+envVarGroups:
+  - name: database-config
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: bluesphere-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: pserv
+          name: bluesphere-redis
+          property: connectionString

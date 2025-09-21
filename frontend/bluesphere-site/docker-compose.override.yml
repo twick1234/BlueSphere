@@ -1,0 +1,36 @@
+# BlueSphere Development Override
+# Override configuration for local development
+
+version: '3.8'
+
+services:
+  bluesphere-app:
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+      - FAST_REFRESH=true
+    volumes:
+      # Override to use development Dockerfile
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+  # Development database with sample data
+  bluesphere-db:
+    environment:
+      - POSTGRES_DB=bluesphere_dev
+      - POSTGRES_USER=dev_user
+      - POSTGRES_PASSWORD=dev_password_2025
+    ports:
+      - "5433:5432"  # Different port for development
+
+  # Development Redis with debug enabled
+  bluesphere-redis:
+    command: redis-server --appendonly yes --loglevel verbose
+
+  # Remove NGINX proxy for development (direct access)
+  bluesphere-proxy:
+    profiles:
+      - production
