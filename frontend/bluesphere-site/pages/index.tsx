@@ -1,287 +1,467 @@
 /*
- * BlueSphere Homepage - Complete Redesign
+ * BlueSphere Homepage - World-Class Design
  * Copyright (c) 2025 Mark Lindon — BlueSphere
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
-import { PageHeader, PageSection, Card, Button, Grid, Stats } from '../components/PageLayout';
+import Link from 'next/link';
+import WorldClassLayout from '../components/WorldClassLayout';
+import {
+  MapIcon,
+  BeakerIcon,
+  ChartBarIcon,
+  HeartIcon,
+  GlobeAltIcon,
+  PlayIcon
+} from '@heroicons/react/24/outline';
 
 const HomePage = () => {
-  const stats = [
-    { label: 'Ocean Sensors', value: '15,000+', change: '+12% this month', trend: 'up' as const },
-    { label: 'Data Points', value: '2.4M', change: '+8% this month', trend: 'up' as const },
-    { label: 'Marine Species', value: '1,200+', change: 'New discoveries weekly', trend: 'neutral' as const },
-    { label: 'Countries', value: '85', change: 'Global coverage', trend: 'neutral' as const }
-  ];
-
   return (
-    <Layout
+    <WorldClassLayout
       title="BlueSphere — Global Ocean Monitoring Platform"
       description="Real-time ocean temperature monitoring, shark tracking, and climate data from 15,000+ sensors worldwide. Open-source marine conservation platform for researchers and educators."
       keywords="ocean monitoring, marine data, sea temperature, ocean currents, oceanography, marine biology, climate data, ocean sensors, marine ecosystem"
     >
       <style jsx>{`
+        /* Hero Section */
         .hero {
-          background: linear-gradient(135deg, #f6f8fa 0%, #ffffff 100%);
-          padding: 80px 24px 64px;
+          background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+          padding: 120px 0 100px;
           text-align: center;
-          border-bottom: 1px solid #d0d7de;
+          position: relative;
+          overflow: hidden;
         }
 
-        @media (prefers-color-scheme: dark) {
-          .hero {
-            background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
-            border-bottom-color: #30363d;
-          }
+        .hero::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+          opacity: 0.6;
         }
 
         .hero-content {
-          max-width: 800px;
+          max-width: 1200px;
           margin: 0 auto;
+          padding: 0 24px;
+          position: relative;
+          z-index: 1;
         }
 
         .hero-title {
-          font-size: 48px;
-          font-weight: 600;
+          font-size: 72px;
+          font-weight: 800;
           line-height: 1.1;
-          color: #24292f;
-          margin: 0 0 16px 0;
+          color: #1a202c;
+          margin: 0 0 24px 0;
+          letter-spacing: -0.025em;
         }
 
         .hero-subtitle {
-          font-size: 20px;
-          color: #656d76;
-          margin: 0 0 32px 0;
+          font-size: 24px;
+          color: #64748b;
+          margin: 0 0 48px 0;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
           line-height: 1.4;
         }
 
-        @media (prefers-color-scheme: dark) {
-          .hero-title {
-            color: #e6edf3;
-          }
-          .hero-subtitle {
-            color: #7d8590;
-          }
-        }
-
-        .hero-buttons {
+        .hero-cta {
           display: flex;
-          gap: 12px;
+          gap: 16px;
           justify-content: center;
+          align-items: center;
           flex-wrap: wrap;
-          margin-bottom: 48px;
+          margin-bottom: 80px;
         }
 
-        .feature-icon {
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, #0969da, #0550ae);
-          border-radius: 8px;
+        .btn-primary {
+          background: #3b82f6;
+          color: white;
+          padding: 16px 32px;
+          border-radius: 12px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 16px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 24px;
-          margin-bottom: 16px;
+          gap: 8px;
+          transition: all 0.2s ease;
+          border: none;
+          cursor: pointer;
         }
 
-        .feature-title {
-          font-size: 18px;
+        .btn-primary:hover {
+          background: #2563eb;
+          transform: translateY(-1px);
+          box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+          background: white;
+          color: #374151;
+          padding: 16px 32px;
+          border-radius: 12px;
+          text-decoration: none;
           font-weight: 600;
-          color: #24292f;
-          margin: 0 0 8px 0;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.2s ease;
+          border: 1px solid #d1d5db;
         }
 
-        .feature-description {
-          color: #656d76;
-          line-height: 1.5;
-          margin: 0;
+        .btn-secondary:hover {
+          background: #f9fafb;
+          border-color: #9ca3af;
+          transform: translateY(-1px);
         }
 
-        @media (prefers-color-scheme: dark) {
-          .feature-title {
-            color: #e6edf3;
-          }
-          .feature-description {
-            color: #7d8590;
-          }
+        /* Stats Section */
+        .stats {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 32px;
+          max-width: 1000px;
+          margin: 0 auto;
+        }
+
+        .stat {
+          text-align: center;
+        }
+
+        .stat-number {
+          font-size: 48px;
+          font-weight: 800;
+          color: #1a202c;
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        .stat-label {
+          font-size: 16px;
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        /* Features Section */
+        .features {
+          padding: 120px 0;
+          background: white;
+        }
+
+        .features-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 24px;
+        }
+
+        .section-header {
+          text-align: center;
+          margin-bottom: 80px;
         }
 
         .section-title {
-          font-size: 32px;
-          font-weight: 600;
-          color: #24292f;
+          font-size: 48px;
+          font-weight: 800;
+          color: #1a202c;
           margin: 0 0 16px 0;
-          text-align: center;
+          letter-spacing: -0.025em;
         }
 
         .section-subtitle {
-          font-size: 16px;
-          color: #656d76;
-          text-align: center;
-          margin: 0 0 48px 0;
+          font-size: 20px;
+          color: #64748b;
           max-width: 600px;
-          margin-left: auto;
-          margin-right: auto;
+          margin: 0 auto;
+          line-height: 1.6;
         }
 
-        @media (prefers-color-scheme: dark) {
-          .section-title {
-            color: #e6edf3;
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 40px;
+        }
+
+        .feature {
+          text-align: center;
+          padding: 40px 32px;
+          border-radius: 16px;
+          background: #f8fafc;
+          transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+          background: white;
+          transform: translateY(-4px);
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .feature-icon {
+          width: 64px;
+          height: 64px;
+          margin: 0 auto 24px;
+          padding: 16px;
+          border-radius: 16px;
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+          color: white;
+        }
+
+        .feature-title {
+          font-size: 20px;
+          font-weight: 700;
+          color: #1a202c;
+          margin: 0 0 12px 0;
+        }
+
+        .feature-description {
+          color: #64748b;
+          line-height: 1.6;
+        }
+
+        /* Call to Action Section */
+        .cta-section {
+          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+          padding: 120px 0;
+          text-align: center;
+          color: white;
+        }
+
+        .cta-content {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 0 24px;
+        }
+
+        .cta-title {
+          font-size: 48px;
+          font-weight: 800;
+          margin: 0 0 24px 0;
+          letter-spacing: -0.025em;
+        }
+
+        .cta-subtitle {
+          font-size: 20px;
+          color: #cbd5e1;
+          margin: 0 0 48px 0;
+          line-height: 1.6;
+        }
+
+        .btn-cta {
+          background: white;
+          color: #1e293b;
+          padding: 16px 32px;
+          border-radius: 12px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 16px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.2s ease;
+        }
+
+        .btn-cta:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+          .features-grid {
+            grid-template-columns: repeat(2, 1fr);
           }
-          .section-subtitle {
-            color: #7d8590;
+
+          .stats {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
 
         @media (max-width: 768px) {
-          .hero {
-            padding: 48px 16px 40px;
-          }
           .hero-title {
-            font-size: 32px;
+            font-size: 48px;
           }
+
           .hero-subtitle {
-            font-size: 16px;
+            font-size: 18px;
           }
-          .hero-buttons {
+
+          .hero-cta {
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
+            max-width: 300px;
+            margin: 0 auto 80px;
           }
+
           .section-title {
-            font-size: 24px;
+            font-size: 36px;
+          }
+
+          .features-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+          }
+
+          .stat-number {
+            font-size: 36px;
+          }
+
+          .cta-title {
+            font-size: 36px;
           }
         }
       `}</style>
 
+      {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
-          <h1 className="hero-title">Monitor Our Oceans in Real-Time</h1>
+          <h1 className="hero-title">
+            Monitor Our Oceans.
+            <br />
+            Protect Marine Life.
+          </h1>
           <p className="hero-subtitle">
-            Advanced AI-powered platform tracking marine ecosystems, climate patterns,
-            and wildlife movements across the globe in real-time.
+            Real-time ocean monitoring and marine conservation platform powered by AI
+            and data from 15,000+ sensors worldwide. Join the mission to protect our blue planet.
           </p>
-          <div className="hero-buttons">
-            <Button href="/map" variant="primary" size="lg">
-              🗺️ Explore Ocean Map
-            </Button>
-            <Button href="/sharks" variant="secondary" size="lg">
-              🦈 Track Sharks
-            </Button>
-            <Button href="/analytics" variant="ghost" size="lg">
-              📊 View Analytics
-            </Button>
+
+          <div className="hero-cta">
+            <Link href="/map" className="btn-primary">
+              <MapIcon className="w-5 h-5" />
+              Explore Ocean Map
+            </Link>
+            <Link href="/species-ai" className="btn-secondary">
+              <PlayIcon className="w-5 h-5" />
+              Watch Demo
+            </Link>
           </div>
-          <Stats stats={stats} />
+
+          <div className="stats">
+            <div className="stat">
+              <span className="stat-number">15K+</span>
+              <span className="stat-label">Ocean Sensors</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">2.4M</span>
+              <span className="stat-label">Data Points</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">40K+</span>
+              <span className="stat-label">Tracked Animals</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">85</span>
+              <span className="stat-label">Countries</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <PageSection>
-        <h2 className="section-title">Real-Time Ocean Intelligence</h2>
-        <p className="section-subtitle">
-          Cutting-edge technology meets marine science to deliver unprecedented
-          insights into our planet's most critical ecosystems.
-        </p>
-
-        <Grid cols={3}>
-          <Card hover>
-            <div className="feature-icon">🌊</div>
-            <h3 className="feature-title">Live Ocean Monitoring</h3>
-            <p className="feature-description">
-              Real-time temperature, currents, and weather data from thousands
-              of sensors across the globe, updated every minute.
+      {/* Features Section */}
+      <section className="features">
+        <div className="features-content">
+          <div className="section-header">
+            <h2 className="section-title">Platform Capabilities</h2>
+            <p className="section-subtitle">
+              Comprehensive tools for marine research, conservation, and education
+              powered by cutting-edge technology and global collaboration.
             </p>
-            <div style={{ marginTop: '16px' }}>
-              <Button href="/map" variant="ghost" size="sm">
-                View Live Map →
-              </Button>
+          </div>
+
+          <div className="features-grid">
+            <div className="feature">
+              <div className="feature-icon">
+                <MapIcon className="w-full h-full" />
+              </div>
+              <h3 className="feature-title">Real-time Ocean Mapping</h3>
+              <p className="feature-description">
+                Interactive global maps with live data from thousands of sensors,
+                tracking temperature, currents, and marine life movements.
+              </p>
             </div>
-          </Card>
 
-          <Card hover>
-            <div className="feature-icon">🦈</div>
-            <h3 className="feature-title">Marine Wildlife Tracking</h3>
-            <p className="feature-description">
-              Track sharks, whales, and other marine animals with satellite tags,
-              revealing migration patterns and habitat usage.
-            </p>
-            <div style={{ marginTop: '16px' }}>
-              <Button href="/sharks" variant="ghost" size="sm">
-                Track Animals →
-              </Button>
+            <div className="feature">
+              <div className="feature-icon">
+                <BeakerIcon className="w-full h-full" />
+              </div>
+              <h3 className="feature-title">AI Species Recognition</h3>
+              <p className="feature-description">
+                Advanced computer vision technology for instant marine life identification
+                with 95.2% accuracy across 2,847+ species.
+              </p>
             </div>
-          </Card>
 
-          <Card hover>
-            <div className="feature-icon">🤖</div>
-            <h3 className="feature-title">AI Predictive Analytics</h3>
-            <p className="feature-description">
-              Machine learning models predict marine heatwaves, ecosystem changes,
-              and species population trends before they happen.
-            </p>
-            <div style={{ marginTop: '16px' }}>
-              <Button href="/analytics" variant="ghost" size="sm">
-                View Predictions →
-              </Button>
+            <div className="feature">
+              <div className="feature-icon">
+                <ChartBarIcon className="w-full h-full" />
+              </div>
+              <h3 className="feature-title">Shark Tracking</h3>
+              <p className="feature-description">
+                Monitor 40,000+ tagged sharks globally with migration patterns,
+                behavior analysis, and conservation status tracking.
+              </p>
             </div>
-          </Card>
-        </Grid>
-      </PageSection>
 
-      <PageSection>
-        <h2 className="section-title">Conservation in Action</h2>
-        <p className="section-subtitle">
-          Our data directly supports marine conservation efforts and policy decisions worldwide.
-        </p>
-
-        <Grid cols={2}>
-          <Card>
-            <h3 className="feature-title">🚨 Crisis Response</h3>
-            <p className="feature-description">
-              Real-time alerts for marine heatwaves, coral bleaching events,
-              and ecosystem threats enable rapid response from conservation teams.
-            </p>
-            <div style={{ marginTop: '16px' }}>
-              <Button href="/crisis" variant="primary" size="sm">
-                Crisis Monitor
-              </Button>
+            <div className="feature">
+              <div className="feature-icon">
+                <GlobeAltIcon className="w-full h-full" />
+              </div>
+              <h3 className="feature-title">Climate Analysis</h3>
+              <p className="feature-description">
+                Comprehensive climate data analysis with predictive modeling
+                for ocean temperature trends and ecosystem changes.
+              </p>
             </div>
-          </Card>
 
-          <Card>
-            <h3 className="feature-title">📚 Educational Resources</h3>
-            <p className="feature-description">
-              Interactive stories, data visualizations, and educational content
-              help people understand and protect our oceans.
-            </p>
-            <div style={{ marginTop: '16px' }}>
-              <Button href="/stories" variant="primary" size="sm">
-                Ocean Stories
-              </Button>
+            <div className="feature">
+              <div className="feature-icon">
+                <HeartIcon className="w-full h-full" />
+              </div>
+              <h3 className="feature-title">Conservation Action</h3>
+              <p className="feature-description">
+                Direct support for marine conservation efforts with real-time
+                crisis response and community-driven action campaigns.
+              </p>
             </div>
-          </Card>
-        </Grid>
-      </PageSection>
 
-      <PageSection>
-        <div style={{ textAlign: 'center', padding: '48px 0' }}>
-          <h2 className="section-title">Ready to Explore?</h2>
-          <p className="section-subtitle">
-            Join thousands of researchers, conservationists, and ocean enthusiasts
-            using BlueSphere to understand and protect our marine ecosystems.
-          </p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Button href="/map" variant="primary" size="lg">
-              Start Exploring
-            </Button>
-            <Button href="/about" variant="secondary" size="lg">
-              Learn More
-            </Button>
+            <div className="feature">
+              <div className="feature-icon">
+                <BeakerIcon className="w-full h-full" />
+              </div>
+              <h3 className="feature-title">Research Collaboration</h3>
+              <p className="feature-description">
+                Open platform for marine researchers with data sharing,
+                collaborative tools, and scientific publication support.
+              </p>
+            </div>
           </div>
         </div>
-      </PageSection>
-    </Layout>
+      </section>
+
+      {/* Call to Action */}
+      <section className="cta-section">
+        <div className="cta-content">
+          <h2 className="cta-title">Ready to Make a Difference?</h2>
+          <p className="cta-subtitle">
+            Join thousands of researchers, educators, and ocean enthusiasts
+            using BlueSphere to monitor and protect our marine ecosystems.
+          </p>
+          <Link href="/map" className="btn-cta">
+            <MapIcon className="w-5 h-5" />
+            Start Exploring
+          </Link>
+        </div>
+      </section>
+    </WorldClassLayout>
   );
 };
 
