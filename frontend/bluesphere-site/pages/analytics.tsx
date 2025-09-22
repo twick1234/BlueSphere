@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PredictiveAnalytics from '../components/PredictiveAnalytics';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 
 const AnalyticsPage = () => {
   const [timeframe, setTimeframe] = useState<'7days' | '14days' | '30days' | '90days'>('30days');
@@ -185,9 +185,9 @@ const AnalyticsPage = () => {
   );
 
   return (
-    <Layout title="Predictive Analytics Dashboard - BlueSphere">
+    <WorldClassLayout title="Predictive Analytics Dashboard - BlueSphere">
       <AnalyticsContent />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

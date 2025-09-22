@@ -1,12 +1,12 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import MarineLifeTracker from '../components/MarineLifeTracker';
 
 const MigrationPage = () => {
   return (
-    <Layout title="Marine Life Migration - BlueSphere">
+    <WorldClassLayout title="Marine Life Migration - BlueSphere">
       <MarineLifeTracker isDarkMode={false} />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

@@ -4,11 +4,11 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 
 const DocsPage = () => {
   return (
-    <Layout title="Documentation - BlueSphere">
+    <WorldClassLayout title="Documentation - BlueSphere">
       <div className="bs-section">
         <div className="max-w-4xl mx-auto">
           <h1 className="bs-heading-1 mb-8">📚 Documentation</h1>
@@ -89,7 +89,7 @@ const DocsPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

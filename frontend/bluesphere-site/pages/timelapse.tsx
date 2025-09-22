@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import TimeLapseVisualization from '../components/TimeLapseVisualization';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 
 const TimeLapsePage = () => {
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year' | '5years'>('month');
@@ -243,9 +243,9 @@ const TimeLapsePage = () => {
   };
 
   return (
-    <Layout title="Ocean Temperature Time-lapse - BlueSphere">
+    <WorldClassLayout title="Ocean Temperature Time-lapse - BlueSphere">
       <TimeLapseContent />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

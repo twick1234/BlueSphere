@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 
 const AboutPage = () => {
   return (
@@ -346,7 +346,7 @@ const AboutPage = () => {
         }
       `}</style>
 
-      <Layout
+      <WorldClassLayout
         title="About BlueSphere — Advanced Ocean Monitoring & Research Platform"
         description="Learn about BlueSphere's mission to monitor ocean health through real-time data, shark tracking, and marine conservation research. Supporting scientists and educators worldwide."
       >
@@ -608,7 +608,7 @@ const AboutPage = () => {
             </div>
           </div>
         </section>
-      </Layout>
+      </WorldClassLayout>
     </>
   );
 };

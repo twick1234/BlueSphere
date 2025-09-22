@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import Layout from '../components/Layout'
+import WorldClassLayout from '../components/WorldClassLayout'
 import AlertDashboard from '../components/AlertDashboard'
 import RealTimeStatus from '../components/RealTimeStatus'
 
@@ -545,7 +545,7 @@ function GlobalOceanMap() {
   
   if (loading) {
     return (
-      <Layout
+      <WorldClassLayout
         showNavigation={false}
         title="Global Ocean Monitoring Map - BlueSphere"
         description="Interactive map showing real-time ocean temperature data from 15,000+ monitoring stations worldwide. View current conditions, marine life tracking, and environmental data."
@@ -620,12 +620,12 @@ function GlobalOceanMap() {
             }
           }
         `}</style>
-      </Layout>
+      </WorldClassLayout>
     )
   }
 
   return (
-    <Layout
+    <WorldClassLayout
       showNavigation={false}
       title="Global Ocean Monitoring Map - BlueSphere"
       description="Interactive map showing real-time ocean temperature data from 15,000+ monitoring stations worldwide. View current conditions, marine life tracking, and environmental data."
@@ -1957,7 +1957,7 @@ function GlobalOceanMap() {
           }
         }
       `}</style>
-    </Layout>
+    </WorldClassLayout>
   )
 }
 

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2024–2025 Mark Lindon — BlueSphere
 import React from 'react'
-import Layout from '../components/Layout'
+import WorldClassLayout from '../components/WorldClassLayout'
 import { getPage, listSlugs } from '../lib/content'
 
 export default function Page({ html, title }:{ html:string, title:string }){
-  return <Layout title={title}><div dangerouslySetInnerHTML={{__html: html}} /></Layout>
+  return <WorldClassLayout title={title}><div dangerouslySetInnerHTML={{__html: html}} /></WorldClassLayout>
 }
 
 export async function getStaticPaths(){

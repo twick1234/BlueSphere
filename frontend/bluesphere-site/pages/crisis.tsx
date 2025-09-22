@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 
 interface CrisisAlert {
   id: string;
@@ -122,7 +122,7 @@ const CrisisPage = () => {
   });
 
   return (
-    <Layout title="Ocean Crisis Monitoring - BlueSphere">
+    <WorldClassLayout title="Ocean Crisis Monitoring - BlueSphere">
       <div className="bs-section">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
@@ -292,7 +292,7 @@ const CrisisPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import AlertDashboard from '../components/AlertDashboard';
 import AlertSubscriptionManager from '../components/AlertSubscriptionManager';
 import NotificationManager from '../components/NotificationManager';
@@ -95,9 +95,9 @@ const AlertsPage = () => {
   );
 
   return (
-    <Layout title="Ocean Alert System - BlueSphere">
+    <WorldClassLayout title="Ocean Alert System - BlueSphere">
       <AlertsContent />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

@@ -4,12 +4,12 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import MarineBiodiversityAI from '../components/MarineBiodiversityAI';
 
 const SpeciesAIPage = () => {
   return (
-    <Layout
+    <WorldClassLayout
       title="AI Species Recognition — Marine Life Identification | BlueSphere"
       description="Upload photos of marine life for instant AI-powered species identification. Contribute to global biodiversity databases and learn about ocean conservation through cutting-edge computer vision technology."
     >
@@ -253,7 +253,7 @@ const SpeciesAIPage = () => {
           </div>
         </section>
       </div>
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

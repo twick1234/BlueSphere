@@ -1,12 +1,12 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import OceanHealthScoring from '../components/OceanHealthScoring';
 
 const HealthPage = () => {
   return (
-    <Layout title="Ocean Health Assessment - BlueSphere">
+    <WorldClassLayout title="Ocean Health Assessment - BlueSphere">
       <OceanHealthScoring isDarkMode={false} />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 
 interface DataSource {
   id: string;
@@ -512,7 +512,7 @@ const SourcesPage = () => {
         }
       `}</style>
 
-      <Layout title="Data Sources - BlueSphere">
+      <WorldClassLayout title="Data Sources - BlueSphere">
         {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-bg-effects"></div>
@@ -696,7 +696,7 @@ const SourcesPage = () => {
             </div>
           </div>
         </section>
-      </Layout>
+      </WorldClassLayout>
     </>
   );
 };

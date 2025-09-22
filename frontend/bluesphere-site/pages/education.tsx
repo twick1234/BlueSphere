@@ -1,12 +1,12 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import EducationalResourceCenter from '../components/EducationalResourceCenter';
 
 const EducationPage = () => {
   return (
-    <Layout title="Educational Resource Center - BlueSphere">
+    <WorldClassLayout title="Educational Resource Center - BlueSphere">
       <EducationalResourceCenter isDarkMode={false} />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

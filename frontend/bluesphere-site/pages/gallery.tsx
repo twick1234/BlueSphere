@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import MarineGallery from '../components/MarineGallery';
 
 const GalleryPage = () => {
@@ -106,7 +106,7 @@ const GalleryPage = () => {
         }
       `}</style>
 
-      <Layout title="Marine Photography Gallery - BlueSphere">
+      <WorldClassLayout title="Marine Photography Gallery - BlueSphere">
         {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-bg-effects"></div>
@@ -169,7 +169,7 @@ const GalleryPage = () => {
             </div>
           </div>
         </section>
-      </Layout>
+      </WorldClassLayout>
     </>
   );
 };

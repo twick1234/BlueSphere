@@ -4,12 +4,12 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import { LayeredMapInterface } from '../components/advanced-mapping';
 
 const MappingPage = () => {
   return (
-    <Layout
+    <WorldClassLayout
       title="Advanced Marine Mapping — Interactive Ocean Data Visualization | BlueSphere"
       description="Explore interactive marine data layers including shark tracking, protected areas, research stations, and ocean conditions. Google Maps-style interface for comprehensive ocean monitoring."
       keywords="marine mapping, ocean data, shark tracking, interactive maps, marine protected areas, research stations"
@@ -387,7 +387,7 @@ const MappingPage = () => {
           </div>
         </section>
       </div>
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2024–2025 Mark Lindon — BlueSphere
-import Layout from '../components/Layout'
+import WorldClassLayout from '../components/WorldClassLayout'
 import { useEffect, useMemo, useState } from 'react'
 import { getPage } from '../lib/content'
 import Chatbot from '../components/Chatbot'
@@ -22,7 +22,7 @@ export default function FAQ({ html }: { html: string }){
 
   useEffect(()=>{}, [q]);
 
-  return <Layout title="FAQ">
+  return <WorldClassLayout title="FAQ">
     <h1>Frequently Asked Questions</h1>
     <div style={{display:'flex', gap:8, alignItems:'center', margin:'12px 0'}}>
       <input placeholder="Search questions..." value={q} onChange={e=>setQ(e.target.value)} style={{flex:1, padding:'8px 10px', borderRadius:8, border:'1px solid #ddd'}} />
@@ -35,7 +35,7 @@ export default function FAQ({ html }: { html: string }){
       {q && <div>{blocks.map((b,i)=>(<p key={i}>{b}</p>))}</div>}
     </div>
     <Chatbot />
-  </Layout>
+  </WorldClassLayout>
 }
 
 export async function getStaticProps(){

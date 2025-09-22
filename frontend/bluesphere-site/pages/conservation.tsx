@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import ConservationActionCenter from '../components/ConservationActionCenter';
 
 const ConservationPage = () => {
@@ -289,7 +289,7 @@ const ConservationPage = () => {
         }
       `}</style>
 
-      <Layout
+      <WorldClassLayout
         title="Marine Conservation Action Center — Ocean Protection | BlueSphere"
         description="Take action for marine conservation. Discover ocean protection initiatives, track conservation progress, and join global efforts to protect coral reefs, marine life, and ocean ecosystems."
       >
@@ -472,7 +472,7 @@ const ConservationPage = () => {
             </div>
           </div>
         </section>
-      </Layout>
+      </WorldClassLayout>
     </>
   );
 };

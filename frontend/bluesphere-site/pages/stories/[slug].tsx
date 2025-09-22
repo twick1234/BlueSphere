@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2024–2025 Mark Lindon — BlueSphere
-import Layout from '../../components/Layout'
+import WorldClassLayout from '../../components/WorldClassLayout'
 import { getStory, listStorySlugs } from '../../lib/content'
 
 export default function Story({ title, html }:{ title:string, html:string }){
-  return <Layout title={title}>
+  return <WorldClassLayout title={title}>
     <div dangerouslySetInnerHTML={{__html: html}} />
-  </Layout>
+  </WorldClassLayout>
 }
 
 export async function getStaticPaths(){

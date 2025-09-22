@@ -6,14 +6,14 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import WorldClassLayout from '../../components/WorldClassLayout';
 import StorytellingContent from '../../components/StorytellingContent';
 import Link from 'next/link';
 import { listStorySlugs, getStory } from '../../lib/content';
 
 export default function Stories({ items }: { items: { slug: string; title: string }[] }) {
   return (
-    <Layout title="Ocean Stories - Educational Content | BlueSphere">
+    <WorldClassLayout title="Ocean Stories - Educational Content | BlueSphere">
       <StorytellingContent />
 
       {/* Legacy stories section if needed */}
@@ -32,7 +32,7 @@ export default function Stories({ items }: { items: { slug: string; title: strin
           </div>
         </div>
       )}
-    </Layout>
+    </WorldClassLayout>
   );
 }
 

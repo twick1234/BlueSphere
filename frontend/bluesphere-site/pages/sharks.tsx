@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import SharkProfile from '../components/SharkProfile';
 import { SharkData, SharkProfile as SharkProfileData, OCEARCHService, sharkTracker } from '../lib/shark-tracking';
 
@@ -131,7 +131,7 @@ const SharksPage = () => {
   });
 
   return (
-    <Layout
+    <WorldClassLayout
       title="Shark Tracking — Real-time Tagged Shark Monitoring | BlueSphere"
       description="Track hundreds of tagged sharks worldwide in real-time. Interactive map showing Great Whites, Tiger Sharks, and more with live locations, migration patterns, and conservation data."
     >
@@ -654,7 +654,7 @@ const SharksPage = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

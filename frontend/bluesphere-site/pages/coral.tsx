@@ -1,12 +1,12 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import CoralReefMonitoring from '../components/CoralReefMonitoring';
 
 const CoralPage = () => {
   return (
-    <Layout title="Coral Reef Monitoring - BlueSphere">
+    <WorldClassLayout title="Coral Reef Monitoring - BlueSphere">
       <CoralReefMonitoring isDarkMode={false} />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

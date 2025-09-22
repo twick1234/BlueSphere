@@ -1,12 +1,12 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import PollutionDetection from '../components/PollutionDetection';
 
 const PollutionPage = () => {
   return (
-    <Layout title="Ocean Pollution Detection - BlueSphere">
+    <WorldClassLayout title="Ocean Pollution Detection - BlueSphere">
       <PollutionDetection isDarkMode={false} />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

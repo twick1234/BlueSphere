@@ -1,4 +1,4 @@
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import Link from 'next/link';
 
 const ArchitecturePage = () => {
@@ -274,9 +274,9 @@ const ArchitecturePage = () => {
   );
 
   return (
-    <Layout title="System Architecture - BlueSphere">
+    <WorldClassLayout title="System Architecture - BlueSphere">
       <ArchitectureContent />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 

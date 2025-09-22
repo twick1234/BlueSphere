@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
+import WorldClassLayout from '../components/WorldClassLayout';
 import HistoricalDataCycler from '../components/HistoricalDataCycler';
 
 const HistoricalDataPage = () => {
@@ -236,9 +236,9 @@ const HistoricalDataPage = () => {
   );
 
   return (
-    <Layout title="Historical Ocean Temperature Analysis - BlueSphere">
+    <WorldClassLayout title="Historical Ocean Temperature Analysis - BlueSphere">
       <HistoricalContent />
-    </Layout>
+    </WorldClassLayout>
   );
 };
 
