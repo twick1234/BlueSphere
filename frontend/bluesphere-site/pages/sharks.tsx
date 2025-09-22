@@ -89,7 +89,13 @@ const SharksPage = () => {
         setIsLoading(true);
         console.log('Loading shark data from OCEARCHService...');
 
-        const sharkData = await OCEARCHService.getTrackedSharks();
+        // Set a reasonable timeout for data loading
+        const loadPromise = OCEARCHService.getTrackedSharks();
+        const timeoutPromise = new Promise<SharkData[]>((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), 3000)
+        );
+
+        const sharkData = await Promise.race([loadPromise, timeoutPromise]);
         console.log(`Received ${sharkData.length} sharks from service`);
 
         // Convert SharkData to TrackedShark format for this page
@@ -98,9 +104,12 @@ const SharksPage = () => {
         setTrackedSharks(convertedSharks);
         console.log(`Successfully loaded ${convertedSharks.length} tracked sharks`);
       } catch (error) {
-        console.error('Failed to load shark data:', error);
-        // Fallback to empty array on error
-        setTrackedSharks([]);
+        console.error('Failed to load shark data, using fallback:', error);
+        // Fallback to mock data immediately on error or timeout
+        const fallbackData = await OCEARCHService.getEnhancedMockData();
+        const convertedFallback = fallbackData.map(convertFromSharkData);
+        setTrackedSharks(convertedFallback);
+        console.log(`Using fallback data: ${convertedFallback.length} sharks`);
       } finally {
         setIsLoading(false);
       }
@@ -292,6 +301,24 @@ const SharksPage = () => {
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
           overflow: hidden;
           height: 600px;
+          position: relative;
+        }
+
+        .map-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 600px;
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-loading p {
+          margin-top: 1rem;
+          color: #64748b;
+          font-size: 1rem;
         }
 
         .sharks-grid {
