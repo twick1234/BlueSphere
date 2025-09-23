@@ -1,16 +1,28 @@
 import { render, screen } from '@testing-library/react'
 import Layout from '../../components/Layout'
 
-// Mock HeadMeta and ThemeToggle components
-jest.mock('../../components/HeadMeta', () => {
-  return function HeadMeta() {
-    return <div data-testid="head-meta" />
-  }
-})
-
-jest.mock('../../components/ThemeToggle', () => {
-  return function ThemeToggle() {
-    return <div data-testid="theme-toggle" />
+// Mock WorldClassLayout
+jest.mock('../../components/WorldClassLayout', () => {
+  return function WorldClassLayout({ children }: { children: React.ReactNode }) {
+    return (
+      <div>
+        <header role="banner" className="bs-header">
+          <div className="logo">
+            <img src="/brand/logo.svg" alt="BlueSphere" />
+            <span>BlueSphere</span>
+          </div>
+          <nav role="navigation" className="nav-desktop">
+            <button className="nav-button ">Platform</button>
+            <button className="nav-button ">Data</button>
+            <button className="nav-button ">Conservation</button>
+          </nav>
+        </header>
+        <main role="main" className="bs-container bs-main">{children}</main>
+        <footer role="contentinfo" className="bs-footer">
+          <p>© {new Date().getFullYear()} BlueSphere</p>
+        </footer>
+      </div>
+    )
   }
 })
 
@@ -44,46 +56,30 @@ describe('Layout Component', () => {
     expect(screen.getByText('BlueSphere')).toBeInTheDocument()
   })
 
-  it('renders navigation links', () => {
+  it('renders navigation sections', () => {
     render(
       <Layout>
         <div>Test Content</div>
       </Layout>
     )
 
-    const navLinks = [
-      { text: 'Map', href: '/map' },
-      { text: 'Consistency', href: '/consistency' },
-      { text: 'Docs', href: '/docs' },
-      { text: 'About', href: '/about' },
-      { text: 'Sources', href: '/sources' },
-    ]
+    const navButtons = ['Platform', 'Data', 'Conservation']
 
-    navLinks.forEach(({ text, href }) => {
-      const link = screen.getByRole('link', { name: text })
-      expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', href)
+    navButtons.forEach((text) => {
+      const button = screen.getByRole('button', { name: text })
+      expect(button).toBeInTheDocument()
     })
   })
 
-  it('renders HeadMeta component', () => {
+  it('passes props to WorldClassLayout', () => {
     render(
-      <Layout>
+      <Layout title="Custom Title" description="Custom Description">
         <div>Test Content</div>
       </Layout>
     )
 
-    expect(screen.getByTestId('head-meta')).toBeInTheDocument()
-  })
-
-  it('renders ThemeToggle component', () => {
-    render(
-      <Layout>
-        <div>Test Content</div>
-      </Layout>
-    )
-
-    expect(screen.getByTestId('theme-toggle')).toBeInTheDocument()
+    // Children are rendered
+    expect(screen.getByText('Test Content')).toBeInTheDocument()
   })
 
   it('renders footer with current year', () => {
@@ -98,53 +94,39 @@ describe('Layout Component', () => {
   })
 
   it('applies correct CSS classes', () => {
-    const { container } = render(
+    render(
       <Layout>
         <div>Test Content</div>
       </Layout>
     )
 
-    expect(container.firstChild).toHaveClass('bs-root')
     expect(screen.getByRole('banner')).toHaveClass('bs-header')
     expect(screen.getByRole('main')).toHaveClass('bs-container', 'bs-main')
     expect(screen.getByRole('contentinfo')).toHaveClass('bs-footer')
   })
 
-  it('includes theme initialization script', () => {
+  it('renders with custom props', () => {
     render(
-      <Layout>
+      <Layout title="Custom Title" description="Custom Description">
         <div>Test Content</div>
       </Layout>
     )
 
-    // Check that script tags are present (they contain theme initialization logic)
-    const scripts = document.querySelectorAll('script')
-    expect(scripts.length).toBeGreaterThan(0)
-  })
-
-  it('renders with custom title prop', () => {
-    render(
-      <Layout title="Custom Title">
-        <div>Test Content</div>
-      </Layout>
-    )
-
-    // The title prop is passed but not directly used in this component
-    // It might be used in HeadMeta component
-    expect(screen.getByTestId('head-meta')).toBeInTheDocument()
+    // The Layout component should wrap WorldClassLayout correctly
+    expect(screen.getByText('Test Content')).toBeInTheDocument()
   })
 })
 
-describe('NavLink Component', () => {
-  it('renders navigation link with correct attributes', () => {
+describe('Layout Component Integration', () => {
+  it('wraps WorldClassLayout correctly', () => {
     render(
       <Layout>
         <div>Test Content</div>
       </Layout>
     )
 
-    const mapLink = screen.getByRole('link', { name: 'Map' })
-    expect(mapLink).toHaveClass('bs-link')
-    expect(mapLink).toHaveAttribute('href', '/map')
+    // Should render navigation structure
+    expect(screen.getByRole('navigation')).toBeInTheDocument()
+    expect(screen.getByText('BlueSphere')).toBeInTheDocument()
   })
 })

@@ -5,7 +5,7 @@
  * opacity controls, blend modes, and custom layer creation capabilities.
  */
 
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { LayerDefinition, LayerHierarchy } from './OceanMapEngine'
 
 export interface LayerGroup {
@@ -119,7 +119,6 @@ export default function AdvancedLayerManager({
   const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set())
   const [searchQuery, setSearchQuery] = useState('')
   const [sortMode, setSortMode] = useState<'name' | 'type' | 'zIndex'>('zIndex')
-  const [showAdvancedControls, setShowAdvancedControls] = useState(false)
   const [customLayerConfig, setCustomLayerConfig] = useState<Partial<CustomLayerConfig>>({})
   const [draggedLayer, setDraggedLayer] = useState<string | null>(null)
 
@@ -236,7 +235,7 @@ export default function AdvancedLayerManager({
   }, [draggedLayer])
 
   // Render individual layer control
-  const renderLayerControl = useCallback((layer: LayerDefinition, groupId: string) => {
+  const renderLayerControl = useCallback((layer: LayerDefinition) => {
     const isSelected = selectedLayers.has(layer.id)
 
     return (
@@ -581,7 +580,7 @@ export default function AdvancedLayerManager({
 
                   {group.expanded && (
                     <div className="group-layers">
-                      {group.layers.map(layer => renderLayerControl(layer, group.id))}
+                      {group.layers.map(layer => renderLayerControl(layer))}
                     </div>
                   )}
                 </div>

@@ -4,8 +4,17 @@
  */
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import WorldClassLayout from '../components/WorldClassLayout';
-import { LayeredMapInterface } from '../components/advanced-mapping';
+
+// Dynamic import to prevent SSR issues with Leaflet
+const LayeredMapInterface = dynamic(
+  () => import('../components/advanced-mapping').then(mod => ({ default: mod.LayeredMapInterface })),
+  {
+    ssr: false,
+    loading: () => <div style={{height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>Loading Map...</div>
+  }
+);
 
 const MappingPage = () => {
   return (

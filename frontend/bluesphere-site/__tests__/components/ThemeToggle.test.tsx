@@ -28,7 +28,7 @@ describe('ThemeToggle Component', () => {
   beforeEach(() => {
     localStorageMock.clear()
     jest.clearAllMocks()
-    
+
     // Mock matchMedia consistently
     const mockMediaQueryList = {
       matches: false,
@@ -36,7 +36,7 @@ describe('ThemeToggle Component', () => {
       removeEventListener: jest.fn(),
     }
     window.matchMedia = jest.fn().mockReturnValue(mockMediaQueryList)
-    
+
     // Reset document.documentElement attributes
     document.documentElement.removeAttribute('data-theme')
     // Clean up existing mock logo elements
@@ -49,6 +49,9 @@ describe('ThemeToggle Component', () => {
     logoElement.id = 'bs-logo'
     logoElement.src = '/brand/logo.svg'
     document.body.appendChild(logoElement)
+
+    // Reset localStorage to ensure 'system' is the default
+    localStorageMock.getItem.mockReturnValue(null)
   })
 
   afterEach(() => {
@@ -120,8 +123,10 @@ describe('ThemeToggle Component', () => {
 
     const button = screen.getByRole('button')
 
-    // Initial system theme (should not have data-theme attribute)
-    expect(document.documentElement).not.toHaveAttribute('data-theme')
+    // Wait for initial theme to be applied
+    await waitFor(() => {
+      expect(document.documentElement).not.toHaveAttribute('data-theme')
+    })
 
     // Click to light theme
     await user.click(button)
@@ -149,8 +154,10 @@ describe('ThemeToggle Component', () => {
     render(<ThemeToggle />)
     const button = screen.getByRole('button')
 
-    // Initial system theme (uses default logo)
-    expect(logoElement.src).toContain('/brand/logo.svg')
+    // Wait for initial theme to be applied
+    await waitFor(() => {
+      expect(logoElement.src).toContain('/brand/logo.svg')
+    })
 
     // Click to light theme
     await user.click(button)

@@ -14,14 +14,20 @@ const nextConfig = {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'https://bluesphere-frontend.onrender.com',
   },
 
-  // Image optimization disabled for static export
+  // Image optimization configuration
   images: {
-    unoptimized: true,
+    unoptimized: process.env.DEPLOYMENT_TARGET === 'github-pages',
     domains: [
       'bluesphere-api.onrender.com',
       'coastwatch.pfeg.noaa.gov',
-      'www.ndbc.noaa.gov'
-    ]
+      'www.ndbc.noaa.gov',
+      'images.unsplash.com',
+      'localhost'
+    ],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384]
   },
 
   // Compression and optimization
@@ -49,6 +55,22 @@ const nextConfig = {
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'on'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https: http:; connect-src 'self' https: wss:; frame-src 'self';"
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
           }
         ]
       }

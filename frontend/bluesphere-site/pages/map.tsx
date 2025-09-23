@@ -546,7 +546,6 @@ function GlobalOceanMap() {
   if (loading) {
     return (
       <WorldClassLayout
-        showNavigation={false}
         title="Global Ocean Monitoring Map - BlueSphere"
         description="Interactive map showing real-time ocean temperature data from 15,000+ monitoring stations worldwide. View current conditions, marine life tracking, and environmental data."
         keywords="ocean map, real-time ocean data, sea temperature map, marine monitoring stations, ocean sensors, interactive ocean map"
@@ -626,7 +625,6 @@ function GlobalOceanMap() {
 
   return (
     <WorldClassLayout
-      showNavigation={false}
       title="Global Ocean Monitoring Map - BlueSphere"
       description="Interactive map showing real-time ocean temperature data from 15,000+ monitoring stations worldwide. View current conditions, marine life tracking, and environmental data."
       keywords="ocean map, real-time ocean data, sea temperature map, marine monitoring stations, ocean sensors, interactive ocean map"

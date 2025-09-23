@@ -822,10 +822,10 @@ function generateTemperatureData(): {
     max_temperature: hw.maxTemp,
     duration_days: hw.duration,
     boundaries: [
-      [hw.center[0] + 3, hw.center[1] - 5],
-      [hw.center[0] + 3, hw.center[1] + 5],
-      [hw.center[0] - 3, hw.center[1] + 5],
-      [hw.center[0] - 3, hw.center[1] - 5]
+      [hw.center[0] + 3, hw.center[1] - 5] as [number, number],
+      [hw.center[0] + 3, hw.center[1] + 5] as [number, number],
+      [hw.center[0] - 3, hw.center[1] + 5] as [number, number],
+      [hw.center[0] - 3, hw.center[1] - 5] as [number, number]
     ],
     center: hw.center,
     impact_assessment: hw.impact
