@@ -21,7 +21,6 @@ interface AccessibleDataVisualizationProps {
   data: DataPoint[];
   title: string;
   description?: string;
-  type: 'chart' | 'graph' | 'map' | 'table';
   unit?: string;
   showTable?: boolean;
   showSummary?: boolean;
@@ -32,7 +31,6 @@ export function AccessibleDataVisualization({
   data,
   title,
   description,
-  type,
   unit = '',
   showTable = true,
   showSummary = true,

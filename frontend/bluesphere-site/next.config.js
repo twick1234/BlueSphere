@@ -98,13 +98,44 @@ const nextConfig = {
       config.optimization = {
         ...config.optimization,
         minimize: true,
+        usedExports: true,
+        sideEffects: false,
         splitChunks: {
           chunks: 'all',
+          minSize: 20000,
+          maxSize: 244000,
           cacheGroups: {
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
             vendor: {
               test: /[\\/]node_modules[\\/]/,
               name: 'vendors',
+              priority: -10,
               chunks: 'all',
+            },
+            // Separate chunk for Leaflet to enable better caching
+            leaflet: {
+              test: /[\\/]node_modules[\\/](leaflet|react-leaflet)[\\/]/,
+              name: 'leaflet',
+              chunks: 'all',
+              priority: 30,
+            },
+            // Separate chunk for D3 and visualization libraries
+            viz: {
+              test: /[\\/]node_modules[\\/](d3|react-chartjs-2|chart\.js)[\\/]/,
+              name: 'visualization',
+              chunks: 'all',
+              priority: 25,
+            },
+            // React and common utilities
+            common: {
+              test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
+              name: 'react-vendor',
+              chunks: 'all',
+              priority: 20,
             },
           },
         },
@@ -121,6 +152,19 @@ const nextConfig = {
         })
       )
     }
+
+    // Preload critical resources
+    config.module.rules.push({
+      test: /\.(js|ts|tsx)$/,
+      include: [/components\/OceanMap/, /components\/SharkMap/],
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['next/babel'],
+          plugins: [['import', { libraryName: 'leaflet', libraryDirectory: 'dist' }]]
+        }
+      }
+    });
 
     return config
   }

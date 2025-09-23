@@ -1,46 +1,502 @@
-:root{
-  --bs-bg: #f8fafc;
-  --bs-fg: #0f172a;
-  --bs-accent: #0ea5e9;
-  --bs-muted: #64748b;
-  --bs-border: #e5e7eb;
+/**
+ * BlueSphere Global Styles
+ * Unified CSS architecture with design tokens
+ * Copyright (c) 2025 Mark Lindon — BlueSphere
+ */
+
+/* Import Tailwind CSS base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import design tokens */
+@import './design-tokens.css';
+
+/* ===== Global Reset & Base Styles ===== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-html, body { margin:0; padding:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; color: var(--bs-fg); background: var(--bs-bg); }
-a { color: var(--bs-accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-.bs-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
-.bs-header { position: sticky; top: 0; z-index: 50; background: white; border-bottom: 1px solid var(--bs-border); }
-.bs-header-inner { display:flex; align-items:center; justify-content: space-between; height: 56px; }
-.bs-brand a { font-weight: 700; letter-spacing: 0.2px; color: var(--bs-fg); }
-.bs-nav { display:flex; gap: 16px; }
-.bs-link { padding: 8px 10px; border-radius: 8px; }
-.bs-link:hover { background: #f1f5f9; text-decoration: none; }
-.bs-main { padding: 24px 16px; min-height: calc(100vh - 56px - 56px); }
-.bs-footer { border-top: 1px solid var(--bs-border); padding: 16px 0; color: var(--bs-muted); background: white; }
-pre, code { background: #0b1020; color: #e2e8f0; border-radius: 8px; padding: 8px 10px; }
 
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
 
-/* Dark mode base */
-@media (prefers-color-scheme: dark){
-  :root{
-    --bs-bg: #0b1020;
-    --bs-fg: #e2e8f0;
-    --bs-border: #1f2937;
+body {
+  font-family: var(--bs-font-family-sans);
+  background-color: var(--bs-bg-primary);
+  color: var(--bs-text-primary);
+  line-height: var(--bs-leading-normal);
+  transition: background-color var(--bs-transition-normal), color var(--bs-transition-normal);
+}
+
+/* ===== Typography ===== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--bs-font-semibold);
+  line-height: var(--bs-leading-tight);
+  color: var(--bs-text-primary);
+  margin-bottom: var(--bs-space-4);
+}
+
+h1 {
+  font-size: var(--bs-text-4xl);
+  font-weight: var(--bs-font-bold);
+}
+
+h2 {
+  font-size: var(--bs-text-3xl);
+}
+
+h3 {
+  font-size: var(--bs-text-2xl);
+}
+
+h4 {
+  font-size: var(--bs-text-xl);
+}
+
+h5 {
+  font-size: var(--bs-text-lg);
+}
+
+h6 {
+  font-size: var(--bs-text-base);
+}
+
+p {
+  margin-bottom: var(--bs-space-4);
+  color: var(--bs-text-secondary);
+  line-height: var(--bs-leading-relaxed);
+}
+
+/* ===== Links ===== */
+
+a {
+  color: var(--bs-primary);
+  text-decoration: none;
+  transition: color var(--bs-transition-fast);
+}
+
+a:hover {
+  color: var(--bs-primary-hover);
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid var(--bs-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--bs-radius-sm);
+}
+
+/* ===== Code Blocks ===== */
+
+pre, code {
+  font-family: var(--bs-font-family-mono);
+  background-color: var(--bs-deep-900);
+  color: var(--bs-deep-50);
+  border-radius: var(--bs-radius-md);
+  font-size: var(--bs-text-sm);
+}
+
+pre {
+  padding: var(--bs-space-4);
+  overflow-x: auto;
+  margin-bottom: var(--bs-space-4);
+  border: 1px solid var(--bs-deep-700);
+}
+
+code {
+  padding: var(--bs-space-1) var(--bs-space-2);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* ===== Focus Management ===== */
+
+:focus {
+  outline: 2px solid var(--bs-border-focus);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ===== Reduced Motion ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  .bs-header, .bs-footer { background: #0b1020; }
-  a { color: #7dd3fc; }
-  .bs-link:hover { background: #111827; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
+/* ===== Legacy Support for Existing Components ===== */
 
-/* Explicit theme override via [data-theme] */
-:root[data-theme="light"]{
-  --bs-bg: #f8fafc;
-  --bs-fg: #0f172a;
-  --bs-border: #e5e7eb;
+/* Support for legacy bs- classes */
+.bs-container {
+  @apply bs-container;
 }
-:root[data-theme="dark"]{
-  --bs-bg: #0b1020;
-  --bs-fg: #e2e8f0;
-  --bs-border: #1f2937;
+
+.bs-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--bs-nav-backdrop);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--bs-border-primary);
+  transition: all var(--bs-transition-fast);
+}
+
+.bs-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--bs-nav-height);
+  padding: 0 var(--bs-nav-padding);
+  max-width: var(--bs-container-xl);
+  margin: 0 auto;
+}
+
+.bs-brand a {
+  font-weight: var(--bs-font-bold);
+  letter-spacing: 0.5px;
+  color: var(--bs-text-primary);
+  font-size: var(--bs-text-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-3);
+}
+
+.bs-nav {
+  display: flex;
+  gap: var(--bs-space-2);
+  align-items: center;
+}
+
+.bs-link {
+  padding: var(--bs-space-2) var(--bs-space-3);
+  border-radius: var(--bs-radius-lg);
+  color: var(--bs-text-secondary);
+  font-weight: var(--bs-font-medium);
+  transition: all var(--bs-transition-fast);
+}
+
+.bs-link:hover {
+  background-color: var(--bs-surface-hover);
+  color: var(--bs-text-primary);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.bs-link.active {
+  color: var(--bs-primary);
+  background-color: var(--bs-primary-light);
+}
+
+.bs-main {
+  padding: var(--bs-space-6) var(--bs-space-4);
+  min-height: calc(100vh - var(--bs-nav-height) - var(--bs-nav-height));
+  max-width: var(--bs-container-xl);
+  margin: 0 auto;
+}
+
+.bs-footer {
+  border-top: 1px solid var(--bs-border-primary);
+  padding: var(--bs-space-4) 0;
+  color: var(--bs-text-muted);
+  background-color: var(--bs-surface);
+  text-align: center;
+}
+
+/* ===== Premium Design System Components ===== */
+
+/* Glass morphism cards */
+.bs-glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--bs-radius-2xl);
+  box-shadow: var(--bs-shadow-xl);
+  padding: var(--bs-space-6);
+  transition: all var(--bs-transition-normal);
+}
+
+.bs-glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bs-shadow-2xl);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Premium gradients */
+.bs-gradient-ocean {
+  background: linear-gradient(135deg, var(--bs-ocean-500) 0%, var(--bs-ocean-600) 100%);
+}
+
+.bs-gradient-hero {
+  background: linear-gradient(135deg, var(--bs-ocean-400) 0%, var(--bs-kelp-400) 50%, var(--bs-sand-400) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.bs-gradient-deep {
+  background: linear-gradient(135deg, var(--bs-deep-800) 0%, var(--bs-deep-900) 100%);
+}
+
+/* Animation classes */
+.bs-animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.bs-animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(14, 165, 233, 0.3); }
+  to { box-shadow: 0 0 30px rgba(14, 165, 233, 0.6); }
+}
+
+/* Responsive utilities */
+.bs-show-mobile {
+  display: block;
+}
+
+.bs-hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .bs-show-mobile {
+    display: none;
+  }
+
+  .bs-hide-mobile {
+    display: block;
+  }
+
+  .bs-main {
+    padding: var(--bs-space-8) var(--bs-space-6);
+  }
+}
+
+/* ===== Component-Specific Overrides ===== */
+
+/* Form elements */
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* Button focus states */
+button:focus {
+  outline: 2px solid var(--bs-border-focus);
+  outline-offset: 2px;
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* List styles */
+ul, ol {
+  padding-left: var(--bs-space-6);
+  margin-bottom: var(--bs-space-4);
+}
+
+li {
+  margin-bottom: var(--bs-space-1);
+  color: var(--bs-text-secondary);
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--bs-space-6);
+}
+
+th, td {
+  padding: var(--bs-space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--bs-border-primary);
+}
+
+th {
+  background-color: var(--bs-bg-secondary);
+  font-weight: var(--bs-font-semibold);
+  color: var(--bs-text-primary);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bs-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bs-border-secondary);
+  border-radius: var(--bs-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-primary);
+}
+
+/* ===== Dark Mode Enhancements ===== */
+
+[data-theme="dark"] .bs-glass-card {
+  background: rgba(30, 41, 59, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .bs-header {
+  background-color: rgba(15, 23, 42, 0.8);
+}
+
+[data-theme="dark"] th {
+  background-color: var(--bs-deep-800);
+}
+
+/* ===== Print Styles ===== */
+
+@media print {
+  .bs-header,
+  .bs-footer {
+    display: none;
+  }
+
+  .bs-main {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    min-height: auto;
+  }
+
+  .bs-glass-card {
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .bs-gradient-hero,
+  .bs-gradient-ocean,
+  .bs-gradient-deep {
+    background: none;
+    color: inherit;
+  }
+}
+
+/* ===== Accessibility Enhancements ===== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --bs-text-primary: #000000;
+    --bs-text-secondary: #000000;
+    --bs-bg-primary: #ffffff;
+    --bs-border-primary: #000000;
+    --bs-primary: #0000ff;
+  }
+
+  [data-theme="dark"] {
+    --bs-text-primary: #ffffff;
+    --bs-text-secondary: #ffffff;
+    --bs-bg-primary: #000000;
+    --bs-border-primary: #ffffff;
+    --bs-primary: #00ffff;
+  }
+}
+
+/* Ensure interactive elements are accessible */
+button,
+input,
+textarea,
+select,
+[role="button"],
+[tabindex="0"] {
+  min-height: 44px; /* Touch target size */
+  min-width: 44px;
+}
+
+/* Skip links for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--bs-primary);
+  color: var(--bs-text-inverse);
+  padding: var(--bs-space-2) var(--bs-space-4);
+  border-radius: var(--bs-radius-md);
+  text-decoration: none;
+  z-index: 1000;
+  transition: top var(--bs-transition-fast);
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== Performance Optimizations ===== */
+
+/* GPU acceleration for smooth animations */
+.bs-glass-card,
+.bs-animate-float,
+.bs-animate-glow {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimize font loading */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 }

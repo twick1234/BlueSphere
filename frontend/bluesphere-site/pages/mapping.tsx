@@ -7,12 +7,20 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import WorldClassLayout from '../components/WorldClassLayout';
 
-// Dynamic import to prevent SSR issues with Leaflet
+// Optimized dynamic import with better loading and preload hints
 const LayeredMapInterface = dynamic(
   () => import('../components/advanced-mapping').then(mod => ({ default: mod.LayeredMapInterface })),
   {
     ssr: false,
-    loading: () => <div style={{height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>Loading Map...</div>
+    loading: () => (
+      <div className="map-loading-container">
+        <div className="map-loading-content">
+          <div className="map-loading-spinner"></div>
+          <h3>Loading Interactive Marine Map</h3>
+          <p>Preparing ocean data visualization...</p>
+        </div>
+      </div>
+    )
   }
 );
 
@@ -175,6 +183,49 @@ const MappingPage = () => {
           font-weight: 500;
         }
 
+        .map-loading-container {
+          height: 600px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          border-radius: 16px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .map-loading-content {
+          text-align: center;
+          color: #64748b;
+        }
+
+        .map-loading-content h3 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #0f172a;
+          margin-bottom: 0.5rem;
+        }
+
+        .map-loading-content p {
+          font-size: 1rem;
+          opacity: 0.8;
+          margin-bottom: 2rem;
+        }
+
+        .map-loading-spinner {
+          width: 40px;
+          height: 40px;
+          border: 4px solid #e2e8f0;
+          border-top: 4px solid #0ea5e9;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
           .hero-title {
             font-size: 2rem;
@@ -199,6 +250,10 @@ const MappingPage = () => {
 
           .controls-grid {
             grid-template-columns: 1fr;
+          }
+
+          .map-loading-container {
+            height: 400px;
           }
         }
       `}</style>
