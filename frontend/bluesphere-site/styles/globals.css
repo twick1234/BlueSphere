@@ -151,7 +151,7 @@ pre code {
 
 /* Support for legacy bs- classes */
 .bs-container {
-  @apply bs-container;
+  @apply container mx-auto px-4;
 }
 
 .bs-header {
