@@ -297,7 +297,7 @@ const MetricsDashboard = () => {
                 </div>
               </div>
               <div className="mt-4 text-xs text-gray-500">
-                Last failure: {new Date(metrics.system.lastFailure).toLocaleDateString()}
+                Last failure: <span suppressHydrationWarning>{new Date(metrics.system.lastFailure).toLocaleDateString()}</span>
               </div>
             </div>
 
@@ -484,7 +484,7 @@ const MetricsDashboard = () => {
           {/* Footer */}
           <div className="text-center text-gray-500 text-sm">
             <p>
-              🌊 BlueSphere Marine Monitoring Platform • Last updated: {new Date().toLocaleString()}
+              🌊 BlueSphere Marine Monitoring Platform • Last updated: <span suppressHydrationWarning>{new Date().toLocaleString()}</span>
             </p>
             <p className="mt-2">
               Dashboard URL: <code className="bg-gray-100 px-2 py-1 rounded">
