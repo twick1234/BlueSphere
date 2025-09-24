@@ -1,0 +1,165 @@
+{
+  "config": {
+    "configFile": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/playwright.config.ts",
+    "rootDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright/config/global-setup.ts",
+    "globalTeardown": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright/config/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "playwright-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+        "testIgnore": [],
+        "testMatch": [
+          "**/__tests__/playwright/**/*.spec.ts",
+          "**/__tests__/e2e/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+        "testIgnore": [],
+        "testMatch": [
+          "**/__tests__/playwright/**/*.spec.ts",
+          "**/__tests__/e2e/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+        "testIgnore": [],
+        "testMatch": [
+          "**/__tests__/playwright/**/*.spec.ts",
+          "**/__tests__/e2e/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+        "testIgnore": [],
+        "testMatch": [
+          "**/__tests__/playwright/**/*.spec.ts",
+          "**/__tests__/e2e/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+        "testIgnore": [],
+        "testMatch": [
+          "**/__tests__/playwright/**/*.spec.ts",
+          "**/__tests__/e2e/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright",
+        "testIgnore": [],
+        "testMatch": [
+          "**/__tests__/playwright/**/*.spec.ts",
+          "**/__tests__/e2e/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 4,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:4000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: browserType.launch: Executable doesn't exist at /Users/marklindon/Library/Caches/ms-playwright/chromium_headless_shell-1187/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+      "stack": "Error: browserType.launch: Executable doesn't exist at /Users/marklindon/Library/Caches/ms-playwright/chromium_headless_shell-1187/chrome-mac/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝\n    at globalSetup (/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright/config/global-setup.ts:7:34)",
+      "location": {
+        "file": "/Users/marklindon/BlueSphere/bluesphere/frontend/bluesphere-site/__tests__/playwright/config/global-setup.ts",
+        "column": 34,
+        "line": 7
+      },
+      "snippet": "\u001b[90m   at \u001b[39mconfig/global-setup.ts:7\n\n   5 |\n   6 |   // Verify dev server is running\n>  7 |   const browser = await chromium.launch()\n     |                                  ^\n   8 |   const page = await browser.newPage()\n   9 |\n  10 |   try {"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-09-24T12:15:32.048Z",
+    "duration": 733.298,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

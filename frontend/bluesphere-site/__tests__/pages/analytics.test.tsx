@@ -127,11 +127,15 @@ describe('AnalyticsPage', () => {
 
       await user.selectOptions(select, '7days')
       expect(select).toHaveValue('7days')
-      expect(screen.getByTestId('selected-timeframe')).toHaveTextContent('7days')
+      await waitFor(() => {
+        expect(screen.getByTestId('selected-timeframe')).toHaveTextContent('7days')
+      })
 
       await user.selectOptions(select, '90days')
       expect(select).toHaveValue('90days')
-      expect(screen.getByTestId('selected-timeframe')).toHaveTextContent('90days')
+      await waitFor(() => {
+        expect(screen.getByTestId('selected-timeframe')).toHaveTextContent('90days')
+      })
     })
 
     it('updates PredictiveAnalytics component when timeframe changes', async () => {
@@ -169,7 +173,7 @@ describe('AnalyticsPage', () => {
 
       expect(screen.getByText(/Training Data/)).toBeInTheDocument()
       expect(screen.getByText(/50,000 temperature measurements/)).toBeInTheDocument()
-      expect(screen.getByText(/20+ years/)).toBeInTheDocument()
+      expect(screen.getByText(/20\+ years/)).toBeInTheDocument()
     })
 
     it('shows feature engineering details', () => {
