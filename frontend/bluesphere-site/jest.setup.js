@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom'
+import 'jest-axe/extend-expect'
 
 // Mock next/router
 jest.mock('next/router', () => ({
@@ -155,3 +156,68 @@ afterAll(() => {
   console.error = originalError
   console.warn = originalWarn
 })
+
+// Mock lib files that may not exist
+jest.mock('@/lib/error-handling', () => ({
+  EnhancedError: class MockEnhancedError extends Error {
+    constructor(message, context) {
+      super(message)
+      this.name = 'EnhancedError'
+      this.user_friendly_message = `User friendly: ${message}`
+      this.recovery_suggestions = ['Try refreshing the page', 'Check your internet connection']
+      this.context = context
+    }
+  },
+  ErrorLogger: {
+    logError: jest.fn().mockResolvedValue('error-id-123')
+  },
+  isEnhancedError: jest.fn((error) => error.name === 'EnhancedError'),
+  ErrorFactory: {
+    createDataProcessingError: jest.fn((message, context) => {
+      const error = new Error(message)
+      error.name = 'EnhancedError'
+      error.user_friendly_message = `User friendly: ${message}`
+      error.recovery_suggestions = ['Try refreshing the page', 'Check your internet connection']
+      error.context = context
+      return error
+    })
+  }
+}))
+
+jest.mock('@/lib/performance', () => ({
+  trackErrorBoundaryPerformance: jest.fn(),
+  getOptimizedImageSrc: jest.fn((src, width, quality) => `${src}?w=${width}&q=${quality}`),
+  createIntersectionObserver: jest.fn((callback) => ({
+    observe: jest.fn((element) => {
+      setTimeout(() => callback([{ isIntersecting: true, target: element }]), 0)
+    }),
+    unobserve: jest.fn(),
+    disconnect: jest.fn()
+  })),
+  getConnectionInfo: jest.fn(() => ({
+    effectiveType: '4g',
+    downlink: 10,
+    rtt: 100,
+    saveData: false
+  }))
+}))
+
+// Mock accessibility provider
+jest.mock('@/components/accessibility/AccessibilityProvider', () => ({
+  useAccessibility: () => ({
+    announce: jest.fn(),
+    prefersReducedMotion: false,
+    prefersHighContrast: false,
+    announcements: [],
+    clearAnnouncements: jest.fn()
+  })
+}))
+
+// Mock localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+}
+global.localStorage = localStorageMock

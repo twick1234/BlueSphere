@@ -1,5 +1,5 @@
+import React from 'react'
 import { render, RenderOptions } from '@testing-library/react'
-import { ReactElement, ReactNode } from 'react'
 import { jest } from '@jest/globals'
 
 // Mock next/router for tests
@@ -19,6 +19,12 @@ export const mockRouter = {
     off: jest.fn(),
     emit: jest.fn(),
   },
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  defaultLocale: 'en',
+  domainLocales: [],
+  isPreview: false,
 }
 
 // Mock fetch with default responses
@@ -31,13 +37,13 @@ interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
 }
 
 export function renderWithProviders(
-  ui: ReactElement,
+  ui: React.ReactElement,
   options: CustomRenderOptions = {}
 ) {
   const { router = mockRouter, ...renderOptions } = options
 
   // You can add providers here if needed (ThemeProvider, etc.)
-  function Wrapper({ children }: { children: ReactNode }) {
+  function Wrapper({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 

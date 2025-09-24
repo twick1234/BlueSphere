@@ -41,10 +41,17 @@ const customJestConfig = {
   coverageReporters: ['text', 'lcov', 'html'],
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      branches: 85,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
+    // Specific thresholds for critical utility functions
+    'lib/**/*.{js,jsx,ts,tsx}': {
+      branches: 95,
+      functions: 95,
+      lines: 95,
+      statements: 95,
     },
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],

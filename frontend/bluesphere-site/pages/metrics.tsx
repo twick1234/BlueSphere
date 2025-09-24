@@ -487,7 +487,7 @@ const MetricsDashboard = () => {
               🌊 BlueSphere Marine Monitoring Platform • Last updated: <span suppressHydrationWarning>{new Date().toLocaleString()}</span>
             </p>
             <p className="mt-2">
-              Dashboard URL: <code className="bg-gray-100 px-2 py-1 rounded">
+              Dashboard URL: <code className="bg-gray-100 px-2 py-1 rounded" suppressHydrationWarning>
                 {typeof window !== 'undefined' ? window.location.href : '/metrics'}
               </code>
             </p>

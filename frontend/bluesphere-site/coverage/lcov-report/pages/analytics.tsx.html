@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -256,12 +256,12 @@
 <a name='L191'></a><a href='#L191'>191</a>
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
-<a name='L194'></a><a href='#L194'>194</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L194'></a><a href='#L194'>194</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">56x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -291,7 +291,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -449,12 +449,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from <span class="cstat-no" title="statement not covered" >'react';</span>
-import PredictiveAnalytics from <span class="cstat-no" title="statement not covered" >'../components/PredictiveAnalytics';</span>
-import WorldClassLayout from <span class="cstat-no" title="statement not covered" >'../components/WorldClassLayout';</span>
+<span class="cline-any cline-yes">49x</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from 'react';
+import PredictiveAnalytics from '../components/PredictiveAnalytics';
+import WorldClassLayout from '../components/WorldClassLayout';
 &nbsp;
-const AnalyticsPage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-  const [timeframe, setTimeframe] = <span class="cstat-no" title="statement not covered" >useState&lt;'7days' | '14days' | '30days' | '90days'&gt;('30days');</span>
+const AnalyticsPage = () =&gt; {
+  const [timeframe, setTimeframe] = useState&lt;'7days' | '14days' | '30days' | '90days'&gt;('30days');
 &nbsp;
   const AnalyticsContent = () =&gt; (
     &lt;div className="bs-section"&gt;
@@ -484,7 +484,7 @@ const AnalyticsPage = <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
           &lt;select
             value={timeframe}
-            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setTimeframe(e.target.value as any)}</span>
+            onChange={(e) =&gt; setTimeframe(e.target.value as any)}
             className="bs-premium-card px-4 py-3 text-sm font-medium bg-white border-0 bs-focus-ring min-w-[200px]"
           &gt;
             &lt;option value="7days"&gt;🔮 Next 7 Days&lt;/option&gt;
@@ -642,14 +642,14 @@ const AnalyticsPage = <span class="cstat-no" title="statement not covered" ><spa
   );
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default <span class="cstat-no" title="statement not covered" >A</span>nalyticsPage;</span></pre></td></tr></table></pre>
+export default AnalyticsPage;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-23T15:11:47.771Z
+                at 2025-09-24T10:01:48.448Z
             </div>
         <script src="../prettify.js"></script>
         <script>
