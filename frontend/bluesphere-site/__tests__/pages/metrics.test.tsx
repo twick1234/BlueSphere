@@ -238,7 +238,7 @@ describe('MetricsPage', () => {
     it('renders the page header and title', () => {
       render(<MetricsPage />)
 
-      expect(screen.getByText(/Platform Metrics/i)).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: /Platform Metrics/i })).toBeInTheDocument()
       expect(screen.getByText(/Real-time monitoring/i)).toBeInTheDocument()
     })
 

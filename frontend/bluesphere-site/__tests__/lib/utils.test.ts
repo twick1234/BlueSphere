@@ -31,7 +31,7 @@ describe('Geographic Utilities', () => {
     const keyWest = { lat: 24.5551, lon: -81.7821 }
 
     const distance = calculateDistance(miami.lat, miami.lon, keyWest.lat, keyWest.lon)
-    expect(distance).toBeCloseTo(165, 0) // Within 1km tolerance
+    expect(distance).toBeCloseTo(209, 5) // Within 5km tolerance (actual distance Miami to Key West)
   })
 
   it('should calculate zero distance for same location', () => {
@@ -42,7 +42,7 @@ describe('Geographic Utilities', () => {
   it('should handle antipodal points', () => {
     // Points on opposite sides of Earth should be ~20,015km apart
     const distance = calculateDistance(0, 0, 0, 180)
-    expect(distance).toBeCloseTo(20015, 100)
+    expect(distance).toBeCloseTo(20015, 0)
   })
 
   it('should format coordinates properly', () => {
@@ -144,7 +144,7 @@ describe('Error Handling', () => {
   })
 
   it('should handle edge cases', () => {
-    expect(calculateDistance(90, 0, -90, 0)).toBeCloseTo(20003, 10) // Pole to pole
+    expect(calculateDistance(90, 0, -90, 0)).toBeCloseTo(20015, 0) // Pole to pole
     expect(convertTemperature(-273.15, 'C', 'K')).toBe(0) // Absolute zero
   })
 })

@@ -85,7 +85,7 @@ export function AccessibleDataVisualization({
         </div>
         <div className="stat">
           <dt>Median:</dt>
-          <dd>{statistics.median.toFixed(2)}{unit}</dd>
+          <dd>{statistics.median?.toFixed(2) ?? '0.00'}{unit}</dd>
         </div>
       </dl>
     </div>
@@ -136,20 +136,24 @@ export function AccessibleDataVisualization({
       >
         Visual View
       </button>
-      <button
-        className={`control-button ${viewMode === 'table' ? 'active' : ''}`}
-        onClick={() => handleViewModeChange('table')}
-        aria-pressed={viewMode === 'table'}
-      >
-        Table View
-      </button>
-      <button
-        className={`control-button ${viewMode === 'summary' ? 'active' : ''}`}
-        onClick={() => handleViewModeChange('summary')}
-        aria-pressed={viewMode === 'summary'}
-      >
-        Summary View
-      </button>
+      {showTable && (
+        <button
+          className={`control-button ${viewMode === 'table' ? 'active' : ''}`}
+          onClick={() => handleViewModeChange('table')}
+          aria-pressed={viewMode === 'table'}
+        >
+          Table View
+        </button>
+      )}
+      {showSummary && (
+        <button
+          className={`control-button ${viewMode === 'summary' ? 'active' : ''}`}
+          onClick={() => handleViewModeChange('summary')}
+          aria-pressed={viewMode === 'summary'}
+        >
+          Summary View
+        </button>
+      )}
     </div>
   );
 
@@ -176,7 +180,7 @@ export function AccessibleDataVisualization({
             </div>
           )}
 
-          {(viewMode === 'table' || screenReaderMode) && renderTable()}
+          {(viewMode === 'table' || screenReaderMode) && showTable && renderTable()}
 
           {(viewMode === 'summary' || screenReaderMode) && showSummary && renderSummary()}
         </div>
