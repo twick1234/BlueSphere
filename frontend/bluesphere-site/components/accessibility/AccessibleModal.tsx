@@ -96,14 +96,13 @@ export function AccessibleModal({
         aria-hidden="true"
       >
         <div
-          ref={modalRef}
+          ref={modalRef as React.RefObject<HTMLDivElement>}
           className={`modal ${getSizeClasses()} ${className}`}
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
           aria-describedby={descriptionId}
           onClick={(e) => e.stopPropagation()}
-          onEscape={onClose}
         >
           <div className="modal-header">
             <h2 id={titleId} className="modal-title">

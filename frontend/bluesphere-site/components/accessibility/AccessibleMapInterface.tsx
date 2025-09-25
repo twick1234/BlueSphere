@@ -5,7 +5,7 @@
  * WCAG 2.1 AA compliant with alternative representations and ARIA support
  */
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useAccessibility } from './AccessibilityProvider';
 
 interface MapLocation {
@@ -26,7 +26,6 @@ interface AccessibleMapInterfaceProps {
   onLocationSelect?: (location: MapLocation) => void;
   onLocationFocus?: (location: MapLocation) => void;
   showControls?: boolean;
-  showAlternatives?: boolean;
 }
 
 export function AccessibleMapInterface({
@@ -35,8 +34,7 @@ export function AccessibleMapInterface({
   description,
   onLocationSelect,
   onLocationFocus,
-  showControls = true,
-  showAlternatives = true
+  showControls = true
 }: AccessibleMapInterfaceProps) {
   const { announce, screenReaderMode, focusElement } = useAccessibility();
   const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(null);
@@ -88,7 +86,7 @@ export function AccessibleMapInterface({
     return regions;
   }, [filteredLocations]);
 
-  function getRegionFromCoordinates(lat: number, lng: number): string {
+  function getRegionFromCoordinates(lat: number, _lng: number): string {
     // Simplified region detection - you could make this more sophisticated
     if (lat > 60) return 'Arctic';
     if (lat > 30) return 'Northern';
@@ -124,27 +122,38 @@ export function AccessibleMapInterface({
       case 'ArrowDown':
         event.preventDefault();
         if (index < filteredLocations.length - 1) {
-          handleLocationFocus(filteredLocations[index + 1]);
-          focusElement(`[data-location-id="${filteredLocations[index + 1].id}"]`);
+          const nextLocation = filteredLocations[index + 1];
+          if (nextLocation) {
+            handleLocationFocus(nextLocation);
+            focusElement(`[data-location-id="${nextLocation.id}"]`);
+          }
         }
         break;
       case 'ArrowUp':
         event.preventDefault();
         if (index > 0) {
-          handleLocationFocus(filteredLocations[index - 1]);
-          focusElement(`[data-location-id="${filteredLocations[index - 1].id}"]`);
+          const prevLocation = filteredLocations[index - 1];
+          if (prevLocation) {
+            handleLocationFocus(prevLocation);
+            focusElement(`[data-location-id="${prevLocation.id}"]`);
+          }
         }
         break;
       case 'Home':
         event.preventDefault();
-        handleLocationFocus(filteredLocations[0]);
-        focusElement(`[data-location-id="${filteredLocations[0].id}"]`);
+        const firstLocation = filteredLocations[0];
+        if (firstLocation) {
+          handleLocationFocus(firstLocation);
+          focusElement(`[data-location-id="${firstLocation.id}"]`);
+        }
         break;
       case 'End':
         event.preventDefault();
         const lastLocation = filteredLocations[filteredLocations.length - 1];
-        handleLocationFocus(lastLocation);
-        focusElement(`[data-location-id="${lastLocation.id}"]`);
+        if (lastLocation) {
+          handleLocationFocus(lastLocation);
+          focusElement(`[data-location-id="${lastLocation.id}"]`);
+        }
         break;
     }
   };
@@ -213,7 +222,7 @@ export function AccessibleMapInterface({
         <div key={region} className="region-section">
           <h3 className="region-title">{region} Region ({regionLocations.length})</h3>
           <ul className="location-items" role="group" aria-labelledby={`region-${region}`}>
-            {regionLocations.map((location, index) => (
+            {regionLocations.map((location) => (
               <li
                 key={location.id}
                 className={`location-item ${selectedLocation?.id === location.id ? 'selected' : ''} ${focusedLocation?.id === location.id ? 'focused' : ''}`}

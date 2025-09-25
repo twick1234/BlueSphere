@@ -378,7 +378,9 @@ const AlertSubscriptionManager: React.FC<AlertSubscriptionManagerProps> = ({
                       value={zone.name}
                       onChange={(e) => {
                         const newZones = [...newSubscription.zones];
-                        newZones[index].name = e.target.value;
+                        if (newZones[index]) {
+                          newZones[index].name = e.target.value;
+                        }
                         setNewSubscription(prev => ({ ...prev, zones: newZones }));
                       }}
                       className={`flex-1 px-2 py-1 border rounded ${inputClass} mr-2`}

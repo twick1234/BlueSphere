@@ -5,7 +5,7 @@
  * contour lines, elevation profiles, and interactive 3D rendering.
  */
 
-import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { useMap } from 'react-leaflet'
 import L from 'leaflet'
 import * as d3 from 'd3'
@@ -282,6 +282,10 @@ class BathymetryRenderer {
     const resolution = 256
     const colorData = new Uint8Array(resolution * 4)
 
+    if (!scheme.colors || scheme.colors.length === 0) {
+      return // Early return if no colors available
+    }
+
     const minDepth = Math.min(...scheme.colors.map(c => c.depth))
     const maxDepth = Math.max(...scheme.colors.map(c => c.depth))
 
@@ -292,10 +296,16 @@ class BathymetryRenderer {
       let lowerStop = scheme.colors[0]
       let upperStop = scheme.colors[scheme.colors.length - 1]
 
+      if (!lowerStop || !upperStop) {
+        continue // Skip this iteration if no stops available
+      }
+
       for (let j = 0; j < scheme.colors.length - 1; j++) {
-        if (depth >= scheme.colors[j].depth && depth <= scheme.colors[j + 1].depth) {
-          lowerStop = scheme.colors[j]
-          upperStop = scheme.colors[j + 1]
+        const currentColor = scheme.colors[j];
+        const nextColor = scheme.colors[j + 1];
+        if (currentColor && nextColor && depth >= currentColor.depth && depth <= nextColor.depth) {
+          lowerStop = currentColor
+          upperStop = nextColor
           break
         }
       }
